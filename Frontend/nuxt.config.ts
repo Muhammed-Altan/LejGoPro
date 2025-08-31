@@ -5,7 +5,7 @@ export default defineNuxtConfig({
   modules: ['@nuxt/ui', '@nuxt/image', '@nuxt/icon',],
   app: {
     head: {
-      title: 'Portfolio',
+      title: 'LejGoPro',
     }
   },
   css: ['@/assets/css/main.css'],

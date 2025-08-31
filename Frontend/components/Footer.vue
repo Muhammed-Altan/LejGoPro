@@ -20,11 +20,11 @@
       <div>
         <h3 class="font-bold mb-4">Hurtige Links</h3>
         <ul class="space-y-2 text-gray-300">
-          <li><a href="#" class="hover:text-white">Produkter</a></li>
-          <li><a href="#" class="hover:text-white">Priser</a></li>
-          <li><a href="#" class="hover:text-white">Om Os</a></li>
-          <li><a href="#" class="hover:text-white">FAQ</a></li>
-          <li><a href="#" class="hover:text-white">Vilkår</a></li>
+          <li><NuxtLink to="/products" class="hover:text-white">Produkter</NuxtLink></li>
+          <li><NuxtLink to="#" class="hover:text-white">Priser</NuxtLink></li>
+          <li><NuxtLink to="#" class="hover:text-white">Om Os</NuxtLink></li>
+          <li><NuxtLink to="/faq" class="hover:text-white">FAQ</NuxtLink></li>
+          <li><NuxtLink to="#" class="hover:text-white">Vilkår</NuxtLink></li>
         </ul>
       </div>
       <!-- Services -->

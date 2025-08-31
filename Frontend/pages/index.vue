@@ -45,76 +45,31 @@
   <section class="max-w-7xl mx-auto mt-16 mb-16">
     <h2 class="text-2xl md:text-3xl font-bold text-center mb-8">Vælg Din Perfekte <span class="text-[#B8082A]">GoPro</span></h2>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      <!-- Card 1 -->
-      <div class="bg-white rounded-2xl shadow-lg border p-6 flex flex-col">
-        <img src="https://images.unsplash.com/photo-1519183071298-a2962be56693?auto=format&fit=crop&w=400&q=80" alt="GoPro HERO10 Black" class="w-full h-40 object-contain mb-4" />
-        <h3 class="font-bold text-lg mb-1 text-black">GoPro HERO10 Black</h3>
-        <p class="text-sm text-gray-600 mb-3">Kraftfuld performance med GP2 processor og glimrende stabilisering.</p>
-        <ul class="text-xs text-gray-700 mb-4 space-y-1">
-          <li>📷 5.3K Video</li>
-          <li>🖥️ GP2 Processor</li>
-          <li>⚡ HyperSmooth 4.0</li>
-          <li>🕑 Vandtæt</li>
-        </ul>
-        <div class="flex items-end gap-4 mb-4">
-          <div>
-            <span class="font-bold text-black text-xl">29 kr</span>
-            <span class="text-gray-500 text-sm">/dag</span>
-          </div>
-          <div>
-            <span class="font-bold text-black text-base">109 kr</span>
-            <span class="text-gray-500 text-sm">/uge</span>
-          </div>
-        </div>
-        <button class="bg-[#B8082A] text-white font-semibold py-2 px-6 rounded-full mt-auto">Lej Nu</button>
-      </div>
-      <!-- Card 2 -->
-      <div class="bg-white rounded-2xl shadow-lg border p-6 flex flex-col relative">
-        <span class="absolute top-3 right-3 bg-[#B8082A] text-white text-xs font-semibold px-3 py-1 rounded-full">Mest Populær</span>
-        <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80" alt="GoPro HERO11 Black" class="w-full h-40 object-contain mb-4" />
-        <h3 class="font-bold text-lg mb-1 text-black">GoPro HERO11 Black</h3>
-        <p class="text-sm text-gray-600 mb-3">Fremragende allround kamera med 5.3K video og forbedret natoptagelse.</p>
-        <ul class="text-xs text-gray-700 mb-4 space-y-1">
-          <li>� 5.3K Video</li>
-          <li>🌙 Nightlapse</li>
-          <li>⚡ HyperSmooth 5.0</li>
-          <li>🕑 Vandtæt til 10m</li>
-        </ul>
-        <div class="flex items-end gap-4 mb-4">
-          <div>
-            <span class="font-bold text-black text-xl">39 kr</span>
-            <span class="text-gray-500 text-sm">/dag</span>
-          </div>
-          <div>
-            <span class="font-bold text-black text-base">129 kr</span>
-            <span class="text-gray-500 text-sm">/uge</span>
-          </div>
-        </div>
-        <button class="bg-[#B8082A] text-white font-semibold py-2 px-6 rounded-full mt-auto">Lej Nu</button>
-      </div>
-      <!-- Card 3 -->
-      <div class="bg-white rounded-2xl shadow-lg border p-6 flex flex-col">
-        <img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=400&q=80" alt="GoPro HERO9 Black" class="w-full h-40 object-contain mb-4" />
-        <h3 class="font-bold text-lg mb-1 text-black">GoPro HERO9 Black</h3>
-        <p class="text-sm text-gray-600 mb-3">Pålidelig og prisvenlig mulighed med fremskærm og 5K video.</p>
-        <ul class="text-xs text-gray-700 mb-4 space-y-1">
-          <li>📷 5K Video</li>
-          <li>🖥️ Fremskærm</li>
-          <li>⚡ HyperSmooth 3.0</li>
-          <li>⏩ TimeWarp 3.0</li>
-        </ul>
-        <div class="flex items-end gap-4 mb-4">
-          <div>
-            <span class="font-bold text-black text-xl">25 kr</span>
-            <span class="text-gray-500 text-sm">/dag</span>
-          </div>
-          <div>
-            <span class="font-bold text-black text-base">89 kr</span>
-            <span class="text-gray-500 text-sm">/uge</span>
-          </div>
-        </div>
-        <button class="bg-[#B8082A] text-white font-semibold py-2 px-6 rounded-full mt-auto">Lej Nu</button>
-      </div>
+      <ProductCard
+        title="GoPro HERO10 Black"
+        description="Kraftfuld performance med GP2 processor og glimrende stabilisering."
+        img="https://images.unsplash.com/photo-1519183071298-a2962be56693?auto=format&fit=crop&w=400&q=80"
+        :features="['📷 5.3K Video', '🖥️ GP2 Processor', '⚡ HyperSmooth 4.0', '🕑 Vandtæt']"
+        :priceDay="29"
+        :priceWeek="109"
+      />
+      <ProductCard
+        title="GoPro HERO11 Black"
+        description="Fremragende allround kamera med 5.3K video og forbedret natoptagelse."
+        img="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80"
+        :features="['📷 5.3K Video', '🌙 Nightlapse', '⚡ HyperSmooth 5.0', '🕑 Vandtæt til 10m']"
+        :priceDay="39"
+        :priceWeek="129"
+        :popular="true"
+      />
+      <ProductCard
+        title="GoPro HERO9 Black"
+        description="Pålidelig og prisvenlig mulighed med fremskærm og 5K video."
+        img="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=400&q=80"
+        :features="['📷 5K Video', '🖥️ Fremskærm', '⚡ HyperSmooth 3.0', '⏩ TimeWarp 3.0']"
+        :priceDay="25"
+        :priceWeek="89"
+      />
     </div>
   </section>
 
@@ -146,16 +101,16 @@
   </section>
 
   <!-- FAQ Section -->
-  <section class="bg-white py-16">
+  <section class="bg-white py-16 ">
     <h2 class="text-2xl md:text-3xl font-bold text-center mb-12">Frequently asked <span class="text-[#B8082A]">questions.</span></h2>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto mb-8">
-      <button class="bg-white border border-gray-200 rounded-xl py-6 px-4 text-left font-medium text-black flex justify-between items-center hover:border-[#B8082A] transition">Hvordan og hvornår skal man betale?<span class="text-[#B8082A]">&gt;</span></button>
-      <button class="bg-white border border-gray-200 rounded-xl py-6 px-4 text-left font-medium text-black flex justify-between items-center hover:border-[#B8082A] transition">Hvor længe holder et GoPro strøm?<span class="text-[#B8082A]">&gt;</span></button>
-      <button class="bg-white border border-gray-200 rounded-xl py-6 px-4 text-left font-medium text-black flex justify-between items-center hover:border-[#B8082A] transition">Hvor lang tid tager det at oplade et GoPro?<span class="text-[#B8082A]">&gt;</span></button>
-      <button class="bg-white border border-gray-200 rounded-xl py-6 px-4 text-left font-medium text-black flex justify-between items-center hover:border-[#B8082A] transition">Er kameraet forsikret?<span class="text-[#B8082A]">&gt;</span></button>
+    <div class="flex flex-row gap-10 justify-center align-center mx-auto mb-10">
+  <UAccordion class = "!w-64" :items="[items[0]]" :ui="{ ...ui, item: ui.item + '  min-h-[100px] py-1 border-b-2 border-[#B8082A] !border-b-2 !border-[#B8082A]' }" />
+  <UAccordion class = "!w-64" :items="[items[1]]" :ui="{ ...ui, item: ui.item + '  min-h-[100px] py-1 border-b-2 border-[#B8082A] !border-b-2 !border-[#B8082A]' }" />
+  <UAccordion class = "!w-64" :items="[items[2]]" :ui="{ ...ui, item: ui.item + '  min-h-[100px] py-1 border-b-2 border-[#B8082A] !border-b-2 !border-[#B8082A]' }" />
+  <UAccordion class = "!w-64" :items="[items[3]]" :ui="{ ...ui, item: ui.item + '  min-h-[100px] py-1 border-b-2 border-[#B8082A] !border-b-2 !border-[#B8082A]' }" />
     </div>
     <div class="flex justify-center">
-      <button class="bg-[#B8082A] text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-[#a10725] transition">Læs mere</button>
+      <NuxtLink to="/faq" class="bg-[#B8082A] text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-[#a10725] transition">Læs mere</NuxtLink>
     </div>
   </section>
 
@@ -164,6 +119,40 @@
 
 </template>
 <script setup lang="ts">
+
+import ProductCard from '../components/ProductCard.vue';
+
+import type { AccordionItem } from '@nuxt/ui'
+
+const items = ref<AccordionItem[]>([
+  {
+    label: 'Hvordan og hvornår skal man betale?',
+    icon: 'i-lucide-credit-card',
+    content: 'Betaling sker via MobilePay inden afrejse, efter du har accepteret tilbuddet og modtaget kameraet.'
+  },
+  {
+    label: 'Hvor længe holder et GoPro strøm?',
+    icon: 'i-lucide-battery-charging',
+    content: 'Et GoPro holder typisk 1-2 timer afhængigt af brug og model. Med ekstra batterier kan du forlænge tiden.'
+  },
+  {
+    label: 'Hvor lang tid tager det at oplade et GoPro?',
+    icon: 'i-lucide-clock',
+    content: 'Opladning tager ca. 2 timer med den medfølgende oplader.'
+  },
+  {
+    label: 'Er kameraet forsikret?',
+    icon: 'i-lucide-shield-check',
+    content: 'Ja, der er basisforsikring inkluderet. Kontakt os for detaljer om dækning.'
+  }
+])
+
+const ui = {
+  item: 'bg-white border border-gray-200 rounded-xl px-4 font-medium text-black hover:border-[#B8082A] transition flex flex-col items-center justify-center text-center',
+  leadingIcon: 'mb-2 text-[#B8082A]',
+  trigger: 'flex justify-center items-center',
+  content: 'py-2 text-gray-700 text-center flex flex-col items-center justify-center'
+}
 
 </script>
 
