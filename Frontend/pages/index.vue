@@ -148,10 +148,10 @@ const items = ref<AccordionItem[]>([
 ])
 
 const ui = {
-  item: 'bg-white border border-gray-200 rounded-xl px-4 font-medium text-black hover:border-[#B8082A] transition flex flex-col items-center justify-center text-center',
+  item: 'bg-white border border-gray-200 rounded-xl font-medium text-black hover:border-[#B8082A] transition flex flex-col items-center justify-center text-center',
   leadingIcon: 'mb-2 text-[#B8082A]',
-  trigger: 'flex justify-center items-center',
-  content: 'py-2 text-gray-700 text-center flex flex-col items-center justify-center'
+  trigger: 'flex justify-center items-center px-4 w-full h-full min-h-[100px] cursor-pointer',
+  content: 'p-2 text-gray-700 text-center flex flex-col items-center justify-center'
 }
 
 </script>

@@ -8,8 +8,7 @@
     </div>
     <nav class="header-nav">
       <a href="/products" class="header-link">Produkter</a>
-      <a href="#priser" class="header-link">Priser</a>
-      <a href="#om-os" class="header-link">Om Os</a>
+      <a href="#hvorfor" class="header-link">Hvorfor Leje?</a>
       <a href="#kontakt" class="header-link">Kontakt</a>
       <UButton size="md" class="book-btn">Book Nu</UButton>
     </nav>
