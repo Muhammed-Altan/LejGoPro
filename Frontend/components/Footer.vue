@@ -22,7 +22,7 @@
         <ul class="space-y-2 text-gray-300">
           <li><NuxtLink to="/products" class="hover:text-white">Produkter</NuxtLink></li>
           <li><NuxtLink to="#" class="hover:text-white">Hvorfor leje?</NuxtLink></li>
-          <li><NuxtLink to="/faq" class="hover:text-white">Kontakt Os</NuxtLink></li>
+          <li><NuxtLink to="/kontakt" class="hover:text-white">Kontakt Os</NuxtLink></li>
           <li><NuxtLink to="/faq" class="hover:text-white">Booking</NuxtLink></li>
           <li><NuxtLink to="/faq" class="hover:text-white">FAQ</NuxtLink></li>
         </ul>
