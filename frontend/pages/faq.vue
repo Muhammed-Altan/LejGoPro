@@ -76,4 +76,6 @@ const ui = {
   trigger: 'flex justify-center items-center w-full h-full cursor-pointer',
   content: 'py-2 text-gray-700 text-center flex flex-col items-center justify-center w-full'
 }
+
 </script>
+

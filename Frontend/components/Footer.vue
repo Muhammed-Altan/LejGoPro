@@ -63,7 +63,3 @@
     </div>
   </footer>
 </template>
-
-<script setup lang="ts">
-// No script needed for static footer
-</script>
