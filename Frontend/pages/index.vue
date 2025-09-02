@@ -6,14 +6,14 @@
   <div class="absolute inset-0 bg-white/20"></div>
     <div class="relative z-10 flex flex-col items-center justify-center py-24">
       <h1 class="text-4xl md:text-5xl font-bold text-center text-black mb-8">
-        Lej dit <span class="text-[#B8082A]">GoPro</span> til næste eventyr
+  Lej dit <span class="text-[#B8082A]">GoPro</span> til næste eventyr
       </h1>
       <p class="text-lg text-center text-black mb-8 max-w-xl">
         Professionelle actionkameraer til rejsende og eventyrere – nem booking, gratis levering og konkurrencedygtige priser.
       </p>
       <div class="flex gap-4 justify-center mb-8">
-        <button class="bg-[#B8082A] text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-[#a10725] transition">Se Alle Produkter</button>
-        <button class="bg-white text-[#B8082A] font-semibold py-3 px-8 rounded-full shadow-lg border border-[#B8082A] hover:bg-[#B8082A] hover:text-white transition">Få Et Tilbud</button>
+  <button class="bg-[#B8082A] text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-[#a10725] transition">Se Alle Produkter</button>
+  <button class="bg-white text-[#B8082A] font-semibold py-3 px-8 rounded-full shadow-lg border border-[#B8082A] hover:bg-[#B8082A] hover:text-white transition">Få Et Tilbud</button>
       </div>
     </div>
   </section>
@@ -28,11 +28,11 @@
         <!-- Adventure Image Grid -->
         <div class="grid grid-cols-2 md:grid-cols-3 gap-6 mb-12">
           <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80" alt="Waterfall selfie" class="rounded-2xl object-cover w-full h-64" />
-          <img src="https://images.unsplash.com/photo-1465101178521-c1a4c8a0f8f5?auto=format&fit=crop&w=600&q=80" alt="Diving" class="rounded-2xl object-cover w-full h-64" />
+          <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80" alt="Skiing" class="rounded-2xl object-cover w-full h-64" />
           <img src="https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=600&q=80" alt="Dog adventure" class="rounded-2xl object-cover w-full h-64" />
-          <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=600&q=80" alt="Helicopter" class="rounded-2xl object-cover w-full h-64" />
-          <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=600&q=80" alt="Skiing" class="rounded-2xl object-cover w-full h-64" />
           <img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=600&q=80" alt="Mountain climbing" class="rounded-2xl object-cover w-full h-64" />
+          <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=600&q=80" alt="Skiing" class="rounded-2xl object-cover w-full h-64" />
+          <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" alt="Mountain climbing" class="rounded-2xl object-cover w-full h-64" />
         </div>
         <div class="flex justify-center mb-12">
           <button class="bg-[#B8082A] text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-[#a10725] transition">Fang dit eventyr her</button>
@@ -43,12 +43,12 @@
 
   <!-- Product Cards Section -->
   <section class="max-w-7xl mx-auto mt-16 mb-16">
-    <h2 class="text-2xl md:text-3xl font-bold text-center mb-8">Vælg Din Perfekte <span class="text-[#B8082A]">GoPro</span></h2>
+  <h2 class="text-2xl md:text-3xl font-bold text-center mb-8">Vælg Din Perfekte <span class="text-[#B8082A]">GoPro</span></h2>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
       <ProductCard
         title="GoPro HERO10 Black"
         description="Kraftfuld performance med GP2 processor og glimrende stabilisering."
-        img="https://images.unsplash.com/photo-1519183071298-a2962be56693?auto=format&fit=crop&w=400&q=80"
+        img="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80"
         :features="['📷 5.3K Video', '🖥️ GP2 Processor', '⚡ HyperSmooth 4.0', '🕑 Vandtæt']"
         :priceDay="29"
         :priceWeek="109"
@@ -65,7 +65,7 @@
       <ProductCard
         title="GoPro HERO9 Black"
         description="Pålidelig og prisvenlig mulighed med fremskærm og 5K video."
-        img="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=400&q=80"
+        img="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80"
         :features="['📷 5K Video', '🖥️ Fremskærm', '⚡ HyperSmooth 3.0', '⏩ TimeWarp 3.0']"
         :priceDay="25"
         :priceWeek="89"
@@ -75,7 +75,7 @@
 
   <!-- Booking Steps -->
   <section class="bg-white py-16">
-    <h2 class="text-2xl md:text-3xl font-bold text-center mb-12">Sådan <span class="text-[#B8082A]">booker</span> du</h2>
+  <h2 class="text-2xl md:text-3xl font-bold text-center mb-12">Sådan <span class="text-[#B8082A]">booker</span> du</h2>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-5xl mx-auto">
       <div class="flex flex-col items-center">
         <span class="text-5xl mb-4">📅</span>
@@ -102,7 +102,7 @@
 
   <!-- FAQ Section -->
   <section class="bg-white py-16 ">
-    <h2 class="text-2xl md:text-3xl font-bold text-center mb-12">Frequently asked <span class="text-[#B8082A]">questions.</span></h2>
+  <h2 class="text-2xl md:text-3xl font-bold text-center mb-12">Frequently asked <span class="text-[#B8082A]">questions.</span></h2>
     <div class="flex flex-row gap-10 justify-center align-center mx-auto mb-10">
   <UAccordion class = "!w-64" :items="[items[0]]" :ui="{ ...ui, item: ui.item + '  min-h-[100px] py-1 border-b-2 border-[#B8082A] !border-b-2 !border-[#B8082A]' }" />
   <UAccordion class = "!w-64" :items="[items[1]]" :ui="{ ...ui, item: ui.item + '  min-h-[100px] py-1 border-b-2 border-[#B8082A] !border-b-2 !border-[#B8082A]' }" />
@@ -110,7 +110,7 @@
   <UAccordion class = "!w-64" :items="[items[3]]" :ui="{ ...ui, item: ui.item + '  min-h-[100px] py-1 border-b-2 border-[#B8082A] !border-b-2 !border-[#B8082A]' }" />
     </div>
     <div class="flex justify-center">
-      <NuxtLink to="/faq" class="bg-[#B8082A] text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-[#a10725] transition">Læs mere</NuxtLink>
+  <NuxtLink to="/faq" class="bg-[#B8082A] text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-[#a10725] transition">Læs mere</NuxtLink>
     </div>
   </section>
 

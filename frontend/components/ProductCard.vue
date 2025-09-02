@@ -1,6 +1,6 @@
 <template>
   <div class="bg-white rounded-2xl shadow-lg border p-6 flex flex-col" :class="{ 'relative': popular }">
-    <span v-if="popular" class="absolute top-3 right-3 bg-[#B8082A] text-white text-xs font-semibold px-3 py-1 rounded-full">Mest Populær</span>
+  <span v-if="popular" class="absolute top-3 right-3 bg-[#B8082A] text-white text-xs font-semibold px-3 py-1 rounded-full">Mest Populær</span>
     <img :src="img" :alt="title" class="w-full h-40 object-contain mb-4" />
     <h3 class="font-bold text-lg mb-1 text-black">{{ title }}</h3>
     <p class="text-sm text-gray-600 mb-3">{{ description }}</p>

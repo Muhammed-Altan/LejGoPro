@@ -1,2 +1,2 @@
-<!-- Lav en page der omhandler hvorfor man skal leje en GoPro i stedet for at købe et -->
+<!-- Create a page about why you should rent a GoPro instead of buying one -->
 <template></template>
