@@ -18,7 +18,7 @@
         </div>
     </section>
     <!-- Section 2: Eventyr and images -->
-    <section class="bg-gray-100 py-10 bg-white">
+    <section class="py-10 bg-white">
         <div class="max-w-4xl mx-auto text-center mb-8">
             <h3 class="text-2xl font-bold mb-8">Kontakt Os — <span class="text-[#B8082A]">Dit Eventyr</span> Begynder Her</h3>
             <div class="py-8 rounded-xl">
