@@ -19,7 +19,7 @@
   </section>
 
   <!-- Adventure Headline -->
-  <section class="max-w mx-auto bg-white">
+  <section class="max-w-7xl mx-auto bg-white">
     <div class="w-full py-12">
       <div class="max-w-7xl mx-auto">
         <h2 class="text-3xl md:text-4xl font-bold text-center mb-8">
