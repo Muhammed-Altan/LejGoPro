@@ -77,9 +77,3 @@ const ui = {
   content: 'py-2 text-gray-700 text-center flex flex-col items-center justify-center w-full'
 }
 </script>
-
-<style scoped>
-
-
-
-</style>
