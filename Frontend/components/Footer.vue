@@ -11,9 +11,9 @@
         </div>
         <p class="text-sm text-gray-300 mb-4">Danmarks førende platform for GoPro udlejning til eventyrere og rejsende.</p>
         <div class="flex gap-4 text-xl">
-          <a href="#" aria-label="Facebook" class="hover:text-gray-400"><i class="fab fa-facebook"></i></a>
-          <a href="#" aria-label="Instagram" class="hover:text-gray-400"><i class="fab fa-instagram"></i></a>
-          <a href="#" aria-label="Twitter" class="hover:text-gray-400"><i class="fab fa-twitter"></i></a>
+          <NuxtLink to="#" aria-label="Facebook" class="hover:text-gray-400"><i class="fab fa-facebook"></i></NuxtLink>
+          <NuxtLink to="#" aria-label="Instagram" class="hover:text-gray-400"><i class="fab fa-instagram"></i></NuxtLink>
+          <NuxtLink to="#" aria-label="Twitter" class="hover:text-gray-400"><i class="fab fa-twitter"></i></NuxtLink>
         </div>
       </div>
       <!-- Quick Links -->
@@ -21,29 +21,29 @@
         <h3 class="font-bold mb-4">Hurtige Links</h3>
         <ul class="space-y-2 text-gray-300">
           <li><NuxtLink to="/products" class="hover:text-white">Produkter</NuxtLink></li>
-          <li><NuxtLink to="#" class="hover:text-white">Priser</NuxtLink></li>
-          <li><NuxtLink to="#" class="hover:text-white">Om Os</NuxtLink></li>
+          <li><NuxtLink to="#" class="hover:text-white">Hvorfor leje?</NuxtLink></li>
+          <li><NuxtLink to="/faq" class="hover:text-white">Kontakt Os</NuxtLink></li>
+          <li><NuxtLink to="/faq" class="hover:text-white">Booking</NuxtLink></li>
           <li><NuxtLink to="/faq" class="hover:text-white">FAQ</NuxtLink></li>
-          <li><NuxtLink to="#" class="hover:text-white">Vilkår</NuxtLink></li>
         </ul>
       </div>
       <!-- Services -->
       <div>
         <h3 class="font-bold mb-4">Tjenester</h3>
         <ul class="space-y-2 text-gray-300">
-          <li><a href="#" class="hover:text-white">GoPro Udlejning</a></li>
-          <li><a href="#" class="hover:text-white">Tilbehør Pakker</a></li>
-          <li><a href="#" class="hover:text-white">Express Levering</a></li>
-          <li><a href="#" class="hover:text-white">Video Redigering</a></li>
-          <li><a href="#" class="hover:text-white">Support & Vejledning</a></li>
+          <li><NuxtLink to="/" class="hover:text-white">LejGoPro</NuxtLink></li>
+          <li><NuxtLink to="#" class="hover:text-white">Tilbehør Pakker</NuxtLink></li>
+          <li><NuxtLink to="#" class="hover:text-white">Express Levering</NuxtLink></li>
+          <li><NuxtLink to="#" class="hover:text-white">Video Redigering</NuxtLink></li>
+          <li><NuxtLink to="#" class="hover:text-white">Support & Vejledning</NuxtLink></li>
         </ul>
       </div>
       <!-- Contact -->
       <div>
         <h3 class="font-bold mb-4">Kontakt Os</h3>
         <ul class="space-y-2 text-gray-300">
-          <li><i class="fas fa-phone mr-2"></i> +45 12 34 56 78</li>
-          <li><i class="fas fa-envelope mr-2"></i> info@goproudlejning.dk</li>
+          <li><i class="fas fa-phone mr-2"></i> +45 53 80 59 54</li>
+          <li><i class="fas fa-envelope mr-2"></i> kontakt@lejgopro.dk</li>
           <li><i class="fas fa-map-marker-alt mr-2"></i> København, Danmark</li>
         </ul>
         <div class="bg-[#1e293b] rounded-lg p-4 mt-4 text-sm">
@@ -56,9 +56,9 @@
     <div class="border-t border-gray-700 mt-12 pt-6 text-xs text-gray-400 flex flex-col md:flex-row justify-between items-center px-8">
       <div>© 2024 GoProUdlejning.dk. Alle rettigheder forbeholdes.</div>
       <div class="flex gap-6 mt-2 md:mt-0">
-        <a href="#" class="hover:text-white">Privatlivspolitik</a>
-        <a href="#" class="hover:text-white">Handelsbetingelser</a>
-        <a href="#" class="hover:text-white">Cookies</a>
+        <NuxtLink to="#" class="hover:text-white">Privatlivspolitik</NuxtLink>
+        <NuxtLink to="#" class="hover:text-white">Handelsbetingelser</NuxtLink>
+        <NuxtLink to="#" class="hover:text-white">Cookies</NuxtLink>
       </div>
     </div>
   </footer>
