@@ -31,7 +31,7 @@
           <img src="https://images.unsplash.com/photo-1465101178521-c1a4c8a0f8f5?auto=format&fit=crop&w=600&q=80" alt="Diving" class="rounded-2xl object-cover w-full h-64" />
           <img src="https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=600&q=80" alt="Dog adventure" class="rounded-2xl object-cover w-full h-64" />
           <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=600&q=80" alt="Helicopter" class="rounded-2xl object-cover w-full h-64" />
-          <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=600&q=80" alt="Skiing" class="rounded-2xl object-cover w-full h-64" />
+          <img src="https://images.unsplash.com/photo-1517841905240-8c2b1a67b8a0?auto=format&fit=crop&w=600&q=80" alt="Skiing" class="rounded-2xl object-cover w-full h-64" />
           <img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=600&q=80" alt="Mountain climbing" class="rounded-2xl object-cover w-full h-64" />
         </div>
         <div class="flex justify-center mb-12">
