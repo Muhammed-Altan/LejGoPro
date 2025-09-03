@@ -7,9 +7,9 @@
       <!-- <UColorModeSwitch /> -->
     </div>
     <nav class="header-nav">
-      <a href="/products" class="header-link">Produkter</a>
-      <a href="#hvorfor" class="header-link">Hvorfor Leje?</a>
-      <a href="#kontakt" class="header-link">Kontakt</a>
+      <NuxtLink to="/products" class="header-link">Produkter</NuxtLink>
+      <NuxtLink to="/hvorfor" class="header-link">Hvorfor leje?</NuxtLink>
+      <NuxtLink to="/kontakt" class="header-link">Kontakt</NuxtLink>
       <UButton size="md" class="book-btn">Book Nu</UButton>
     </nav>
   </header>
