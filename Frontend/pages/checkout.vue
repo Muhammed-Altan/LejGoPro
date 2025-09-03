@@ -1,77 +1,113 @@
 <template>
-    <section class="booking-container">
-        <h2>Book dit udstyr</h2>
-        <p>Udfyld formularen nedenfor for at få et tilbud</p>
-        <form @submit.prevent="submitBooking" class="booking-form">
-            <div class="row">
-                <div class="field">
-                    <label for="startDate">Startdato</label>
-                    <input id="startDate" type="date" v-model="form.startDate" required />
+    <section class="max-w-xl mx-auto bg-white rounded-xl shadow-md p-8 font-sans text-gray-900">
+        <h2 class="mb-1 text-xl font-semibold">Vælg dit udstyr</h2>
+        <p class="mb-6 text-gray-600">Udfyld formularen nedenfor for at få et tilbud</p>
+        <form @submit.prevent="submitBooking" class="space-y-7">
+            <!-- Datoer -->
+            <div class="flex flex-wrap gap-6 mb-4">
+                <div class="flex-1 min-w-[180px] flex flex-col">
+                    <label for="startDate" class="text-base font-semibold mb-1 text-gray-900">Startdato</label>
+                    <input id="startDate" type="date" v-model="form.startDate" required class="p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" />
                 </div>
-                <div class="field">
-                    <label for="endDate">Slutdato</label>
-                    <input id="endDate" type="date" v-model="form.endDate" required />
+                <div class="flex-1 min-w-[180px] flex flex-col">
+                    <label for="endDate" class="text-base font-semibold mb-1 text-gray-900">Slutdato</label>
+                    <input id="endDate" type="date" v-model="form.endDate" required class="p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" />
                 </div>
             </div>
-            <div class="row">
-                <div class="field">
-                    <label for="camera">Vælg Kamera</label>
-                    <select id="camera" v-model="form.camera" required>
+            <!-- Kamera og antal -->
+            <div class="flex flex-wrap gap-6 mb-4 items-end">
+                <div class="flex-1 min-w-[180px] flex flex-col">
+                    <label for="camera" class="text-base font-semibold mb-1 text-gray-900">Vælg Kamera</label>
+                    <select id="camera" v-model="form.camera" required class="p-3 border border-gray-200 rounded-lg bg-gray-50 text-base">
                         <option disabled value="">Vælg en GoPro Model</option>
                         <option>GoPro Hero 12</option>
                         <option>GoPro Hero 11</option>
                         <option>GoPro Max</option>
                     </select>
                 </div>
-                <div class="field">
-                    <label for="amount">Antal</label>
-                    <input id="amount" type="number" min="1" v-model.number="form.amount" required placeholder="Antal modeller" />
+                <div class="flex-1 min-w-[180px] flex flex-col">
+                    <label for="amount" class="text-base font-semibold mb-1 text-gray-900">Antal</label>
+                    <input id="amount" type="number" min="1" v-model.number="form.amount" required placeholder="Antal modeller" class="p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" />
                 </div>
-                <button type="button" class="add-btn" @click="addCamera">Tilføj</button>
+                <button type="button" class="ml-auto text-red-700 font-semibold flex items-center gap-2 mt-7" @click="addCamera">
+                    <span class="text-xl">+</span>
+                    <span>Tilføj</span>
+                </button>
             </div>
-            <div class="row">
-                <label>Vælg Ekstraudstyr</label>
-                <div class="extras">
-                    <label><input type="checkbox" v-model="form.extras" value="Ekstra batteri" /> Ekstra batteri</label>
-                    <label><input type="checkbox" v-model="form.extras" value="Grip" /> Grip</label>
-                    <label><input type="checkbox" v-model="form.extras" value="Headstrap" /> Headstrap</label>
-                    <label><input type="checkbox" v-model="form.extras" value="Brystmount" /> Brystmount</label>
-                    <label><input type="checkbox" v-model="form.extras" value="Beskyttelsescase" /> Beskyttelsescase</label>
-                    <label><input type="checkbox" v-model="form.extras" value="Sugekop til bil og ruder" /> Sugekop til bil og ruder</label>
-                </div>
-            </div>
-            <div class="row">
-                <div class="field">
-                    <label for="name">Dit Fulde Navn</label>
-                    <input id="name" v-model="form.name" required placeholder="Indtast dit fulde navn" />
-                </div>
-                <div class="field">
-                    <label for="phone">Telefonnummer</label>
-                    <input id="phone" v-model="form.phone" required placeholder="+45 12 34 56 78" />
+            <!-- Ekstraudstyr -->
+            <div class="mb-4">
+                <label class="block text-base font-semibold mb-2 text-gray-900">Vælg Ekstraudstyr</label>
+                <div class="flex flex-wrap gap-x-10 gap-y-3">
+                    <label class="flex items-center"><input type="checkbox" v-model="form.extras" value="Ekstra batteri" class="mr-2" /> Ekstra batteri</label>
+                    <label class="flex items-center"><input type="checkbox" v-model="form.extras" value="Grip" class="mr-2" /> Grip</label>
+                    <label class="flex items-center"><input type="checkbox" v-model="form.extras" value="Headstrap" class="mr-2" /> Headstrap</label>
+                    <label class="flex items-center"><input type="checkbox" v-model="form.extras" value="Brystmount" class="mr-2" /> Brystmount</label>
+                    <label class="flex items-center"><input type="checkbox" v-model="form.extras" value="Beskyttelsescase" class="mr-2" /> Beskyttelsescase</label>
+                    <label class="flex items-center"><input type="checkbox" v-model="form.extras" value="Sugekop til bil og ruder" class="mr-2" /> Sugekop til bil og ruder</label>
                 </div>
             </div>
-            <div class="row">
-                <div class="field">
-                    <label for="email">Email</label>
-                    <input id="email" type="email" v-model="form.email" required placeholder="din@email.com" />
+            <!-- Estimeret pris -->
+            <div class="mb-4">
+                <div class="bg-blue-50 rounded-lg p-4 w-full flex flex-col gap-1">
+                    <div class="flex justify-between items-center">
+                        <strong class="text-base">Estimeret pris:</strong>
+                        <span class="text-lg font-semibold">{{ estimatedPrice }} kr</span>
+                    </div>
+                    <div class="text-sm text-gray-500">Vælg datoer og kamera for at se prisen</div>
                 </div>
             </div>
-            <div class="row">
-                <div class="price-box">
-                    <strong>Estimeret pris:</strong>
-                    <span>{{ estimatedPrice }} kr</span>
-                    <div class="price-note">Vælg datoer og kamera for at se prisen</div>
+            <!-- Levering -->
+            <div>
+                <h3 class="text-lg font-semibold mb-1">Levering</h3>
+                <p class="mb-6 text-gray-600">Udfyld formularen nedenfor for at se Leveringsmetoder</p>
+                <div class="flex flex-wrap gap-6 mb-4">
+                    <div class="flex-1 min-w-[180px] flex flex-col">
+                        <label for="name" class="text-base font-semibold mb-1 text-gray-900">Dit Fulde Navn</label>
+                        <input id="name" v-model="form.name" required placeholder="Indtast dit fulde navn" class="p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" />
+                    </div>
+                    <div class="flex-1 min-w-[180px] flex flex-col">
+                        <label for="phone" class="text-base font-semibold mb-1 text-gray-900">Telefonnummer</label>
+                        <input id="phone" v-model="form.phone" required placeholder="+45 12 34 56 78" class="p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" />
+                    </div>
+                </div>
+                <div class="flex flex-wrap gap-6 mb-4">
+                    <div class="flex-1 min-w-[180px] flex flex-col">
+                        <label for="email" class="text-base font-semibold mb-1 text-gray-900">Email</label>
+                        <input id="email" type="email" v-model="form.email" required placeholder="din@email.com" class="p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" />
+                    </div>
+                </div>
+                <!-- Adresse -->
+                <div class="mb-4 space-y-3">
+                    <div>
+                        <label for="address" class="text-base font-semibold mb-1 text-gray-900">Adresse</label>
+                        <input id="address" v-model="form.address" required placeholder="Adresse" class="w-full p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" />
+                    </div>
+                    <div>
+                        <input id="address2" v-model="form.address2" placeholder="Lejlighed, etage osv. (Valgfri)" class="w-full p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" />
+                    </div>
+                    <div class="flex gap-4">
+                        <input id="zip" v-model="form.zip" required placeholder="Postnummer" class="flex-1 p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" />
+                        <input id="city" v-model="form.city" required placeholder="By" class="flex-1 p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" />
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <div class="bg-blue-50 rounded-lg p-4 w-full text-sm text-gray-700">
+                        Angiv din leveringsadresse for at se de tilgængelige leveringsmetoder
+                    </div>
                 </div>
             </div>
-            <div class="row terms-row">
-                <label>
-                    <input type="checkbox" v-model="form.acceptTerms" required />
+            <!-- Accept terms -->
+            <div class="mb-6">
+                <label class="flex items-center">
+                    <input type="checkbox" v-model="form.acceptTerms" required class="mr-2" />
                     Accepter Lejebetingelser
+                    <span class="text-red-600 ml-1">*</span>
                 </label>
             </div>
-            <button type="submit" class="submit-btn">Send forespørgelse</button>
+            <!-- Submit -->
+            <button type="submit" class="w-full bg-red-700 text-white text-lg font-semibold rounded-lg py-3 cursor-pointer mt-2 hover:bg-red-800 transition">Send forespørgelse</button>
         </form>
-        <div v-if="submitted" class="confirmation">
+        <div v-if="submitted" class="mt-8 bg-green-50 rounded-lg p-4 text-center text-green-700 font-medium">
             <p>Tak for din forespørgsel, {{ form.name }}!</p>
         </div>
     </section>
@@ -90,6 +126,10 @@ export default {
                 name: '',
                 phone: '',
                 email: '',
+                address: '',
+                address2: '',
+                zip: '',
+                city: '',
                 acceptTerms: false
             },
             submitted: false
@@ -123,106 +163,3 @@ export default {
 };
 </script>
 
-<style scoped>
-.booking-container {
-    max-width: 600px;
-    margin: 2rem auto;
-    background: #fff;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-    padding: 2rem 2.5rem;
-    font-family: 'Inter', Arial, sans-serif;
-    color: #222;
-}
-h2 {
-    margin-bottom: 0.2rem;
-    font-size: 1.4rem;
-    font-weight: 600;
-}
-.booking-form p {
-    margin-bottom: 1.5rem;
-    color: #555;
-}
-.row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.5rem;
-    margin-bottom: 1.2rem;
-}
-.field {
-    flex: 1;
-    min-width: 180px;
-    display: flex;
-    flex-direction: column;
-}
-label {
-    font-size: 0.98rem;
-    margin-bottom: 0.3rem;
-    color: #222;
-}
-input, select {
-    padding: 0.6rem;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-size: 1rem;
-    background: #fafafa;
-}
-input[type="checkbox"] {
-    margin-right: 0.5em;
-}
-.extras {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.2rem;
-}
-.add-btn {
-    align-self: flex-end;
-    background: none;
-    border: none;
-    color: #c00;
-    font-weight: 600;
-    cursor: pointer;
-    margin-top: 1.7rem;
-}
-.price-box {
-    background: #f4f7fa;
-    border-radius: 6px;
-    padding: 1rem;
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 0.3rem;
-}
-.price-note {
-    font-size: 0.95rem;
-    color: #888;
-}
-.terms-row {
-    margin-bottom: 1.5rem;
-}
-.submit-btn {
-    width: 100%;
-    background: #c00;
-    color: #fff;
-    font-size: 1.1rem;
-    font-weight: 600;
-    border: none;
-    border-radius: 6px;
-    padding: 1rem 0;
-    cursor: pointer;
-    margin-top: 0.5rem;
-    transition: background 0.2s;
-}
-.submit-btn:hover {
-    background: #a00;
-}
-.confirmation {
-    margin-top: 2rem;
-    background: #e6ffe6;
-    border-radius: 8px;
-    padding: 1rem;
-    text-align: center;
-    color: #2a7a2a;
-    font-weight: 500;
-}
-</style>
