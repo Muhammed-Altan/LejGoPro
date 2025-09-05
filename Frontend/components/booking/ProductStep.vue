@@ -74,7 +74,7 @@
 		<section class="bg-gray-50 rounded-xl p-6 shadow flex items-center justify-between">
 			<div class="flex items-center gap-3">
 				<span class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-green-100">
-					<svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+					<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24"><path fill="#08d035" d="M12 22q-3.475-.875-5.738-3.988T4 11.1V5l8-3l8 3v6.1q0 3.8-2.262 6.913T12 22m0-2.1q2.6-.825 4.3-3.3t1.7-5.5V6.375l-6-2.25l-6 2.25V11.1q0 3.025 1.7 5.5t4.3 3.3m0-7.9"/></svg>
 				</span>
 				<div>
 					   <div class="font-semibold">Forsikring</div>
@@ -91,10 +91,10 @@
 		<!-- Date Pickers -->
 		<div class="flex gap-4">
 			<div class="flex-1">
-				<input type="text" placeholder="dd-mm-åååå" class="w-full border border-gray-300 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+				<VueDatePicker v-model="startDate" :input-class="'w-full border border-gray-300 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-400'" placeholder="Start dato" />
 			</div>
 			<div class="flex-1">
-				<input type="text" placeholder="dd-mm-åååå" class="w-full border border-gray-300 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+				<VueDatePicker v-model="endDate" :input-class="'w-full border border-gray-300 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-400'" placeholder="Slut dato" />
 			</div>
 		</div>
 	</div>
@@ -102,6 +102,8 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css';
 
 const models = [
 	{ name: 'GoPro HERO10 Black', price: 70 },
@@ -122,6 +124,8 @@ const selectedAccessories = ref<{ name: string; price: number; quantity: number 
 const insurance = ref(false);
 const showModels = ref(false);
 const showAccessories = ref(false);
+const startDate = ref(null);
+const endDate = ref(null);
 
 function selectModel(model: { name: string; price: number }) {
 	const found = selectedModels.value.find((m) => m.name === model.name);
