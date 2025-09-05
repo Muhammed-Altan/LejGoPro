@@ -57,4 +57,9 @@
 // No logic yet, presentational only
 </script>
 
-<!-- No additional styles needed, Tailwind is used -->
+<style scoped>
+* {
+	color: black !important;
+}
+
+</style>

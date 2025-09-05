@@ -47,4 +47,9 @@
 // Static mockup for now. Replace with props or state for dynamic data.
 </script>
 
-<!-- All styling is handled by Tailwind CSS -->
+<style scoped>
+* {
+	color: black !important;
+}
+
+</style>

@@ -62,4 +62,9 @@ import { ref } from 'vue';
 const selectedPayment = ref('creditcard');
 </script>
 
-<!-- No additional styles needed, all handled by Tailwind -->
+<style scoped>
+* {
+	color: black !important;
+}
+
+</style>
