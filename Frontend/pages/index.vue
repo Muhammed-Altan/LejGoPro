@@ -46,29 +46,15 @@
   <h2 class="text-2xl md:text-3xl font-bold text-center mb-8">Vælg Din Perfekte <span class="text-[#B8082A]">GoPro</span></h2>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
       <ProductCard
-        title="GoPro HERO10 Black"
-        description="Kraftfuld performance med GP2 processor og glimrende stabilisering."
-        img="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80"
-        :features="['📷 5.3K Video', '🖥️ GP2 Processor', '⚡ HyperSmooth 4.0', '🕑 Vandtæt']"
-        :priceDay="29"
-        :priceWeek="109"
-      />
-      <ProductCard
-        title="GoPro HERO11 Black"
-        description="Fremragende allround kamera med 5.3K video og forbedret natoptagelse."
-        img="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80"
-        :features="['📷 5.3K Video', '🌙 Nightlapse', '⚡ HyperSmooth 5.0', '🕑 Vandtæt til 10m']"
-        :priceDay="39"
-        :priceWeek="129"
-        :popular="true"
-      />
-      <ProductCard
-        title="GoPro HERO9 Black"
-        description="Pålidelig og prisvenlig mulighed med fremskærm og 5K video."
-        img="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80"
-        :features="['📷 5K Video', '🖥️ Fremskærm', '⚡ HyperSmooth 3.0', '⏩ TimeWarp 3.0']"
-        :priceDay="25"
-        :priceWeek="89"
+        v-for="product in products"
+        :key="product.title"
+        :title="product.title"
+        :description="product.description"
+        :img="product.img"
+        :features="product.features"
+        :priceDay="product.priceDay"
+        :priceWeek="product.priceWeek"
+        :popular="product.popular"
       />
     </div>
   </section>
@@ -119,6 +105,36 @@
 
 </template>
 <script setup lang="ts">
+import { ref } from 'vue';
+// ...existing code...
+
+const products = ref([
+  {
+    title: 'GoPro HERO10 Black',
+    description: 'Kraftfuld performance med GP2 processor og glimrende stabilisering.',
+    img: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80',
+    features: ['📷 5.3K Video', '🖥️ GP2 Processor', '⚡ HyperSmooth 4.0', '🕑 Vandtæt'],
+    priceDay: 29,
+    priceWeek: 109
+  },
+  {
+    title: 'GoPro HERO11 Black',
+    description: 'Fremragende allround kamera med 5.3K video og forbedret natoptagelse.',
+    img: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80',
+    features: ['📷 5.3K Video', '🌙 Nightlapse', '⚡ HyperSmooth 5.0', '🕑 Vandtæt til 10m'],
+    priceDay: 39,
+    priceWeek: 129,
+    popular: true
+  },
+  {
+    title: 'GoPro HERO9 Black',
+    description: 'Pålidelig og prisvenlig mulighed med fremskærm og 5K video.',
+    img: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80',
+    features: ['📷 5K Video', '🖥️ Fremskærm', '⚡ HyperSmooth 3.0', '⏩ TimeWarp 3.0'],
+    priceDay: 25,
+    priceWeek: 89
+  }
+]);
 
 import ProductCard from '../components/ProductCard.vue';
 
