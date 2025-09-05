@@ -1,6 +1,6 @@
 
 <template>
-	<form class="bg-white rounded-xl p-6 flex flex-col gap-4 max-w-2xl mx-auto shadow-md">
+	<form class="bg-white rounded-xl flex flex-col gap-4 max-w-2xl w-full mx-auto">
 		<div class="flex flex-col md:flex-row gap-4">
 			<input
 				type="text"

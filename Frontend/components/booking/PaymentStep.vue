@@ -1,6 +1,6 @@
 
 <template>
-		<div class="bg-[#eef5ff] rounded-xl p-6 w-full max-w-xl mx-auto shadow-md">
+		<div class="bg-[#eef5ff] rounded-xl p-6 w-full max-w-2xl mx-auto">
 			<!-- Kreditkort Collapsible -->
 				<div class="mb-2">
 					<button

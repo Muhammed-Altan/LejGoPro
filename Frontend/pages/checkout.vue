@@ -1,4 +1,5 @@
 <template>
+  <Header />
   <div class="max-w-7xl mx-auto p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
     <!-- Venstre side (2/3 af bredden) -->
     <div class="lg:col-span-2 space-y-6 bg-white p-6 rounded-xl shadow-md">
@@ -12,10 +13,14 @@
       <BasketView />
     </aside>
   </div>
+  <Footer />
 </template>
+
 <script setup lang="ts">
 import ProductStep from '@/components/booking/ProductStep.vue';
 import DeliveryStep from '@/components/booking/DeliveryStep.vue';
 import PaymentStep from '@/components/booking/PaymentStep.vue';
 import BasketView from '@/components/booking/BasketView.vue';
+import Header from '~/components/Header.vue';
+import Footer from '~/components/Footer.vue';
 </script>

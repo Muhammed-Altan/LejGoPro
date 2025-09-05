@@ -9,8 +9,8 @@
 					<div>
 						<div class="text-lg font-semibold">GoPro HERO10 Black</div>
 						<div class="text-sm text-gray-500">Standard udstyr inkluderet</div>
+						<div class="text-lg font-medium whitespace-nowrap">499,00 kr.</div>
 					</div>
-					<div class="text-lg font-medium whitespace-nowrap">499,00 kr.</div>
 				</div>
 			</div>
 		</div>

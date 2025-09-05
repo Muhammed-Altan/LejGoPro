@@ -1,5 +1,5 @@
 <template>
-<div class="space-y-6">
+<div class="space-y-6 w-full max-w-2xl mx-auto">
 		<!-- GoPro Model Selection (Collapsible) -->
 		<section class="bg-gray-50 rounded-xl p-6 shadow flex flex-col gap-2">
 			<div class="flex items-center justify-between mb-2">
