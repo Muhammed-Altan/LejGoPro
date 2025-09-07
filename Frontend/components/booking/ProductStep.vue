@@ -1,5 +1,9 @@
 <template>
-<div class="space-y-6 w-full max-w-2xl mx-auto">
+	<div class="space-y-6 w-full max-w-2xl mx-auto">
+	<article>
+		<h1 class="font-semibold text-lg">Vælg dit udstyr</h1>
+		<h2 class="font-medium text-base">Udfyld formularen nedenfor for at få et tilbud</h2>
+	</article>
 		<!-- GoPro Model Selection (Collapsible) -->
 		<section class="bg-gray-50 rounded-xl p-6 shadow flex flex-col gap-2">
 			<div class="flex items-center justify-between mb-2">

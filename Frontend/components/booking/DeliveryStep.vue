@@ -1,6 +1,10 @@
 
 <template>
 	<form class="bg-white rounded-xl flex flex-col gap-4 max-w-2xl w-full mx-auto">
+		<article>
+			<h1 class="font-semibold text-lg">Levering</h1>
+			<h2 class="font-medium text-base">Udfyld formularen nedenfor for at se Leveringsmetoder</h2>
+		</article>
 		<div class="flex flex-col md:flex-row gap-4">
 			<input
 				type="text"
