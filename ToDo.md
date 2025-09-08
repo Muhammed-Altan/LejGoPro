@@ -4,4 +4,7 @@
 3. Product Page Extras
 
 
+1. Table names 
+2. Database primary key struktur ting (det lars lærte os)
+
  -->

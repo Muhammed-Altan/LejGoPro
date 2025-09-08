@@ -27,7 +27,7 @@
                 <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80" alt="Diving" class="rounded-xl object-cover w-full h-72" />
                 <img src="https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=800&q=80" alt="Dog adventure" class="rounded-xl object-cover w-full h-72" />
                 </div>
-                <button class="bg-[#B8082A] text-white font-semibold py-2 px-6 rounded shadow hover:bg-[#a10725] transition">Begynd dit eventyr her</button>
+                <button class="bg-[#B8082A] text-white font-semibold py-2 px-6 rounded shadow hover:bg-[#a10725] transition cursor-pointer">Begynd dit eventyr her</button>
             </div>
         </div>
     </section>
