@@ -9,9 +9,9 @@ export class ProductService {
     return prisma.product.findMany();
   }
 
-  async createProduct(name: string, price: number) {
+  async createProduct(data: { name: string; dailyPrice: number; weeklyPrice: number; twoWeekPrice: number; price: number }) {
     return prisma.product.create({
-      data: { name, price },
+      data,
     });
   }
 }

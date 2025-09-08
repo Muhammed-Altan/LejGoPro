@@ -11,7 +11,14 @@ export class ProductController {
   }
 
   @Post()
-  createProduct(@Body() body: { name: string; price: number }) {
-    return this.productService.createProduct(body.name, body.price);
+  createProduct(@Body() body: { name: string; dailyPrice: number; weeklyPrice: number; twoWeekPrice: number; price?: number }) {
+    // price is optional/legacy, can be omitted
+    return this.productService.createProduct({
+      name: body.name,
+      dailyPrice: body.dailyPrice,
+      weeklyPrice: body.weeklyPrice,
+      twoWeekPrice: body.twoWeekPrice,
+      price: body.price
+    });
   }
 }
