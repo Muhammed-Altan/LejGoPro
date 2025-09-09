@@ -25,3 +25,11 @@ model Product {
   weeklyPrice  Int     // Price for exactly 7 days
   twoWeekPrice Int     // Price for exactly 14 days
 }
+
+model Accessory {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  img         String
+  price       Int
+}
