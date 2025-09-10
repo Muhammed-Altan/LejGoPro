@@ -30,7 +30,7 @@
 		</div>
 		<div class="flex justify-between text-base mb-1">
 			<span>Subtotal - 4 varer</span>
-			<span>{{ totalPrice.toLocaleString('da-DK', { minimumFractionDigits: 2 }) }} kr.</span>
+			<span>700 kr.</span>
 		</div>
 		<div class="flex justify-between text-base mb-4">
 			<span>Levering</span>
