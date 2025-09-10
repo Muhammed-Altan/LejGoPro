@@ -124,12 +124,14 @@ const accessories = [
 ];
 
 const selectedModels = ref<{ name: string; price: number; quantity: number }[]>([]);
+
 const selectedAccessories = ref<{ name: string; price: number; quantity: number }[]>([]);
 const insurance = ref(false);
 const showModels = ref(false);
 const showAccessories = ref(false);
-const startDate = ref(null);
-const endDate = ref(null);
+const startDate = ref<Date|null>(null);
+const endDate = ref<Date|null>(null);
+
 
 function selectModel(model: { name: string; price: number }) {
 	const found = selectedModels.value.find((m) => m.name === model.name);
@@ -156,6 +158,8 @@ function addAccessory(acc: { name: string; price: number }) {
 function removeAccessory(idx: number) {
 	selectedAccessories.value.splice(idx, 1);
 }
+
+// --- Optionally, expose totalPrice and getRentalDays for template use ---
 </script>
 <style scoped>
 * {

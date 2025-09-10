@@ -18,20 +18,20 @@
 			<div class="font-semibold mb-1">Ekstra udstyr:</div>
 			<div class="flex justify-between text-base mb-1">
 				<span>2x Ekstra batteri</span>
-				<span>198,00 kr.</span>
+				<span>140,00 kr.</span>
 			</div>
 			<div class="flex justify-between text-base">
 				<span>1x Grip</span>
-				<span>79,00 kr.</span>
+				<span>70,00 kr.</span>
 			</div>
 		</div>
 		<div class="flex justify-between text-base mb-1">
 			<span>Subtotal - 4 varer</span>
-			<span>776,00 kr.</span>
+			<span>{{ totalPrice.toLocaleString('da-DK', { minimumFractionDigits: 2 }) }} kr.</span>
 		</div>
 		<div class="flex justify-between text-base mb-4">
 			<span>Levering</span>
-			<span class="text-gray-400">Angiv leveringsadresse</span>
+			<span class="text-gray-400">Gratis</span>
 		</div>
 		<div class="border-t pt-4 mt-4">
 			<div class="flex justify-between items-end mb-1">
@@ -44,7 +44,8 @@
 </template>
 
 <script setup lang="ts">
-// Static mockup for now. Replace with props or state for dynamic data.
+// Accept totalPrice as a prop (number, required)
+defineProps<{ totalPrice: number }>();
 </script>
 
 <style scoped>
