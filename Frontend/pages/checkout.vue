@@ -11,7 +11,7 @@
 
     <!-- Højre side (1/3 af bredden, sticky kurv) -->
     <aside class="space-y-6">
-      <BasketView />
+      <!-- <BasketView /> -->
       <!-- Included Equipment Card -->
       <div class="bg-white rounded-xl shadow-md p-6 flex flex-col items-start text-xs">
         <div class="flex items-center mb-4 w-full">
