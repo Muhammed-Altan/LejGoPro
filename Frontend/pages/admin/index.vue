@@ -1,6 +1,6 @@
 <template>
     <Header />
-    <div class="max-w-5xl mx-auto py-12">
+    <div class="max-w-5xl mx-auto py-12 mb-10">
         <h1 class="text-3xl font-bold mb-8 text-center">Admin Panel</h1>
         <div class="flex justify-center gap-4 mb-8">
             <button
