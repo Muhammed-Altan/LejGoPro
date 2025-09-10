@@ -136,6 +136,7 @@ const accessories = [
 ];
 
 const selectedModels = ref<{ name: string; price: number; quantity: number }[]>([]);
+
 const selectedAccessories = ref<{ name: string; price: number; quantity: number }[]>([]);
 const insurance = ref(false);
 // Replaced collapsibles with dropdown selections
@@ -143,6 +144,7 @@ const selectedModelName = ref<string>('');
 const selectedAccessoryName = ref<string>('');
 const startDate = ref(null);
 const endDate = ref(null);
+
 
 function selectModel(model: { name: string; price: number }) {
 	const found = selectedModels.value.find((m) => m.name === model.name);
@@ -182,6 +184,8 @@ function onAddSelectedAccessory() {
 function removeAccessory(idx: number) {
 	selectedAccessories.value.splice(idx, 1);
 }
+
+// --- Optionally, expose totalPrice and getRentalDays for template use ---
 </script>
 <style scoped>
 * {

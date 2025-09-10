@@ -12,6 +12,7 @@
     <!-- Højre side (1/3 af bredden, sticky kurv) -->
     <aside class="space-y-6">
       <BasketView />
+
     </aside>
   </section>
   <Footer />

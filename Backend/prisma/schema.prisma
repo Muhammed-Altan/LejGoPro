@@ -15,7 +15,21 @@ datasource db {
 }
 
 model Product {
-  id    Int    @id @default(autoincrement())
-  name  String
-  price Float
+  id          Int      @id @default(autoincrement())
+  name       String
+  description String
+  img         String
+  features    String   // Store as comma-separated string
+  popular     Boolean  @default(false)
+  dailyPrice   Int     // Price per day for bookings under 7 days
+  weeklyPrice  Int     // Price for exactly 7 days
+  twoWeekPrice Int     // Price for exactly 14 days
+}
+
+model Accessory {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String
+  img         String
+  price       Int
 }

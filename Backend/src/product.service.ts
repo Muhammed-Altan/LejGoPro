@@ -9,9 +9,22 @@ export class ProductService {
     return prisma.product.findMany();
   }
 
-  async createProduct(name: string, price: number) {
-    return prisma.product.create({
-      data: { name, price },
+  async createProduct(data: any) {
+    return prisma.product.create({ data });
+  }
+
+  async getProduct(id: number) {
+    return prisma.product.findUnique({ where: { id } });
+  }
+  async updateProduct(id: number, data: any) {
+    return prisma.product.update({
+      where: { id },
+      data,
+    });
+  }
+  async deleteProduct(id: number) {
+    return prisma.product.delete({
+      where: { id },
     });
   }
 }
