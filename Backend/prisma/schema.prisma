@@ -16,20 +16,42 @@ datasource db {
 
 model Product {
   id          Int      @id @default(autoincrement())
-  name       String
+  name        String
   description String
-  img         String
   features    String   // Store as comma-separated string
   popular     Boolean  @default(false)
-  dailyPrice   Int     // Price per day for bookings under 7 days
-  weeklyPrice  Int     // Price for exactly 7 days
-  twoWeekPrice Int     // Price for exactly 14 days
+  dailyPrice  Int     // Price per day for bookings under 7 days
+  weeklyPrice Int     // Price for exactly 7 days
+  twoWeekPrice Int    // Price for exactly 14 days
+  quantity    Int     @default(1) // Number of units available for this product
+  cameras     Camera[]
 }
 
 model Accessory {
   id          Int      @id @default(autoincrement())
   name        String
   description String
-  img         String
   price       Int
+}
+
+model Camera {
+  id           Int      @id @default(autoincrement())
+  product      Product  @relation(fields: [productId], references: [id])
+  productId    Int
+  name         String?  // Make name optional
+  dailyPrice   Int
+  weeklyPrice  Int
+  twoWeekPrice Int
+  bookings     Booking[]
+}
+
+model Booking {
+  id        Int      @id @default(autoincrement())
+  camera    Camera   @relation(fields: [cameraId], references: [id])
+  cameraId  Int
+  cameraName String?
+  productName String?
+  startDate DateTime
+  endDate   DateTime
+  // Add user info if needed
 }
