@@ -6,11 +6,25 @@ const prisma = new PrismaClient();
 @Injectable()
 export class ProductService {
   async getProducts() {
-    return prisma.product.findMany();
+    return prisma.product.findMany({ include: { cameras: true } });
   }
 
   async createProduct(data: any) {
-    return prisma.product.create({ data });
+    // Create product
+    const product = await prisma.product.create({ data });
+    // Create camera units for this product
+    const cameras = [];
+    for (let i = 0; i < product.quantity; i++) {
+      cameras.push({
+        productId: product.id,
+        name: product.name, // Set camera name to product name
+        dailyPrice: product.dailyPrice,
+        weeklyPrice: product.weeklyPrice,
+        twoWeekPrice: product.twoWeekPrice,
+      });
+    }
+    await prisma.camera.createMany({ data: cameras });
+    return product;
   }
 
   async getProduct(id: number) {
