@@ -2,7 +2,7 @@
 export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
-  modules: ['@nuxt/ui', '@nuxt/image', '@nuxt/icon',],
+  modules: ['@nuxt/ui', '@nuxt/image', '@nuxt/icon', '@pinia/nuxt'],
   app: {
     head: {
       title: 'LejGoPro',

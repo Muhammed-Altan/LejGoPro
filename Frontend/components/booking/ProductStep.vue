@@ -30,7 +30,7 @@
 		</section>
 
 		<!-- Selected Model and Quantity -->
-		<div v-if="selectedModels.length" class="space-y-2">
+		<div v-if="selectedModels && selectedModels.length" class="space-y-2">
 			<div v-for="(item, idx) in selectedModels" :key="item.name" class="flex gap-4 items-center">
 				<div class="flex-1 bg-blue-100 text-center rounded-lg py-2 font-medium">{{ item.name }}</div>
 				<div class="flex-1 bg-blue-100 text-center rounded-lg py-2 font-medium flex items-center justify-center gap-2">
@@ -67,7 +67,7 @@
 		</section>
 
 		<!-- Selected Accessory and Quantity -->
-		<div v-if="selectedAccessories.length" class="space-y-2">
+		<div v-if="selectedAccessories && selectedAccessories.length" class="space-y-2">
 			<div v-for="(item, idx) in selectedAccessories" :key="item.name" class="flex gap-4 items-center">
 				<div class="flex-1 bg-blue-100 text-center rounded-lg py-2 font-medium">{{ item.name }}</div>
 				<div class="flex-1 bg-blue-100 text-center rounded-lg py-2 font-medium flex items-center justify-center gap-2">
@@ -117,7 +117,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
+import { useCheckoutStore } from '@/stores/checkout';
+import { useNuxtApp } from '#app';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 
@@ -135,15 +137,16 @@ const accessories = [
 	{ name: 'Beskyttelsescase', price: 70 },
 ];
 
-const selectedModels = ref<{ name: string; price: number; quantity: number }[]>([]);
-
-const selectedAccessories = ref<{ name: string; price: number; quantity: number }[]>([]);
-const insurance = ref(false);
+// SSR-safe Pinia usage
+const store = useCheckoutStore();
+const selectedModels = ref<{ name: string; price: number; quantity: number }[]>(Array.isArray(store.selectedModels) ? store.selectedModels : []);
+const selectedAccessories = ref<{ name: string; price: number; quantity: number }[]>(Array.isArray(store.selectedAccessories) ? store.selectedAccessories : []);
+const insurance = ref(store.insurance);
 // Replaced collapsibles with dropdown selections
 const selectedModelName = ref<string>('');
 const selectedAccessoryName = ref<string>('');
-const startDate = ref(null);
-const endDate = ref(null);
+const startDate = ref<Date | null>(store.startDate ? new Date(store.startDate) : null);
+const endDate = ref<Date | null>(store.endDate ? new Date(store.endDate) : null);
 
 
 function selectModel(model: { name: string; price: number }) {
@@ -186,6 +189,17 @@ function removeAccessory(idx: number) {
 }
 
 // --- Optionally, expose totalPrice and getRentalDays for template use ---
+
+// Sync to store
+watch([selectedModels, selectedAccessories, insurance, startDate, endDate], () => {
+	store.setSelectedModels(selectedModels.value);
+	store.setSelectedAccessories(selectedAccessories.value);
+	store.setInsurance(insurance.value);
+	// Always store as ISO string or null
+	const start = startDate.value ? startDate.value.toISOString() : null;
+	const end = endDate.value ? endDate.value.toISOString() : null;
+	store.setDates(start, end);
+});
 </script>
 <style scoped>
 * {
