@@ -22,4 +22,14 @@ admin/index 103-105: Fix index i kamera som er tekst
 
 Toast for error
 
+Checkbox til produkter, så der kan vælges hvilke kameraer der er på frontpage
+
+Ændre hero billede til ski, eventyr billeder til dem fra figma
+
+Bokse fra checkout til tilbehør i produkter
+
+Alle billeder ændres til de rigtige, ink. logo
+
+Wide vs narrow design
+
  -->
