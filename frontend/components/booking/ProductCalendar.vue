@@ -17,6 +17,7 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { useNuxtApp } from '#app';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 
@@ -26,7 +27,9 @@ const endDate = ref<Date|null>(null);
 const bookings = ref<Array<{ id: number; start: string; end: string; cameraName: string; productName: string }>>([]);
 
 async function fetchBookings() {
-  const res = await fetch(`http://localhost:3001/bookings/camera/${props.cameraId}`);
+  const { $config } = useNuxtApp();
+  const base = ($config?.public?.apiBase) || 'http://localhost:3001';
+  const res = await fetch(`${base}/bookings/camera/${props.cameraId}`);
   if (res.ok) {
     const data = await res.json();
     bookings.value = data.map((booking: any) => ({
@@ -44,7 +47,9 @@ onMounted(fetchBookings);
 async function bookCamera() {
   if (!startDate.value || !endDate.value) return;
   // Post booking to backend
-  const res = await fetch('http://localhost:3001/bookings', {
+  const { $config } = useNuxtApp();
+  const base = ($config?.public?.apiBase) || 'http://localhost:3001';
+  const res = await fetch(`${base}/bookings`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({

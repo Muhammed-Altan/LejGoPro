@@ -34,9 +34,11 @@ const canBook = computed(() => !!accepted.value && !!store.startDate && !!store.
 async function bookNow() {
 	if (!store.startDate || !store.endDate) return;
 	try {
-		// For now, if no productId set, attempt booking with a default id (e.g., 1)
-		const productId = store.productId ?? 1;
-		const res = await fetch('http://localhost:3001/bookings/by-product', {
+		// Prefer productId from selected models; fallback to legacy store.productId, then default 1
+		const productId = (store.getFirstProductId && store.getFirstProductId()) || store.productId || 1;
+		const { $config } = useNuxtApp();
+		const base = ($config?.public?.apiBase) || 'http://localhost:3001';
+		const res = await fetch(`${base}/bookings/by-product`, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({

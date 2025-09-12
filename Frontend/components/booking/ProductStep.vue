@@ -117,29 +117,21 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import { useCheckoutStore } from '@/stores/checkout';
 import { useNuxtApp } from '#app';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
 
-const models = [
-	{ name: 'GoPro HERO10 Black', price: 70 },
-	{ name: 'GoPro HERO11 Black', price: 90 },
-];
+// Models are now fetched from the backend Product table
+interface ProductOption { id: number; name: string; price: number; weeklyPrice?: number; twoWeekPrice?: number }
+const models = ref<ProductOption[]>([]);
 
-const accessories = [
-	{ name: 'Ekstra batterier', price: 70 },
-	{ name: 'Grip', price: 70 },
-	{ name: 'Sugekop til bil og ruder', price: 70 },
-	{ name: 'Headstrap', price: 70 },
-	{ name: 'Brystmount', price: 70 },
-	{ name: 'Beskyttelsescase', price: 70 },
-];
+const accessories = ref<{ name: string; price: number }[]>([]);
 
 // SSR-safe Pinia usage
 const store = useCheckoutStore();
-const selectedModels = ref<{ name: string; price: number; quantity: number }[]>(Array.isArray(store.selectedModels) ? store.selectedModels : []);
+const selectedModels = ref<{ name: string; price: number; quantity: number; productId?: number; config?: { dailyPrice: number; weeklyPrice: number; twoWeekPrice: number } }[]>(Array.isArray(store.selectedModels) ? store.selectedModels : []);
 const selectedAccessories = ref<{ name: string; price: number; quantity: number }[]>(Array.isArray(store.selectedAccessories) ? store.selectedAccessories : []);
 const insurance = ref(store.insurance);
 // Replaced collapsibles with dropdown selections
@@ -149,7 +141,7 @@ const startDate = ref<Date | null>(store.startDate ? new Date(store.startDate) :
 const endDate = ref<Date | null>(store.endDate ? new Date(store.endDate) : null);
 
 
-function selectModel(model: { name: string; price: number }) {
+function selectModel(model: { name: string; price: number; productId?: number; config?: { dailyPrice: number; weeklyPrice: number; twoWeekPrice: number } }) {
 	const found = selectedModels.value.find((m) => m.name === model.name);
 	if (found) {
 		found.quantity++;
@@ -159,8 +151,21 @@ function selectModel(model: { name: string; price: number }) {
 }
 
 function onAddSelectedModel() {
-	const model = models.find(m => m.name === selectedModelName.value);
-	if (model) selectModel(model);
+	const model = models.value.find(m => m.name === selectedModelName.value);
+	if (model) {
+			selectModel({
+				name: model.name,
+				price: model.price,
+				productId: model.id,
+				config: {
+					dailyPrice: model.price,
+					weeklyPrice: (model as any).weeklyPrice ?? model.price * 7,
+					twoWeekPrice: (model as any).twoWeekPrice ?? model.price * 14,
+				},
+			});
+		// also keep legacy field updated with first product id for compatibility
+		if (!store.productId) store.setProductId(model.id);
+	}
 	// reset selection to allow adding the same again
 	selectedModelName.value = '';
 }
@@ -179,7 +184,7 @@ function addAccessory(acc: { name: string; price: number }) {
 }
 
 function onAddSelectedAccessory() {
-	const acc = accessories.find(a => a.name === selectedAccessoryName.value);
+	const acc = accessories.value.find(a => a.name === selectedAccessoryName.value);
 	if (acc) addAccessory(acc);
 	selectedAccessoryName.value = '';
 }
@@ -199,6 +204,39 @@ watch([selectedModels, selectedAccessories, insurance, startDate, endDate], () =
 	const start = startDate.value ? startDate.value.toISOString() : null;
 	const end = endDate.value ? endDate.value.toISOString() : null;
 	store.setDates(start, end);
+});
+
+// Fetch products and accessories from backend to populate dropdowns
+onMounted(async () => {
+	const { $config } = useNuxtApp() as any;
+	const base = ($config?.public?.apiBase) || 'http://localhost:3001';
+	try {
+		// Products
+		const res = await fetch(`${base}/products`);
+		if (!res.ok) throw new Error('Failed to load products');
+		const data = await res.json();
+			models.value = (Array.isArray(data) ? data : []).map((p: any) => ({
+				id: p.id,
+				name: p.name,
+				price: typeof p.dailyPrice === 'number' ? p.dailyPrice : 0,
+				weeklyPrice: p.weeklyPrice,
+				twoWeekPrice: p.twoWeekPrice,
+			}));
+	} catch (e) {
+		console.error('Error fetching products:', e);
+	}
+	try {
+		// Accessories
+		const res = await fetch(`${base}/accessory`);
+		if (!res.ok) throw new Error('Failed to load accessories');
+		const data = await res.json();
+		accessories.value = (Array.isArray(data) ? data : []).map((a: any) => ({
+			name: a.name,
+			price: typeof a.price === 'number' ? a.price : 70,
+		}));
+	} catch (e) {
+		console.error('Error fetching accessories:', e);
+	}
 });
 </script>
 <style scoped>

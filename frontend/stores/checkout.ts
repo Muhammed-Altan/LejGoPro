@@ -1,6 +1,12 @@
 import { defineStore } from 'pinia'
 
-export interface SelectedItem { name: string; price: number; quantity: number }
+export interface SelectedItem {
+  name: string;
+  price: number;
+  quantity: number;
+  productId?: number;
+  config?: { dailyPrice: number; weeklyPrice: number; twoWeekPrice: number };
+}
 
 export const useCheckoutStore = defineStore('checkout', {
   state: () => ({
@@ -9,7 +15,7 @@ export const useCheckoutStore = defineStore('checkout', {
     insurance: false,
     startDate: null as string | null,
     endDate: null as string | null,
-    productId: null as number | null, // selected product id from models list if available
+    productId: null as number | null, // legacy: first selected product id (kept for compatibility)
   }),
   actions: {
     logState() {
@@ -50,6 +56,11 @@ export const useCheckoutStore = defineStore('checkout', {
     },
     setInsurance(val: boolean) { this.insurance = val },
     setProductId(id: number | null) { this.productId = id },
+    getFirstProductId(): number | null {
+      if (this.productId) return this.productId;
+      const first = this.selectedModels.find(m => typeof m.productId === 'number');
+      return first?.productId ?? null;
+    },
     reset() {
       this.selectedModels = [];
       this.selectedAccessories = [];
