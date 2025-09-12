@@ -8,22 +8,28 @@
           <div>
             <div class="font-semibold">{{ line.name }}</div>
             <div class="text-sm text-gray-500">x{{ line.quantity }}</div>
+			<div class="text-sm text-gray-500">{{ line.price }} kr.</div>
           </div>
-          <div class="font-semibold">{{ formatCurrency(lineTotals[idx] || 0) }}</div>
+          <!-- Per-line price calculation is not shown, only grand total from backend is used -->
         </div>
       </div>
-      <div v-if="accessories.length" class="pt-2">
+      <div v-if="backendBreakdown && backendBreakdown.accessories && backendBreakdown.accessories.length" class="pt-2">
         <div class="font-semibold mb-1">Tilbehør</div>
         <div class="space-y-1">
-          <div v-for="(acc, i) in accessories" :key="i" class="flex justify-between text-sm">
+          <div v-for="(acc, i) in backendBreakdown.accessories" :key="i" class="flex justify-between text-sm">
             <span>{{ acc.quantity }}x {{ acc.name }}</span>
-            <span>{{ formatCurrency((acc.price ?? 70) * acc.quantity) }}</span>
+            <span>{{ formatCurrency(acc.price) }}</span>
           </div>
         </div>
       </div>
       <div class="flex justify-between text-base mt-4">
         <span>Forsikring</span>
-        <span>{{ insurance ? formatCurrency(insuranceCost) : '—' }}</span>
+        <span>
+          <template v-if="backendBreakdown && backendBreakdown.insurance !== undefined && backendBreakdown.insurance !== null">
+            {{ formatCurrency(backendBreakdown.insurance) }}
+          </template>
+          <template v-else>—</template>
+        </span>
       </div>
       <div class="flex justify-between text-base mt-1">
         <span>Levering</span>
@@ -32,53 +38,80 @@
       <div class="border-t pt-4 mt-4">
         <div class="flex justify-between items-end">
           <span class="text-xl font-semibold">I alt</span>
-          <span class="text-xl font-semibold">{{ formatCurrency(grandTotal) }}</span>
+          <span class="text-xl font-semibold">
+            <span v-if="loading">Beregner…</span>
+            <span v-else-if="error">Fejl</span>
+            <span v-else>{{ formatCurrency(backendTotal) }}</span>
+          </span>
         </div>
         <div class="text-xs text-gray-500 mt-1" v-if="rentalDays > 0">Antal dage: {{ rentalDays }}</div>
+        <div class="text-xs text-red-500 mt-1" v-if="error">{{ error }}</div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
+import { computed, ref, watch } from 'vue';
 import { useCheckoutStore } from '@/stores/checkout';
-import { calculatePriceWithConfig, calculateTotalBookingPrice, diffDaysInclusive } from '@/utils/price';
+import { diffDaysInclusive } from '@/utils/price';
+import { useNuxtApp } from '#app';
 
 const store = useCheckoutStore();
-
 const stickyClasses = computed(() => 'lg:sticky lg:top-6 lg:max-h-[calc(100vh-3rem)] lg:overflow-auto');
 const models = computed(() => store.selectedModels || []);
 const accessories = computed(() => store.selectedAccessories || []);
 const insurance = computed(() => !!store.insurance);
 const rentalDays = computed(() => diffDaysInclusive(store.startDate, store.endDate));
 
-const lineTotals = computed(() => {
-  const days = rentalDays.value;
-  return models.value.map(m => {
-    const cfg = m.config || { dailyPrice: m.price, weeklyPrice: m.price * 7, twoWeekPrice: m.price * 14 };
-    return calculatePriceWithConfig(cfg, days) * (m.quantity || 1);
-  });
-});
+const backendTotal = ref<number|null>(null);
+const backendBreakdown = ref<any|null>(null);
+const loading = ref(false);
+const error = ref<string|null>(null);
 
-const insuranceCost = computed(() => (insurance.value && rentalDays.value > 0 ? 50 * rentalDays.value : 0));
+async function fetchBackendTotal() {
+  if (!models.value.length || rentalDays.value <= 0) {
+    backendTotal.value = 0;
+    backendBreakdown.value = null;
+    return;
+  }
+  loading.value = true;
+  error.value = null;
+  try {
+    const { $config } = useNuxtApp();
+    const base = ($config?.public?.apiBase) || 'http://localhost:3001';
+    const res = await fetch(`${base}/price/quote`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        models: models.value.map(m => ({
+          name: m.name,
+          quantity: m.quantity || 1,
+          config: m.config || { dailyPrice: m.price, weeklyPrice: m.price * 7, twoWeekPrice: m.price * 14 },
+        })),
+        accessories: accessories.value.map(a => ({ name: a.name, quantity: a.quantity || 1, price: a.price })),
+        days: rentalDays.value,
+        insurance: insurance.value,
+      }),
+    });
+    if (!res.ok) throw new Error('Prisforespørgsel fejlede');
+    const data = await res.json();
+    backendTotal.value = typeof data.total === 'number' ? data.total : 0;
+    backendBreakdown.value = data.breakdown || null;
+  } catch (e: any) {
+    error.value = (typeof e === 'object' && e && 'message' in e) ? (e as any).message : 'Ukendt fejl ved prisforespørgsel';
+    backendTotal.value = null;
+    backendBreakdown.value = null;
+  } finally {
+    loading.value = false;
+  }
+}
 
-const grandTotal = computed(() => {
-  const days = rentalDays.value;
-  if (days <= 0) return 0;
-  return calculateTotalBookingPrice({
-    models: models.value.map(m => ({
-      name: m.name,
-      quantity: m.quantity || 1,
-      config: m.config || { dailyPrice: m.price, weeklyPrice: m.price * 7, twoWeekPrice: m.price * 14 },
-    })),
-    accessories: accessories.value.map(a => ({ name: a.name, quantity: a.quantity || 1, price: a.price })),
-    days,
-    insurance: insurance.value,
-  });
-});
+// Watch for changes and update price live
+watch([models, accessories, insurance, rentalDays], fetchBackendTotal, { immediate: true, deep: true });
 
-function formatCurrency(n: number) {
+function formatCurrency(n: number|null) {
+  if (n == null) return '—';
   return new Intl.NumberFormat('da-DK', { style: 'currency', currency: 'DKK', minimumFractionDigits: 0 }).format(n);
 }
 </script>
