@@ -38,10 +38,6 @@
                                     <textarea id="description" v-model="form.description" required class="p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" />
                                 </div>
                                 <div class="flex flex-col">
-                                    <label for="img" class="text-base font-semibold mb-1 text-gray-900">Billede URL</label>
-                                    <input id="img" v-model="form.img" required class="p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" />
-                                </div>
-                                <div class="flex flex-col">
                                     <label for="features" class="text-base font-semibold mb-1 text-gray-900">Features (kommasepareret)</label>
                                     <input id="features" v-model="form.features" class="p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" placeholder="fx: 📷 5K Video, 🖥️ GP2 Processor" />
                                 </div>
@@ -54,9 +50,15 @@
                                         <label for="weeklyPrice" class="text-base font-semibold mb-1 text-gray-900">Pris pr. uge</label>
                                         <input id="weeklyPrice" type="number" v-model.number="form.weeklyPrice" required class="p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" />
                                     </div>
+                                </div>
+                                <div>
                                     <div class="flex-1 flex flex-col">
                                         <label for="twoWeekPrice" class="text-base font-semibold mb-1 text-gray-900">Pris pr. 2 uger</label>
                                         <input id="twoWeekPrice" type="number" v-model.number="form.twoWeekPrice" required class="p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" />
+                                    </div>
+                                    <div class="flex-1 flex flex-col">
+                                        <label for="quantity" class="text-base font-semibold mb-1 text-gray-900">Antal kameraer</label>
+                                        <input id="quantity" type="number" min="1" v-model.number="form.quantity" required class="p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" />
                                     </div>
                                 </div>
                                 <div class="flex items-center gap-2">
@@ -69,27 +71,44 @@
                             </form>
                         </div>
                     </div>
-            <table class="w-full border rounded-xl overflow-hidden">
-                <thead class="bg-gray-100">
-                    <tr>
-                        <th class="py-2 px-4 text-left">Navn</th>
-                        <th class="py-2 px-4 text-left">Pris pr. dag</th>
-                        <th class="py-2 px-4 text-left">Pris pr. uge</th>
-                        <th class="py-2 px-4 text-left">Handlinger</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="product in products" :key="product.id">
-                        <td class="py-2 px-4">{{ product.name }}</td>
-                        <td class="py-2 px-4">{{ product.dailyPrice }} kr</td>
-                        <td class="py-2 px-4">{{ product.weeklyPrice }} kr</td>
-                        <td class="py-2 px-4 flex gap-2">
-                            <button class="bg-blue-500 text-white px-2 py-1 rounded text-xs cursor-pointer" @click="editProduct(product)">Rediger</button>
-                            <button class="bg-red-500 text-white px-2 py-1 rounded text-xs cursor-pointer" @click="deleteProduct(product)">Slet</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                        <div class="space-y-6">
+                            <div v-for="product in products" :key="product.id" class="border rounded-xl p-6 bg-white shadow">
+                                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                                    <div>
+                                        <h3 class="text-lg font-bold mb-1">{{ product.name }}</h3>
+                                        <p class="text-gray-600 mb-2">{{ product.description }}</p>
+                                        <div class="flex flex-wrap gap-2 mb-2">
+                                            <span v-for="feature in (Array.isArray(product.features) ? product.features : product.features.split(','))" :key="feature" class="bg-gray-100 px-2 py-1 rounded text-xs">{{ feature }}</span>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col gap-1 min-w-[150px]">
+                                        <span class="font-semibold">Pris pr. dag: <span class="text-[#B8082A]">{{ product.dailyPrice }} kr</span></span>
+                                        <span class="font-semibold">Pris pr. uge: <span class="text-[#B8082A]">{{ product.weeklyPrice }} kr</span></span>
+                                        <span class="font-semibold">Pris pr. 2 uger: <span class="text-[#B8082A]">{{ product.twoWeekPrice }} kr</span></span>
+                                        <span class="font-semibold">Antal kameraer: <span class="text-[#B8082A]">{{ product.quantity }}</span></span>
+                                    </div>
+                                    <div class="flex gap-2 mt-2 md:mt-0">
+                                        <button class="bg-blue-500 text-white px-3 py-1 rounded text-xs cursor-pointer" @click="editProduct(product)">Rediger</button>
+                                        <button class="bg-red-500 text-white px-3 py-1 rounded text-xs cursor-pointer" @click="deleteProduct(product)">Slet</button>
+                                    </div>
+                                </div>
+                                <div class="mt-4">
+                                    <details>
+                                        <summary class="cursor-pointer font-semibold">Kameraer ({{ product.cameras.length }})</summary>
+                                        <div class="pl-4 pt-2">
+                                            <div v-for="(camera, idx) in product.cameras" :key="camera.id" class="mb-4">
+                                              <div class="font-bold">Kamera {{ idx + 1 }}</div>
+                                              <ProductCalendar
+                                                :camera-id="camera.id"
+                                                :camera-name="`Kamera ${idx + 1}`"
+                                                :product-name="product.name"
+                                              />
+                                            </div>
+                                        </div>
+                                    </details>
+                                </div>
+                            </div>
+                        </div>
         </div>
 
     <div v-else-if="activeTab === 'accessory'">
@@ -158,20 +177,41 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
+import ProductCalendar from '@/components/booking/ProductCalendar.vue';
 
 const showModal = ref(false);
 const editingId = ref<number|null>(null);
 const form = ref({
     name: '',
     description: '',
-    img: '',
     features: '',
     dailyPrice: 0,
     weeklyPrice: 0,
     twoWeekPrice: 0,
-    popular: false
+    popular: false,
+    quantity: 1
 });
-const products = ref([]);
+interface Product {
+    id: number;
+    name: string;
+    description: string;
+    features: string;
+    dailyPrice: number;
+    weeklyPrice: number;
+    twoWeekPrice: number;
+    popular: boolean;
+    quantity: number;
+    cameras: Camera[];
+}
+
+interface Camera {
+    id: number;
+    productId: number;
+    dailyPrice: number;
+    weeklyPrice: number;
+    twoWeekPrice: number;
+}
+const products = ref<Product[]>([]);
 
 async function fetchProducts() {
     const res = await fetch('http://localhost:3001/products');
@@ -185,12 +225,12 @@ async function createProduct() {
     const payload = {
         name: form.value.name,
         description: form.value.description,
-        img: form.value.img,
         features: form.value.features,
         dailyPrice: form.value.dailyPrice,
         weeklyPrice: form.value.weeklyPrice,
         twoWeekPrice: form.value.twoWeekPrice,
-        popular: form.value.popular
+        popular: form.value.popular,
+        quantity: form.value.quantity
     };
     if (editingId.value) {
         // Update existing product
@@ -209,7 +249,7 @@ async function createProduct() {
     }
     showModal.value = false;
     editingId.value = null;
-    form.value = { name: '', description: '', img: '', features: '', dailyPrice: 0, weeklyPrice: 0, twoWeekPrice: 0, popular: false };
+    form.value = { name: '', description: '', features: '', dailyPrice: 0, weeklyPrice: 0, twoWeekPrice: 0, popular: false, quantity: 1 };
     await fetchProducts();
 }
 
@@ -225,12 +265,12 @@ function editProduct(product: any) {
     form.value = {
         name: product.name,
         description: product.description,
-        img: product.img,
         features: Array.isArray(product.features) ? product.features.join(', ') : product.features,
         dailyPrice: product.dailyPrice,
         weeklyPrice: product.weeklyPrice,
         twoWeekPrice: product.twoWeekPrice || 0,
-        popular: product.popular || false
+        popular: product.popular || false,
+        quantity: product.quantity || 1
     };
     showModal.value = true;
 }

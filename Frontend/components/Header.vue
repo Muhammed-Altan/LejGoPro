@@ -10,7 +10,7 @@
       <NuxtLink to="/products" class="header-link">Produkter</NuxtLink>
       <NuxtLink to="/hvorfor" class="header-link">Hvorfor leje?</NuxtLink>
       <NuxtLink to="/kontakt" class="header-link">Kontakt</NuxtLink>
-      <UButton size="md" class="book-btn">Book Nu</UButton>
+      <UButton to="/checkout" size="md" class="book-btn">Book Nu</UButton>
     </nav>
   </header>
 </template>
@@ -54,7 +54,8 @@
 }
 
 
-.book-btn {
+
+:deep(.book-btn) {
   font-weight: 600;
   border-radius: 8px;
   padding: 0.4rem 1.2rem;
@@ -64,9 +65,10 @@
   color: #fff !important;
 }
 
-.book-btn:hover {
+:deep(.book-btn):hover {
   background-color: #fff !important;
   color: #B8082A !important;
   border: 1px solid #B8082A !important;
+  cursor: pointer;
 }
 </style>
