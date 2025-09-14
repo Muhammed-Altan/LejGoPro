@@ -2,7 +2,7 @@
   <Header />
 
   <!-- Hero Section -->
-  <section class="relative flex flex-col items-center justify-center min-h-[60vh] bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80');">
+  <section class="relative flex flex-col items-center justify-center min-h-[90vh] bg-cover bg-center" style="background-image: url('/hero-bg/federico-persiani-XvPuZ2Q71GA-unsplash.jpg');">
   <div class="absolute inset-0 bg-white/20"></div>
     <div class="relative z-10 flex flex-col items-center justify-center py-24">
       <h1 class="text-4xl md:text-5xl font-bold text-center text-black mb-8">
@@ -27,12 +27,12 @@
         </h2>
         <!-- Adventure Image Grid -->
         <div class="grid grid-cols-2 md:grid-cols-3 gap-10 mb-12">
-          <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=600&q=80" alt="Waterfall selfie" class="rounded-2xl object-cover w-full h-80" />
-          <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80" alt="Skiing" class="rounded-2xl object-cover w-full h-80" />
-          <img src="https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=600&q=80" alt="Dog adventure" class="rounded-2xl object-cover w-full h-80" />
-          <img src="https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=600&q=80" alt="Mountain climbing" class="rounded-2xl object-cover w-full h-80" />
-          <img src="https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=600&q=80" alt="Skiing" class="rounded-2xl object-cover w-full h-80" />
-          <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80" alt="Mountain climbing" class="rounded-2xl object-cover w-full h-80" />
+          <img src="/eventyr/benjamin-voros-FSvn9jMrDyk-unsplash.jpg" alt="Waterfall selfie" class="rounded-2xl object-cover w-full h-80" />
+          <img src="/eventyr/jack-delulio-Sgey0UZt6HY-unsplash.jpg" alt="Skiing" class="rounded-2xl object-cover w-full h-80" />
+          <img src="/eventyr/patrick-hendry-3EtLikBpyfI-unsplash.jpg" alt="Dog adventure" class="rounded-2xl object-cover w-full h-80" />
+          <img src="/eventyr/spenser-sembrat-I-fihlhsBWk-unsplash.jpg" alt="Mountain climbing" class="rounded-2xl object-cover w-full h-80" />
+          <img src="/eventyr/lucas-favre-BRTV55ErUZg-unsplash.jpg" alt="Skiing" class="rounded-2xl object-cover w-full h-80" />
+          <img src="/eventyr/cristian-palmer-RaOKzBtN8fI-unsplash.jpg" alt="Mountain climbing" class="rounded-2xl object-cover w-full h-80" />
         </div>
         <div class="flex justify-center mb-12">
           <button class="bg-[#B8082A] text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-[#a10725] transition cursor-pointer">Fang dit eventyr her</button>
@@ -110,26 +110,34 @@ import { ref } from 'vue';
 
 const products = ref([
   {
+    title: 'GoPro HERO12 Black',
+    description: 'Seneste model med avanceret billedkvalitet og forbedret stabilisering.',
+    img: 'https://static.gopro.com/assets/blta2b8522e5372af40/blt86b2d5c67d4f1ed5/64d0e286369276296caf7a71/02-pdp-h12b-gallery-1920.png?width=1920&quality=80&auto=webp&disable=upscale',
+    features: ['📷 5.3K Video', '⚡ HyperSmooth 6.0', '🕑 Vandtæt', '🔋 Forbedret batteri'],
+    priceDay: 49,
+    priceWeek: 159,
+    popular: true
+  },
+  {
+    title: 'GoPro HERO11 Black',
+    description: 'Fremragende allround kamera med 5.3K video og forbedret natoptagelse.',
+    img: 'https://static.gopro.com/assets/blta2b8522e5372af40/bltb0e158820591a2a1/645147b2d5d03c0794f168cd/pdp-h11b-SA-image02-1920-2x.png?width=3840&quality=80&auto=webp&disable=upscale',
+    features: ['📷 5.3K Video', '🌙 Nightlapse', '⚡ HyperSmooth 5.0', '🕑 Vandtæt til 10m'],
+    priceDay: 39,
+    priceWeek: 129
+  },
+  {
     title: 'GoPro HERO10 Black',
     description: 'Kraftfuld performance med GP2 processor og glimrende stabilisering.',
-    img: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80',
+    img: 'https://static.gopro.com/assets/blta2b8522e5372af40/blt2c7d09c3f92e1c63/643ee1005f834b59633e106f/pdp-h10-image02-1920-2x.png?width=1920&quality=80&auto=webp&disable=upscale',
     features: ['📷 5.3K Video', '🖥️ GP2 Processor', '⚡ HyperSmooth 4.0', '🕑 Vandtæt'],
     priceDay: 29,
     priceWeek: 109
   },
   {
-    title: 'GoPro HERO11 Black',
-    description: 'Fremragende allround kamera med 5.3K video og forbedret natoptagelse.',
-    img: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80',
-    features: ['📷 5.3K Video', '🌙 Nightlapse', '⚡ HyperSmooth 5.0', '🕑 Vandtæt til 10m'],
-    priceDay: 39,
-    priceWeek: 129,
-    popular: true
-  },
-  {
     title: 'GoPro HERO9 Black',
     description: 'Pålidelig og prisvenlig mulighed med fremskærm og 5K video.',
-    img: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80',
+    img: 'https://static.gopro.com/assets/blta2b8522e5372af40/blt2c7d09c3f92e1c63/643ee1005f834b59633e106f/pdp-h10-image02-1920-2x.png?width=1920&quality=80&auto=webp&disable=upscale',
     features: ['📷 5K Video', '🖥️ Fremskærm', '⚡ HyperSmooth 3.0', '⏩ TimeWarp 3.0'],
     priceDay: 25,
     priceWeek: 89
@@ -176,7 +184,7 @@ const ui = {
 
 
 .hero-bg {
-  background-image: url('/Hero-bg-img.png');
+  background-image: url('/hero-bg/federico-persiani-XvPuZ2Q71GA-unsplash.jpg');
   background-size: cover;
   background-position: center;
   position: relative;
