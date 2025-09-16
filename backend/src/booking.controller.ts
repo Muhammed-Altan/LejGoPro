@@ -14,6 +14,12 @@ export class BookingController {
   @Get()
   async getAllBookings() {
     return this.bookingService.getAllBookings();
+
+  @Post('by-product')
+  async bookByProduct(@Body() body: any) {
+    const { productId, startDate, endDate } = body;
+    return this.bookingService.bookProduct(Number(productId), new Date(startDate), new Date(endDate));
+
   }
 
   @Get('camera/:cameraId')

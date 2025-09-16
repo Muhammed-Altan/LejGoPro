@@ -238,7 +238,9 @@ interface Camera {
 const products = ref<Product[]>([]);
 
 async function fetchProducts() {
-    const res = await fetch('http://localhost:3001/products');
+    const { $config } = useNuxtApp();
+    const base = ($config?.public?.apiBase) || 'http://localhost:3001';
+    const res = await fetch(`${base}/products`);
     products.value = await res.json();
 }
 
@@ -258,14 +260,18 @@ async function createProduct() {
     };
     if (editingId.value) {
         // Update existing product
-        await fetch(`http://localhost:3001/products/${editingId.value}`, {
+    const { $config } = useNuxtApp();
+    const base = ($config?.public?.apiBase) || 'http://localhost:3001';
+    await fetch(`${base}/products/${editingId.value}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
         });
     } else {
         // Create new product
-        await fetch('http://localhost:3001/products', {
+    const { $config } = useNuxtApp();
+    const base = ($config?.public?.apiBase) || 'http://localhost:3001';
+    await fetch(`${base}/products`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
@@ -278,7 +284,9 @@ async function createProduct() {
 }
 
 async function deleteProduct(product: any) {
-    await fetch(`http://localhost:3001/products/${product.id}`, {
+    const { $config } = useNuxtApp();
+    const base = ($config?.public?.apiBase) || 'http://localhost:3001';
+    await fetch(`${base}/products/${product.id}`, {
         method: 'DELETE'
     });
     await fetchProducts();
@@ -343,7 +351,9 @@ const accessory = ref<Accessory[]>([]);
 const accessoryForm = ref({ name: '', description: '', img: '', price: 0 });
 
 async function fetchAccessory() {
-    const res = await fetch('http://localhost:3001/accessory');
+    const { $config } = useNuxtApp();
+    const base = ($config?.public?.apiBase) || 'http://localhost:3001';
+    const res = await fetch(`${base}/accessory`);
     accessory.value = await res.json();
 }
 fetchAccessory();
@@ -351,13 +361,17 @@ fetchAccessory();
 async function createAccessory() {
     const payload = { name: accessoryForm.value.name, description: accessoryForm.value.description, img: accessoryForm.value.img, price: accessoryForm.value.price };
     if (editingAccessoryId.value) {
-        await fetch(`http://localhost:3001/accessory/${editingAccessoryId.value}`, {
+    const { $config } = useNuxtApp();
+    const base = ($config?.public?.apiBase) || 'http://localhost:3001';
+    await fetch(`${base}/accessory/${editingAccessoryId.value}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
         });
     } else {
-        await fetch('http://localhost:3001/accessory', {
+    const { $config } = useNuxtApp();
+    const base = ($config?.public?.apiBase) || 'http://localhost:3001';
+    await fetch(`${base}/accessory`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
@@ -370,7 +384,9 @@ async function createAccessory() {
 }
 
 async function deleteAccessory(id: number) {
-    await fetch(`http://localhost:3001/accessory/${id}`, { method: 'DELETE' });
+    const { $config } = useNuxtApp();
+    const base = ($config?.public?.apiBase) || 'http://localhost:3001';
+    await fetch(`${base}/accessory/${id}`, { method: 'DELETE' });
     await fetchAccessory();
 }
 

@@ -41,9 +41,9 @@ export function calculateTotalBookingPrice({
     const accPrice = item.price ?? 70;
     total += item.quantity * accPrice;
   }
-  // Insurance (50 DKK/day)
+  // Insurance
   if (insurance) {
-    total += 50 * days;
+    total += 15 * days;
   }
   return Math.round(total);
 }
