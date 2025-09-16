@@ -40,6 +40,47 @@ export class BookingService {
     });
   }
 
+  // Book by product: find a free camera for the product within the period (with grace days)
+  async bookProduct(productId: number, startDate: Date, endDate: Date) {
+    const graceDays = 3;
+    const bookingStart = new Date(startDate);
+    bookingStart.setDate(bookingStart.getDate() - graceDays);
+    const bookingEnd = new Date(endDate);
+    bookingEnd.setDate(bookingEnd.getDate() + graceDays);
+
+    // Find cameras for product
+    const cameras = await prisma.camera.findMany({ where: { productId } });
+    if (cameras.length === 0) {
+      throw new Error('No cameras found for this product');
+    }
+
+    // For each camera, check if there are overlapping bookings
+    for (const cam of cameras) {
+      const overlapping = await prisma.booking.findFirst({
+        where: {
+          cameraId: cam.id,
+          startDate: { lte: bookingEnd },
+          endDate: { gte: bookingStart },
+        },
+      });
+      if (!overlapping) {
+        // Create booking using this free camera
+        const product = await prisma.product.findUnique({ where: { id: productId } });
+        return prisma.booking.create({
+          data: {
+            cameraId: cam.id,
+            cameraName: cam.name ?? product?.name ?? undefined,
+            productName: product?.name,
+            startDate: startDate,
+            endDate: endDate,
+          },
+        });
+      }
+    }
+
+    throw new Error('No available cameras for these dates');
+  }
+
   async getBookingsForCamera(cameraId: number) {
     return prisma.booking.findMany({
       where: { cameraId },
