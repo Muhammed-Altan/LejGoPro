@@ -71,8 +71,8 @@ export class BookingService {
             cameraId: cam.id,
             cameraName: cam.name ?? product?.name ?? undefined,
             productName: product?.name,
-            startDate: bookingStart,
-            endDate: bookingEnd,
+            startDate: startDate,
+            endDate: endDate,
           },
         });
       }
