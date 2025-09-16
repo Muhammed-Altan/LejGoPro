@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Body, Param } from '@nestjs/common';
 import { BookingService } from './booking.service';
 
-@Controller('bookings')
+@Controller('booking')
 export class BookingController {
   constructor(private readonly bookingService: BookingService) {}
 
@@ -11,10 +11,15 @@ export class BookingController {
     return this.bookingService.bookCamera(cameraId, new Date(startDate), new Date(endDate), cameraName, productName);
   }
 
+  @Get()
+  async getAllBookings() {
+    return this.bookingService.getAllBookings();
+
   @Post('by-product')
   async bookByProduct(@Body() body: any) {
     const { productId, startDate, endDate } = body;
     return this.bookingService.bookProduct(Number(productId), new Date(startDate), new Date(endDate));
+
   }
 
   @Get('camera/:cameraId')
