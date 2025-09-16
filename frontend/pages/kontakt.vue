@@ -23,9 +23,9 @@
             <h3 class="text-2xl font-bold mb-8">Kontakt Os — <span class="text-[#B8082A]">Dit Eventyr</span> Begynder Her</h3>
             <div class="py-8 rounded-xl">
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-10 px-6 mb-8">
-                <img src="https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=800&q=80" alt="Waterfall selfie" class="rounded-xl object-cover w-full h-72" />
-                <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=800&q=80" alt="Diving" class="rounded-xl object-cover w-full h-72" />
-                <img src="https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=800&q=80" alt="Dog adventure" class="rounded-xl object-cover w-full h-72" />
+                <img src="/eventyr/filip-lP5bWEhf4nA-unsplash.jpg" alt="Filip adventure" class="rounded-xl object-cover w-full h-72" />
+                <img src="/eventyr/GoPro-MountainTop.jpg" alt="GoPro adventure" class="rounded-xl object-cover w-full h-72" />
+                <img src="/eventyr/GoPro-Skiing.png" alt="GoPro adventure 2" class="rounded-xl object-cover w-full h-72" />
                 </div>
                 <button class="bg-[#B8082A] text-white font-semibold py-2 px-6 rounded shadow hover:bg-[#a10725] transition cursor-pointer">Begynd dit eventyr her</button>
             </div>

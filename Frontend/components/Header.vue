@@ -21,7 +21,7 @@
 .header-bar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   padding: 0.5rem 2.5rem;
   background: #fff;
   border-bottom: 1px solid #e5e7eb;
