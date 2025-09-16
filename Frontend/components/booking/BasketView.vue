@@ -54,7 +54,6 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue';
 import { useCheckoutStore } from '@/stores/checkout';
-import { diffDaysInclusive } from '@/utils/price';
 import { useNuxtApp } from '#app';
 
 const store = useCheckoutStore();
@@ -62,6 +61,18 @@ const stickyClasses = computed(() => 'lg:sticky lg:top-6 lg:max-h-[calc(100vh-3r
 const models = computed(() => store.selectedModels || []);
 const accessories = computed(() => store.selectedAccessories || []);
 const insurance = computed(() => !!store.insurance);
+function diffDaysInclusive(start: Date | string | null | undefined, end: Date | string | null | undefined) {
+  if (!start || !end) return 0;
+  const s = new Date(start);
+  const e = new Date(end);
+  if (isNaN(s.getTime()) || isNaN(e.getTime())) return 0;
+  // Normalize to midnight to avoid DST/timezone issues
+  s.setHours(0, 0, 0, 0);
+  e.setHours(0, 0, 0, 0);
+  const msPerDay = 24 * 60 * 60 * 1000;
+  const diff = Math.round((e.getTime() - s.getTime()) / msPerDay) + 1; // inclusive
+  return diff > 0 ? diff : 0;
+}
 const rentalDays = computed(() => diffDaysInclusive(store.startDate, store.endDate));
 
 const backendTotal = ref<number|null>(null);

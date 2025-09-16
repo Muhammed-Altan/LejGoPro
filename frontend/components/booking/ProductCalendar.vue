@@ -1,7 +1,19 @@
 <template>
   <div>
-    <VueDatePicker v-model="startDate" :input-class="'w-full border border-gray-300 rounded-lg py-3 px-4'" placeholder="Start dato" />
-    <VueDatePicker v-model="endDate" :input-class="'w-full border border-gray-300 rounded-lg py-3 px-4'" placeholder="Slut dato" />
+    <VueDatePicker
+      v-model="startDate"
+      :enable-time-picker="false"
+      format="dd/MM/yyyy"
+      :input-class="'w-full border border-gray-300 rounded-lg py-3 px-4'"
+      placeholder="Start dato"
+    />
+    <VueDatePicker
+      v-model="endDate"
+      :enable-time-picker="false"
+      format="dd/MM/yyyy"
+      :input-class="'w-full border border-gray-300 rounded-lg py-3 px-4'"
+      placeholder="Slut dato"
+    />
     <div class="mt-2">
       <button class="bg-[#B8082A] text-white px-4 py-2 rounded" @click="bookCamera">Book kamera</button>
     </div>
