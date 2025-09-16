@@ -6,7 +6,7 @@
 	>
 		<h2 class="text-2xl font-semibold mb-6">Din kurv</h2>
 		<div class="flex items-start mb-6">
-			<img src="/Hero-img.jpg" alt="GoPro HERO10 Black" class="w-28 h-24 object-cover rounded-lg mr-4" />
+			<img src="/hero-bg/federico-persiani-XvPuZ2Q71GA-unsplash.jpg" alt="GoPro HERO10 Black" class="w-28 h-24 object-cover rounded-lg mr-4" />
 			<div class="flex-1">
 				<div class="flex justify-between items-start">
 					<div>

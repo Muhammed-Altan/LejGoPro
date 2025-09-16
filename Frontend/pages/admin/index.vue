@@ -166,9 +166,33 @@
         </div>
 
         <div v-else-if="activeTab === 'orders'">
-            <div class="text-center text-gray-500 py-12">
-                <h2 class="text-xl font-semibold mb-2">Ordrer</h2>
-                <p>Ingen ordrer at vise endnu.</p>
+            <div class="max-w-4xl mx-auto py-8">
+                <h2 class="text-xl font-semibold mb-6 text-center">Ordrer</h2>
+                <div v-if="bookings.length === 0" class="text-center text-gray-500 py-12">
+                    <p>Ingen ordrer at vise endnu.</p>
+                </div>
+                <div v-else class="space-y-6">
+                    <div v-for="booking in bookings" :key="booking.id" class="border rounded-xl p-6 bg-white shadow">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                            <div>
+                                <h3 class="text-lg font-bold mb-1">{{ booking.customerName || booking.name || 'Ukendt kunde' }}</h3>
+                                <p class="text-gray-600 mb-2">{{ booking.email }}</p>
+                                <div class="flex flex-wrap gap-2 mb-2">
+                                    <span class="bg-gray-100 px-2 py-1 rounded text-xs">Start: {{ booking.startDate }}</span>
+                                    <span class="bg-gray-100 px-2 py-1 rounded text-xs">Slut: {{ booking.endDate }}</span>
+                                </div>
+                                <div class="flex flex-wrap gap-2 mb-2">
+                                    <span class="bg-gray-100 px-2 py-1 rounded text-xs">Produkt: {{ booking.productName || booking.product || 'Ukendt produkt' }}</span>
+                                    <span class="bg-gray-100 px-2 py-1 rounded text-xs">Pris: {{ booking.price }} kr</span>
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-1 min-w-[150px]">
+                                <span class="font-semibold">Status: <span class="text-[#B8082A]">{{ booking.status || 'Ukendt' }}</span></span>
+                                <span class="font-semibold">Booking ID: <span class="text-[#B8082A]">{{ booking.id }}</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -176,7 +200,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import ProductCalendar from '@/components/booking/ProductCalendar.vue';
 
 const showModal = ref(false);
@@ -276,6 +300,35 @@ function editProduct(product: any) {
 }
 
 const activeTab = ref('products');
+
+interface Booking {
+    id: number;
+    customerName?: string;
+    name?: string;
+    email?: string;
+    startDate?: string;
+    endDate?: string;
+    productName?: string;
+    product?: string;
+    price?: number;
+    status?: string;
+}
+const bookings = ref<Booking[]>([]);
+
+async function fetchBookings() {
+    try {
+        const res = await fetch('http://localhost:3001/booking');
+        const data = await res.json();
+        console.log('Fetched bookings:', data);
+        bookings.value = data;
+    } catch (e) {
+        bookings.value = [];
+    }
+}
+
+onMounted(() => {
+    fetchBookings();
+});
 
 const showAccessoryModal = ref(false);
 const editingAccessoryId = ref<number|null>(null);

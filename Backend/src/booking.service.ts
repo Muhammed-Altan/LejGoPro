@@ -46,4 +46,7 @@ export class BookingService {
       orderBy: { startDate: 'asc' }
     });
   }
+  async getAllBookings() {
+    return prisma.booking.findMany();
+  }
 }
