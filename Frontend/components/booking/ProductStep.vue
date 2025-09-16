@@ -44,6 +44,7 @@
           <option disabled value="">Vælg en model…</option>
           <option v-for="model in models" :key="model.name" :value="model.name">
             {{ model.name }} — {{ model.price.toFixed(2) }} kr./dag
+            <span v-if="datesSelected"> ({{ availability[model.id] ?? '–' }} tilgængelige)</span>
           </option>
         </select>
         <button
@@ -219,7 +220,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted } from "vue";
+import { ref, watch, onMounted, computed } from "vue";
 import { useCheckoutStore } from "@/stores/checkout";
 import { useNuxtApp } from "#app";
 import VueDatePicker from "@vuepic/vue-datepicker";
@@ -235,6 +236,7 @@ interface ProductOption {
 }
 const models = ref<ProductOption[]>([]);
 const accessories = ref<{ name: string; price: number }[]>([]);
+const availability = ref<Record<number, number>>({});
 
 // SSR-safe Pinia usage
 const store = useCheckoutStore();
@@ -369,6 +371,44 @@ onMounted(async () => {
     }));
   } catch (e) {
     console.error("Error fetching accessories:", e);
+  }
+
+  // Initial availability load if dates already in store
+  if (datesSelected.value) {
+    try {
+      const qs = new URLSearchParams({ start: startDate.value!.toISOString(), end: endDate.value!.toISOString() });
+      const res = await fetch(`${base}/products/availability/range?${qs.toString()}`);
+      if (res.ok) {
+        const data = await res.json();
+        const map: Record<number, number> = {};
+        (data || []).forEach((p: any) => { map[p.productId] = p.available; });
+        availability.value = map;
+      }
+    } catch (e) {
+      console.error('Error fetching availability:', e);
+    }
+  }
+});
+
+// Refetch availability whenever dates change and both are set
+watch([startDate, endDate], async () => {
+  const { $config } = useNuxtApp() as any;
+  const base = $config?.public?.apiBase || "http://localhost:3001";
+  if (!startDate.value || !endDate.value) {
+    availability.value = {};
+    return;
+  }
+  try {
+    const qs = new URLSearchParams({ start: startDate.value.toISOString(), end: endDate.value.toISOString() });
+    const res = await fetch(`${base}/products/availability/range?${qs.toString()}`);
+    if (!res.ok) throw new Error('Failed to load availability');
+    const data = await res.json();
+    const map: Record<number, number> = {};
+    (data || []).forEach((p: any) => { map[p.productId] = p.available; });
+    availability.value = map;
+  } catch (e) {
+    console.error('Error fetching availability:', e);
+    availability.value = {};
   }
 });
 </script>
