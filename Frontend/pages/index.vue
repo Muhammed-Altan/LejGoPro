@@ -15,6 +15,28 @@
   <button class="bg-[#B8082A] text-white font-semibold py-3 px-8 rounded-full shadow-lg hover:bg-[#a10725] transition cursor-pointer">Se Alle Produkter</button>
   <button class="bg-white text-[#B8082A] font-semibold py-3 px-8 rounded-full shadow-lg border border-[#B8082A] hover:bg-[#B8082A] hover:text-white transition cursor-pointer">Få Et Tilbud</button>
       </div>
+        <!-- Trustpilot Icon and Rating -->
+        <div class="flex flex-row items-center mt-2 gap-4">
+          <a href="https://www.trustpilot.com/review/lejgopro.dk?utm_medium=trustbox&utm_source=MicroReviewCount" target="_blank" rel="noopener" class="bg-white border border-gray-200 rounded-full px-5 py-2 flex items-center gap-4 shadow hover:shadow-lg transition cursor-pointer">
+            <div class="flex items-center gap-2">
+              <!-- Trustpilot SVG Icon -->
+              <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect width="32" height="32" rx="6" fill="#00B67A"/>
+                <path d="M16 7l2.472 7.61H26l-6.236 4.53L22.236 25 16 20.47 9.764 25l2.236-5.86L6 14.61h7.528L16 7z" fill="#fff"/>
+              </svg>
+              <span class="font-semibold text-black text-lg">Trustpilot</span>
+            </div>
+            <div class="flex items-center gap-1">
+              <!-- Star icons -->
+              <svg width="18" height="18" viewBox="0 0 20 20" fill="#FFD700" xmlns="http://www.w3.org/2000/svg"><polygon points="10,1.5 12.59,7.36 19,7.97 14,12.26 15.18,18.5 10,15.27 4.82,18.5 6,12.26 1,7.97 7.41,7.36"/></svg>
+              <svg width="18" height="18" viewBox="0 0 20 20" fill="#FFD700" xmlns="http://www.w3.org/2000/svg"><polygon points="10,1.5 12.59,7.36 19,7.97 14,12.26 15.18,18.5 10,15.27 4.82,18.5 6,12.26 1,7.97 7.41,7.36"/></svg>
+              <svg width="18" height="18" viewBox="0 0 20 20" fill="#FFD700" xmlns="http://www.w3.org/2000/svg"><polygon points="10,1.5 12.59,7.36 19,7.97 14,12.26 15.18,18.5 10,15.27 4.82,18.5 6,12.26 1,7.97 7.41,7.36"/></svg>
+              <svg width="18" height="18" viewBox="0 0 20 20" fill="#FFD700" xmlns="http://www.w3.org/2000/svg"><polygon points="10,1.5 12.59,7.36 19,7.97 14,12.26 15.18,18.5 10,15.27 4.82,18.5 6,12.26 1,7.97 7.41,7.36"/></svg>
+              <svg width="18" height="18" viewBox="0 0 20 20" fill="#FFD700" xmlns="http://www.w3.org/2000/svg"><polygon points="10,1.5 12.59,7.36 19,7.97 14,12.26 15.18,18.5 10,15.27 4.82,18.5 6,12.26 1,7.97 7.41,7.36"/></svg>
+              <span class="ml-2 text-black font-medium">4.8/5</span>
+            </div>
+          </a>
+        </div>
     </div>
   </section>
 
