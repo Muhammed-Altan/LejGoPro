@@ -8,12 +8,14 @@
 		<div class="flex flex-col md:flex-row gap-4">
 			<input
 				type="text"
+				v-model="fullName"
 				placeholder="Indtast dit fulde navn"
 				class="flex-1 px-4 py-3 rounded-lg bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-900 placeholder-gray-500"
 				autocomplete="name"
 			/>
 			<input
 				type="tel"
+				v-model="phone"
 				placeholder="+45 12 34 56 78"
 				class="flex-1 px-4 py-3 rounded-lg bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-900 placeholder-gray-500"
 				autocomplete="tel"
@@ -21,18 +23,21 @@
 		</div>
 		<input
 			type="email"
+			v-model="email"
 			placeholder="din@email.com"
 			class="w-full px-4 py-3 rounded-lg bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-900 placeholder-gray-500"
 			autocomplete="email"
 		/>
 		<input
 			type="text"
+			v-model="address"
 			placeholder="Adresse"
 			class="w-full px-4 py-3 rounded-lg bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-900 placeholder-gray-500"
 			autocomplete="address-line1"
 		/>
 		<input
 			type="text"
+			v-model="apartment"
 			placeholder="Lejlighed, etage osv. (Valgfri)"
 			class="w-full px-4 py-3 rounded-lg bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-900 placeholder-gray-500"
 			autocomplete="address-line2"
@@ -40,12 +45,14 @@
 		<div class="flex flex-col md:flex-row gap-4">
 			<input
 				type="text"
+				v-model="postalCode"
 				placeholder="Postnummer"
 				class="flex-1 px-4 py-3 rounded-lg bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-900 placeholder-gray-500"
 				autocomplete="postal-code"
 			/>
 			<input
 				type="text"
+				v-model="city"
 				placeholder="By"
 				class="flex-1 px-4 py-3 rounded-lg bg-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-400 text-gray-900 placeholder-gray-500"
 				autocomplete="address-level2"
@@ -58,7 +65,36 @@
 </template>
 
 <script setup>
-// No logic yet, presentational only
+import { useCheckoutStore } from '@/stores/checkout';
+import { watch } from 'vue';
+
+const store = useCheckoutStore();
+
+// Local refs for form fields, synced to store
+const fullName = defineModel('fullName', { default: '' });
+const phone = defineModel('phone', { default: '' });
+const email = defineModel('email', { default: '' });
+const address = defineModel('address', { default: '' });
+const apartment = defineModel('apartment', { default: '' });
+const postalCode = defineModel('postalCode', { default: '' });
+const city = defineModel('city', { default: '' });
+
+// Watch and sync to store
+watch(
+	[fullName, phone, email, address, apartment, postalCode, city],
+	([n, p, e, a, ap, pc, c]) => {
+		store.setDeliveryInfo({
+			fullName: n,
+			phone: p,
+			email: e,
+			address: a,
+			apartment: ap,
+			postalCode: pc,
+			city: c
+		});
+	},
+	{ immediate: true }
+);
 </script>
 
 <style scoped>
