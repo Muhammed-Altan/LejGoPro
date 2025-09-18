@@ -20,7 +20,7 @@ export class BookingController {
       apartment,
       postalCode,
       city,
-      accessoryIds,
+      accessoryInstanceIds,
       totalPrice
     } = body;
     return this.bookingService.bookCamera(
@@ -36,7 +36,7 @@ export class BookingController {
       apartment,
       postalCode,
       city,
-      accessoryIds,
+      accessoryInstanceIds,
       totalPrice
     );
   }
@@ -58,7 +58,7 @@ export class BookingController {
       apartment,
       postalCode,
       city,
-      accessoryIds,
+      accessoryInstanceIds,
       totalPrice
     } = body;
     return this.bookingService.bookProduct(
@@ -72,7 +72,7 @@ export class BookingController {
       apartment,
       postalCode,
       city,
-      accessoryIds,
+      accessoryInstanceIds,
       totalPrice
     );
   }

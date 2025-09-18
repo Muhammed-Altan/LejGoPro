@@ -65,8 +65,16 @@
 </template>
 
 <script setup>
+// Previous defineModel code for reference:
+// const fullName = defineModel(FIELD_FULL_NAME, { default: '' });
+// const phone = defineModel(FIELD_PHONE, { default: '' });
+// const email = defineModel(FIELD_EMAIL, { default: '' });
+// const address = defineModel(FIELD_ADDRESS, { default: '' });
+// const apartment = defineModel(FIELD_APARTMENT, { default: '' });
+// const postalCode = defineModel(FIELD_POSTAL_CODE, { default: '' });
+// const city = defineModel(FIELD_CITY, { default: '' });
 import { useCheckoutStore } from '@/stores/checkout';
-import { watch } from 'vue';
+import { watch, ref } from 'vue';
 
 // Field name constants for type safety
 const FIELD_FULL_NAME = 'fullName';
@@ -80,29 +88,29 @@ const FIELD_CITY = 'city';
 const store = useCheckoutStore();
 
 // Local refs for form fields, synced to store
-const fullName = defineModel(FIELD_FULL_NAME, { default: '' });
-const phone = defineModel(FIELD_PHONE, { default: '' });
-const email = defineModel(FIELD_EMAIL, { default: '' });
-const address = defineModel(FIELD_ADDRESS, { default: '' });
-const apartment = defineModel(FIELD_APARTMENT, { default: '' });
-const postalCode = defineModel(FIELD_POSTAL_CODE, { default: '' });
-const city = defineModel(FIELD_CITY, { default: '' });
+const fullName = ref('');
+const phone = ref('');
+const email = ref('');
+const address = ref('');
+const apartment = ref('');
+const postalCode = ref('');
+const city = ref('');
 
 // Watch and sync to store
 watch(
-	[fullName, phone, email, address, apartment, postalCode, city],
-	([n, p, e, a, ap, pc, c]) => {
-		store.setDeliveryInfo({
-			[FIELD_FULL_NAME]: n,
-			[FIELD_PHONE]: p,
-			[FIELD_EMAIL]: e,
-			[FIELD_ADDRESS]: a,
-			[FIELD_APARTMENT]: ap,
-			[FIELD_POSTAL_CODE]: pc,
-			[FIELD_CITY]: c
-		});
-	},
-	{ immediate: true }
+ [fullName, phone, email, address, apartment, postalCode, city],
+ ([n, p, e, a, ap, pc, c]) => {
+	 store.setDeliveryInfo({
+		 [FIELD_FULL_NAME]: n,
+		 [FIELD_PHONE]: p,
+		 [FIELD_EMAIL]: e,
+		 [FIELD_ADDRESS]: a,
+		 [FIELD_APARTMENT]: ap,
+		 [FIELD_POSTAL_CODE]: pc,
+		 [FIELD_CITY]: c
+	 });
+ },
+ { immediate: true }
 );
 </script>
 
