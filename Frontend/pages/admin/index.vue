@@ -19,7 +19,6 @@
                 @click="activeTab = 'orders'"
             >Ordrer</button>
         </div>
-
         <div v-if="activeTab === 'products'">
                     <div class="flex justify-end mb-4">
                         <button class="bg-[#B8082A] text-white px-4 py-2 rounded font-semibold shadow hover:bg-[#a10725] transition" @click="showModal = true">Opret Produkt</button>
@@ -128,14 +127,14 @@
                             <label for="accessoryDescription" class="text-base font-semibold mb-1 text-gray-900">Beskrivelse</label>
                             <textarea id="accessoryDescription" v-model="accessoryForm.description" required class="p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" />
                         </div>
-                        <div class="flex flex-col">
-                            <label for="accessoryImg" class="text-base font-semibold mb-1 text-gray-900">Billede URL</label>
-                            <input id="accessoryImg" v-model="accessoryForm.img" required class="p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" />
-                        </div>
                         <div class="flex flex-row gap-4">
                             <div class="flex-1 flex flex-col">
                                 <label for="accessoryPrice" class="text-base font-semibold mb-1 text-gray-900">Pris</label>
                                 <input id="accessoryPrice" type="number" v-model.number="accessoryForm.price" required class="p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" />
+                            </div>
+                            <div class="flex-1 flex flex-col">
+                                <label for="accessoryQuantity" class="text-base font-semibold mb-1 text-gray-900">Antal</label>
+                                <input id="accessoryQuantity" type="number" min="1" v-model.number="accessoryForm.quantity" required class="p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" />
                             </div>
                         </div>
                         <div class="flex justify-end">
@@ -144,25 +143,72 @@
                     </form>
                 </div>
             </div>
-            <table class="w-full border rounded-xl overflow-hidden">
-                <thead class="bg-gray-100">
-                    <tr>
-                        <th class="py-2 px-4 text-left">Navn</th>
-                        <th class="py-2 px-4 text-left">Pris</th>
-                        <th class="py-2 px-4 text-left">Handlinger</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr v-for="accessory in accessory" :key="accessory.id">
-                        <td class="py-2 px-4">{{ accessory.name }}</td>
-                        <td class="py-2 px-4">{{ accessory.price }} kr</td>
-                        <td class="py-2 px-4 flex gap-2">
-                            <button class="bg-blue-500 text-white px-2 py-1 rounded text-xs cursor-pointer" @click="editAccessory(accessory)">Rediger</button>
-                            <button class="bg-red-500 text-white px-2 py-1 rounded text-xs cursor-pointer" @click="deleteAccessory(accessory.id)">Slet</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+            <div class="space-y-6">
+                <div v-for="accessoryItem in accessory" :key="accessoryItem.id" class="border rounded-xl p-6 bg-white shadow flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                    <div class="flex items-center gap-4">
+                        <div>
+                            <h3 class="text-lg font-bold mb-1">{{ accessoryItem.name }}</h3>
+                            <p class="text-gray-600 mb-2">{{ accessoryItem.description }}</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-1 min-w-[150px]">
+                        <span class="font-semibold">Pris: <span class="text-[#B8082A]">{{ accessoryItem.price }} kr</span></span>
+                        <span class="font-semibold">Antal: <span class="text-[#B8082A]">{{ accessoryItem.quantity || 1 }}</span></span>
+                    </div>
+                    <div class="flex gap-2 mt-2 md:mt-0">
+                        <button class="bg-blue-500 text-white px-3 py-1 rounded text-xs cursor-pointer" @click="editAccessory(accessoryItem)">Rediger</button>
+                        <button class="bg-red-500 text-white px-3 py-1 rounded text-xs cursor-pointer" @click="deleteAccessory(accessoryItem.id)">Slet</button>
+                    </div>
+                    <div class="flex flex-col gap-2 mt-4">
+                        <select v-model="selectedInstance[accessoryItem.id]" @change="fetchInstanceBookings(selectedInstance[accessoryItem.id])" class="p-2 border rounded w-32">
+                            <option v-for="instance in accessoryInstances[accessoryItem.id] || []" :key="instance.id" :value="instance.id">
+                                Enhed #{{ instance.id }}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+                <div class="space-y-6">
+                    <div v-for="accessoryItem in accessory" :key="accessoryItem.id" class="border rounded-xl p-6 bg-white shadow flex flex-col gap-4">
+                        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                            <div>
+                                <h3 class="text-lg font-bold mb-1">{{ accessoryItem.name }}</h3>
+                                <p class="text-gray-600 mb-2">{{ accessoryItem.description }}</p>
+                            </div>
+                            <div class="flex flex-col gap-1 min-w-[150px]">
+                                <span class="font-semibold">Pris: <span class="text-[#B8082A]">{{ accessoryItem.price }} kr</span></span>
+                                <span class="font-semibold">Antal: <span class="text-[#B8082A]">{{ accessoryItem.quantity || 1 }}</span></span>
+                            </div>
+                            <div class="flex gap-2 mt-2 md:mt-0">
+                                <button class="bg-blue-500 text-white px-3 py-1 rounded text-xs cursor-pointer" @click="editAccessory(accessoryItem)">Rediger</button>
+                                <button class="bg-red-500 text-white px-3 py-1 rounded text-xs cursor-pointer" @click="deleteAccessory(accessoryItem.id)">Slet</button>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <label class="font-semibold mb-2 block">Tilgængelige enheder:</label>
+                            <select v-model="selectedInstance[accessoryItem.id]" @change="fetchInstanceBookings(selectedInstance[accessoryItem.id])" class="p-2 border rounded mb-4">
+                                <option v-for="instance in accessoryInstances[accessoryItem.id] || []" :key="instance.id" :value="instance.id">
+                                    Enhed #{{ instance.id }}
+                                </option>
+                            </select>
+                            <div v-if="selectedInstance[accessoryItem.id]">
+                                <h4 class="font-bold mb-2">Bookingoversigt for enhed #{{ selectedInstance[accessoryItem.id] }}</h4>
+                                <ul class="mb-2">
+                                    <li v-for="booking in instanceBookings[selectedInstance[accessoryItem.id]] || []" :key="booking.id" class="text-sm mb-1">
+                                        {{ booking.startDate }} - {{ booking.endDate }}: {{ booking.customerName || 'Ukendt' }} ({{ booking.status }})
+                                    </li>
+                                    <li v-if="(instanceBookings[selectedInstance[accessoryItem.id]] || []).length === 0" class="text-gray-400">Ingen bookinger</li>
+                                </ul>
+                                <form @submit.prevent="createInstanceBooking(selectedInstance[accessoryItem.id])" class="flex gap-2 items-center">
+                                    <input type="date" v-model="bookingForm.startDate" required class="border rounded p-1" />
+                                    <input type="date" v-model="bookingForm.endDate" required class="border rounded p-1" />
+                                    <input type="text" v-model="bookingForm.customerName" placeholder="Kundenavn" required class="border rounded p-1" />
+                                    <button type="submit" class="bg-[#B8082A] text-white px-3 py-1 rounded">Book</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
         </div>
 
         <div v-else-if="activeTab === 'orders'">
@@ -201,6 +247,43 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
+import { reactive } from 'vue';
+const accessoryInstances = reactive<Record<number, any[]>>({});
+const selectedInstance = reactive<Record<number, number>>({});
+const instanceBookings = reactive<Record<number, any[]>>({});
+const bookingForm = reactive({ startDate: '', endDate: '', customerName: '' });
+async function fetchAccessoryInstances(accessoryId: number) {
+    const res = await fetch(`http://localhost:3001/accessory-instance/${accessoryId}`);
+    accessoryInstances[accessoryId] = await res.json();
+    if (accessoryInstances[accessoryId].length > 0) {
+        selectedInstance[accessoryId] = accessoryInstances[accessoryId][0].id;
+        await fetchInstanceBookings(selectedInstance[accessoryId]);
+    }
+}
+
+async function fetchInstanceBookings(instanceId: number) {
+    const res = await fetch(`http://localhost:3001/accessory-booking/${instanceId}`);
+    instanceBookings[instanceId] = await res.json();
+}
+
+async function createInstanceBooking(instanceId: number) {
+    const payload = {
+        accessoryInstanceId: instanceId,
+        startDate: bookingForm.startDate,
+        endDate: bookingForm.endDate,
+        customerName: bookingForm.customerName,
+        status: 'Booked'
+    };
+    await fetch('http://localhost:3001/accessory-booking', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    });
+    bookingForm.startDate = '';
+    bookingForm.endDate = '';
+    bookingForm.customerName = '';
+    await fetchInstanceBookings(instanceId);
+}
 import ProductCalendar from '@/components/booking/ProductCalendar.vue';
 
 const showModal = ref(false);
@@ -336,6 +419,8 @@ async function fetchBookings() {
 
 onMounted(() => {
     fetchBookings();
+    // Fetch instances for all accessories
+    accessory.value.forEach(a => fetchAccessoryInstances(a.id));
 });
 
 const showAccessoryModal = ref(false);
@@ -344,11 +429,11 @@ interface Accessory {
     id: number;
     name: string;
     description: string;
-    img: string;
     price: number;
+    quantity?: number;
 }
 const accessory = ref<Accessory[]>([]);
-const accessoryForm = ref({ name: '', description: '', img: '', price: 0 });
+const accessoryForm = ref({ name: '', description: '', price: 0, quantity: 1 });
 
 async function fetchAccessory() {
     const { $config } = useNuxtApp();
@@ -359,19 +444,19 @@ async function fetchAccessory() {
 fetchAccessory();
 
 async function createAccessory() {
-    const payload = { name: accessoryForm.value.name, description: accessoryForm.value.description, img: accessoryForm.value.img, price: accessoryForm.value.price };
+    const payload = { name: accessoryForm.value.name, description: accessoryForm.value.description, price: accessoryForm.value.price, quantity: accessoryForm.value.quantity };
     if (editingAccessoryId.value) {
-    const { $config } = useNuxtApp();
-    const base = ($config?.public?.apiBase) || 'http://localhost:3001';
-    await fetch(`${base}/accessory/${editingAccessoryId.value}`, {
+        const { $config } = useNuxtApp();
+        const base = ($config?.public?.apiBase) || 'http://localhost:3001';
+        await fetch(`${base}/accessory/${editingAccessoryId.value}`, {
             method: 'PUT',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
         });
     } else {
-    const { $config } = useNuxtApp();
-    const base = ($config?.public?.apiBase) || 'http://localhost:3001';
-    await fetch(`${base}/accessory`, {
+        const { $config } = useNuxtApp();
+        const base = ($config?.public?.apiBase) || 'http://localhost:3001';
+        await fetch(`${base}/accessory`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(payload)
@@ -379,7 +464,7 @@ async function createAccessory() {
     }
     showAccessoryModal.value = false;
     editingAccessoryId.value = null;
-    accessoryForm.value = { name: '', description: '', img: '', price: 0 };
+    accessoryForm.value = { name: '', description: '', price: 0, quantity: 1 };
     await fetchAccessory();
 }
 
@@ -395,8 +480,8 @@ function editAccessory(accessory: any) {
     accessoryForm.value = {
         name: accessory.name,
         description: accessory.description,
-        img: accessory.img,
-        price: accessory.price
+        price: accessory.price,
+        quantity: accessory.quantity || 1
     };
     showAccessoryModal.value = true;
 }
