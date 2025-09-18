@@ -36,17 +36,22 @@
         <h2 class="font-semibold text-lg">Vælg en GoPro Model</h2>
       </div>
       <div class="flex items-center gap-3">
-        <select
-          v-model="selectedModelName"
-          :disabled="!datesSelected"
-          class="flex-1 w-full border border-gray-300 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
-        >
-          <option disabled value="">Vælg en model…</option>
-          <option v-for="model in models" :key="model.name" :value="model.name">
-            {{ model.name }} — {{ model.price.toFixed(2) }} kr./dag
-            <span v-if="datesSelected"> ({{ availability[model.id] ?? '–' }} tilgængelige)</span>
-          </option>
-        </select>
+        <div class="flex-1 relative">
+          <select
+            v-model="selectedModelName"
+            :disabled="!datesSelected"
+            :class="['w-full border rounded-lg py-3 px-4 focus:outline-none bg-white',
+              !datesSelected ? 'border-gray-300 bg-gray-100 text-gray-400 cursor-not-allowed disabled-select' : 'border-gray-300 focus:ring-2 focus:ring-blue-400']"
+            @focus="onDisabledDropdownFocus($event, !datesSelected)"
+          >
+            <option disabled value="">Vælg en model…</option>
+            <option v-for="model in models" :key="model.name" :value="model.name">
+              {{ model.name }} — {{ model.price.toFixed(2) }} kr./dag
+              <span v-if="datesSelected"> ({{ availability[model.id] ?? '–' }} tilgængelige)</span>
+            </option>
+          </select>
+          <div v-if="!datesSelected" class="text-xs text-red-600 mt-1">Vælg booking periode først</div>
+        </div>
         <button
           :disabled="!selectedModelName || !datesSelected"
           @click="onAddSelectedModel"
@@ -93,16 +98,21 @@
         <h2 class="font-semibold text-lg">Vælg tilbehør</h2>
       </div>
       <div class="flex items-center gap-3">
-        <select
-          v-model="selectedAccessoryName"
-          :disabled="!datesSelected"
-          class="flex-1 w-full border border-gray-300 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
-        >
-          <option disabled value="">Vælg tilbehør…</option>
-          <option v-for="acc in accessories" :key="acc.name" :value="acc.name">
-            {{ acc.name }} — {{ acc.price.toFixed(2) }} kr./dag
-          </option>
-        </select>
+        <div class="flex-1 relative">
+          <select
+            v-model="selectedAccessoryName"
+            :disabled="!datesSelected"
+            :class="['w-full border rounded-lg py-3 px-4 focus:outline-none bg-white',
+              !datesSelected ? 'border-gray-300 bg-gray-100 text-gray-400 cursor-not-allowed disabled-select' : 'border-gray-300 focus:ring-2 focus:ring-blue-400']"
+            @focus="onDisabledDropdownFocus($event, !datesSelected)"
+          >
+            <option disabled value="">Vælg tilbehør…</option>
+            <option v-for="acc in accessories" :key="acc.name" :value="acc.name">
+              {{ acc.name }} — {{ acc.price.toFixed(2) }} kr./dag
+            </option>
+          </select>
+          <div v-if="!datesSelected" class="text-xs text-red-600 mt-1">Vælg booking periode først</div>
+        </div>
         <button
           :disabled="!selectedAccessoryName || !datesSelected"
           @click="onAddSelectedAccessory"
@@ -227,6 +237,19 @@ import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 
 // Models are now fetched from the backend Product table
+
+function onDisabledDropdownFocus(event: FocusEvent, isDisabled: boolean) {
+  if (isDisabled) {
+    const target = event.target as HTMLSelectElement;
+    target.classList.add('border-red-500');
+    setTimeout(() => {
+      target.classList.remove('border-red-500');
+    }, 1200);
+    event.preventDefault();
+    event.stopPropagation();
+    target.blur();
+  }
+}
 interface ProductOption {
   id: number;
   name: string;
@@ -426,5 +449,16 @@ watch([startDate, endDate], async () => {
 }
 .plus-red {
   color: #b8082a !important;
+}
+
+/* Disabled dropdown styling */
+.disabled-select {
+  background-color: #f3f4f6 !important; /* Tailwind gray-100 */
+  color: #d1d5db !important; /* Tailwind gray-300 */
+  cursor: not-allowed !important;
+}
+select.border-red-500 {
+  border-color: #ef4444 !important; /* Tailwind red-500 */
+  box-shadow: 0 0 0 2px #ef444433;
 }
 </style>
