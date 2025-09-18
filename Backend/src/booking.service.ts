@@ -5,7 +5,22 @@ const prisma = new PrismaClient();
 
 @Injectable()
 export class BookingService {
-  async bookCamera(cameraId: number, startDate: Date, endDate: Date, cameraName?: string, productName?: string) {
+  async bookCamera(
+    cameraId: number,
+    startDate: Date,
+    endDate: Date,
+    cameraName: string | undefined,
+    productName: string | undefined,
+    fullName: string,
+    phone: string,
+    email: string,
+    address: string,
+    apartment: string | undefined,
+    postalCode: string,
+    city: string,
+    accessoryIds: number[],
+    totalPrice: number
+  ) {
     // Add 3 day grace period before and after
     const graceDays = 3;
     const bookingStart = new Date(startDate);
@@ -35,13 +50,35 @@ export class BookingService {
         cameraName,
         productName,
         startDate: bookingStart,
-        endDate: bookingEnd
+        endDate: bookingEnd,
+        fullName,
+        phone,
+        email,
+        address,
+        apartment,
+        postalCode,
+        city,
+        accessoryIds,
+        totalPrice
       }
     });
   }
 
   // Book by product: find a free camera for the product within the period (with grace days)
-  async bookProduct(productId: number, startDate: Date, endDate: Date) {
+  async bookProduct(
+    productId: number,
+    startDate: Date,
+    endDate: Date,
+    fullName: string,
+    phone: string,
+    email: string,
+    address: string,
+    apartment: string | undefined,
+    postalCode: string,
+    city: string,
+    accessoryIds: number[],
+    totalPrice: number
+  ) {
     const graceDays = 3;
     const bookingStart = new Date(startDate);
     bookingStart.setDate(bookingStart.getDate() - graceDays);
@@ -73,6 +110,15 @@ export class BookingService {
             productName: product?.name,
             startDate: startDate,
             endDate: endDate,
+            fullName,
+            phone,
+            email,
+            address,
+            apartment,
+            postalCode,
+            city,
+            accessoryIds,
+            totalPrice
           },
         });
       }

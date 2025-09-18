@@ -16,6 +16,16 @@ export const useCheckoutStore = defineStore('checkout', {
     startDate: null as string | null,
     endDate: null as string | null,
     productId: null as number | null, // legacy: first selected product id (kept for compatibility)
+    // Delivery info
+    fullName: '',
+    phone: '',
+    email: '',
+    address: '',
+    apartment: '',
+    postalCode: '',
+    city: '',
+    // Price
+    backendTotal: 0,
   }),
   actions: {
     logState() {
@@ -68,7 +78,29 @@ export const useCheckoutStore = defineStore('checkout', {
       this.startDate = null;
       this.endDate = null;
       this.productId = null;
-  this.logState();
+      this.fullName = '';
+      this.phone = '';
+      this.email = '';
+      this.address = '';
+      this.apartment = '';
+      this.postalCode = '';
+      this.city = '';
+      this.backendTotal = 0;
+      this.logState();
+    },
+    setDeliveryInfo(info: { fullName?: string; phone?: string; email?: string; address?: string; apartment?: string; postalCode?: string; city?: string }) {
+      if (info.fullName !== undefined) this.fullName = info.fullName;
+      if (info.phone !== undefined) this.phone = info.phone;
+      if (info.email !== undefined) this.email = info.email;
+      if (info.address !== undefined) this.address = info.address;
+      if (info.apartment !== undefined) this.apartment = info.apartment;
+      if (info.postalCode !== undefined) this.postalCode = info.postalCode;
+      if (info.city !== undefined) this.city = info.city;
+      this.logState();
+    },
+    setBackendTotal(total: number) {
+      this.backendTotal = total;
+      this.logState();
     }
   }
 });
