@@ -7,29 +7,31 @@
       </h2>
     </article>
     <!-- Date Pickers -->
-    <div class="flex items-center justify-between mb-2">
-      <h2 class="font-semibold text-lg">Vælg din booking periode</h2>
-    </div>
-    <div class="flex gap-4">
-      <div class="flex-1">
-        <VueDatePicker
-          v-model="startDate"
-          :enable-time-picker="false"
-          format="dd/MM/yyyy"
-          :input-class="'w-full border border-gray-300 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-400'"
-          placeholder="Start dato"
-        />
+    <section class="bg-gray-50 rounded-xl p-6 shadow flex flex-col gap-2">
+      <div class="flex items-center justify-between mb-2">
+        <h2 class="font-semibold text-lg">Vælg din booking periode</h2>
       </div>
-      <div class="flex-1">
-        <VueDatePicker
-          v-model="endDate"
-          :enable-time-picker="false"
-          format="dd/MM/yyyy"
-          :input-class="'w-full border border-gray-300 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-400'"
-          placeholder="Slut dato"
-        />
+      <div class="flex gap-4">
+        <div class="flex-1">
+          <VueDatePicker
+            v-model="startDate"
+            :enable-time-picker="false"
+            format="dd/MM/yyyy"
+            :input-class="'w-full border border-gray-300 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-400'"
+            placeholder="Start dato"
+          />
+        </div>
+        <div class="flex-1">
+          <VueDatePicker
+            v-model="endDate"
+            :enable-time-picker="false"
+            format="dd/MM/yyyy"
+            :input-class="'w-full border border-gray-300 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-400'"
+            placeholder="Slut dato"
+          />
+        </div>
       </div>
-    </div>
+    </section>
     <!-- GoPro Model Selection (Dropdown) -->
     <section class="bg-gray-50 rounded-xl p-6 shadow flex flex-col gap-2">
       <div class="flex items-center justify-between mb-2">
@@ -40,17 +42,29 @@
           <select
             v-model="selectedModelName"
             :disabled="!datesSelected"
-            :class="['w-full border rounded-lg py-3 px-4 focus:outline-none bg-white',
-              !datesSelected ? 'border-gray-300 bg-gray-100 text-gray-400 cursor-not-allowed disabled-select' : 'border-gray-300 focus:ring-2 focus:ring-blue-400']"
+            :class="[
+              'w-full border rounded-lg py-3 px-4 focus:outline-none bg-white',
+              !datesSelected
+                ? 'border-gray-300 bg-gray-100 text-gray-400 cursor-not-allowed disabled-select'
+                : 'border-gray-300 focus:ring-2 focus:ring-blue-400',
+            ]"
             @focus="onDisabledDropdownFocus($event, !datesSelected)"
           >
             <option disabled value="">Vælg en model…</option>
-            <option v-for="model in models" :key="model.name" :value="model.name">
+            <option
+              v-for="model in models"
+              :key="model.name"
+              :value="model.name"
+            >
               {{ model.name }} — {{ model.price.toFixed(2) }} kr./dag
-              <span v-if="datesSelected"> ({{ availability[model.id] ?? '–' }} tilgængelige)</span>
+              <span v-if="datesSelected">
+                ({{ availability[model.id] ?? "–" }} tilgængelige)</span
+              >
             </option>
           </select>
-          <div v-if="!datesSelected" class="text-xs text-red-600 mt-1">Vælg booking periode først</div>
+          <div v-if="!datesSelected" class="text-xs text-red-600 mt-1">
+            Vælg booking periode først
+          </div>
         </div>
         <button
           :disabled="!selectedModelName || !datesSelected"
@@ -102,16 +116,26 @@
           <select
             v-model="selectedAccessoryName"
             :disabled="!datesSelected"
-            :class="['w-full border rounded-lg py-3 px-4 focus:outline-none bg-white',
-              !datesSelected ? 'border-gray-300 bg-gray-100 text-gray-400 cursor-not-allowed disabled-select' : 'border-gray-300 focus:ring-2 focus:ring-blue-400']"
+            :class="[
+              'w-full border rounded-lg py-3 px-4 focus:outline-none bg-white',
+              !datesSelected
+                ? 'border-gray-300 bg-gray-100 text-gray-400 cursor-not-allowed disabled-select'
+                : 'border-gray-300 focus:ring-2 focus:ring-blue-400',
+            ]"
             @focus="onDisabledDropdownFocus($event, !datesSelected)"
           >
             <option disabled value="">Vælg tilbehør…</option>
-            <option v-for="acc in accessories" :key="acc.name" :value="acc.name">
+            <option
+              v-for="acc in accessories"
+              :key="acc.name"
+              :value="acc.name"
+            >
               {{ acc.name }} — {{ acc.price.toFixed(2) }} kr./dag
             </option>
           </select>
-          <div v-if="!datesSelected" class="text-xs text-red-600 mt-1">Vælg booking periode først</div>
+          <div v-if="!datesSelected" class="text-xs text-red-600 mt-1">
+            Vælg booking periode først
+          </div>
         </div>
         <button
           :disabled="!selectedAccessoryName || !datesSelected"
@@ -241,9 +265,9 @@ import "@vuepic/vue-datepicker/dist/main.css";
 function onDisabledDropdownFocus(event: FocusEvent, isDisabled: boolean) {
   if (isDisabled) {
     const target = event.target as HTMLSelectElement;
-    target.classList.add('border-red-500');
+    target.classList.add("border-red-500");
     setTimeout(() => {
-      target.classList.remove('border-red-500');
+      target.classList.remove("border-red-500");
     }, 1200);
     event.preventDefault();
     event.stopPropagation();
@@ -399,16 +423,23 @@ onMounted(async () => {
   // Initial availability load if dates already in store
   if (datesSelected.value) {
     try {
-      const qs = new URLSearchParams({ start: startDate.value!.toISOString(), end: endDate.value!.toISOString() });
-      const res = await fetch(`${base}/products/availability/range?${qs.toString()}`);
+      const qs = new URLSearchParams({
+        start: startDate.value!.toISOString(),
+        end: endDate.value!.toISOString(),
+      });
+      const res = await fetch(
+        `${base}/products/availability/range?${qs.toString()}`
+      );
       if (res.ok) {
         const data = await res.json();
         const map: Record<number, number> = {};
-        (data || []).forEach((p: any) => { map[p.productId] = p.available; });
+        (data || []).forEach((p: any) => {
+          map[p.productId] = p.available;
+        });
         availability.value = map;
       }
     } catch (e) {
-      console.error('Error fetching availability:', e);
+      console.error("Error fetching availability:", e);
     }
   }
 });
@@ -422,15 +453,22 @@ watch([startDate, endDate], async () => {
     return;
   }
   try {
-    const qs = new URLSearchParams({ start: startDate.value.toISOString(), end: endDate.value.toISOString() });
-    const res = await fetch(`${base}/products/availability/range?${qs.toString()}`);
-    if (!res.ok) throw new Error('Failed to load availability');
+    const qs = new URLSearchParams({
+      start: startDate.value.toISOString(),
+      end: endDate.value.toISOString(),
+    });
+    const res = await fetch(
+      `${base}/products/availability/range?${qs.toString()}`
+    );
+    if (!res.ok) throw new Error("Failed to load availability");
     const data = await res.json();
     const map: Record<number, number> = {};
-    (data || []).forEach((p: any) => { map[p.productId] = p.available; });
+    (data || []).forEach((p: any) => {
+      map[p.productId] = p.available;
+    });
     availability.value = map;
   } catch (e) {
-    console.error('Error fetching availability:', e);
+    console.error("Error fetching availability:", e);
     availability.value = {};
   }
 });

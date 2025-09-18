@@ -109,10 +109,13 @@ async function fetchBackendTotal() {
     const data = await res.json();
     backendTotal.value = typeof data.total === 'number' ? data.total : 0;
     backendBreakdown.value = data.breakdown || null;
+    // Sync backendTotal to Pinia store for booking
+  store.setBackendTotal(backendTotal.value ?? 0);
   } catch (e: any) {
     error.value = (typeof e === 'object' && e && 'message' in e) ? (e as any).message : 'Ukendt fejl ved prisforespørgsel';
     backendTotal.value = null;
     backendBreakdown.value = null;
+    store.setBackendTotal(0);
   } finally {
     loading.value = false;
   }
