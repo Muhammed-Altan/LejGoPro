@@ -93,6 +93,7 @@
           <input
             type="number"
             min="1"
+            :max="item.productId !== undefined ? (availability[item.productId] ?? 1) : 1"
             v-model.number="item.quantity"
             class="w-20 text-center rounded border border-gray-300"
           />
@@ -167,6 +168,7 @@
           <input
             type="number"
             min="1"
+            :max="accessoryAvailability[item.name] ?? 1"
             v-model.number="item.quantity"
             class="w-20 text-center rounded border border-gray-300"
           />
@@ -262,6 +264,7 @@ import "@vuepic/vue-datepicker/dist/main.css";
 
 // Models are now fetched from the backend Product table
 
+
 function onDisabledDropdownFocus(event: FocusEvent, isDisabled: boolean) {
   if (isDisabled) {
     const target = event.target as HTMLSelectElement;
@@ -284,6 +287,7 @@ interface ProductOption {
 const models = ref<ProductOption[]>([]);
 const accessories = ref<{ name: string; price: number }[]>([]);
 const availability = ref<Record<number, number>>({});
+const accessoryAvailability = ref<Record<string, number>>({});
 
 // SSR-safe Pinia usage
 const store = useCheckoutStore();
