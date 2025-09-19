@@ -33,9 +33,19 @@ export function calculateTotalBookingPrice({
   if (days < 3) days = 3;
   let total = 0;
   // Camera models
-  for (const item of models) {
-    total += calculatePriceWithConfig(item.config, days) * item.quantity;
-  }
+    // Apply discount globally: first camera full price, rest 25% off
+    let cameraCount = 0;
+    for (const item of models) {
+      const basePrice = calculatePriceWithConfig(item.config, days);
+      for (let i = 0; i < item.quantity; i++) {
+        if (cameraCount === 0) {
+          total += basePrice;
+        } else {
+          total += basePrice * 0.75;
+        }
+        cameraCount++;
+      }
+    }
   // Accessories (default 70 DKK per booking, not per day)
   for (const item of accessories) {
     const accPrice = item.price ?? 70;

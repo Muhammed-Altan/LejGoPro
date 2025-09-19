@@ -21,25 +21,44 @@ export class PriceController {
       quantity: a.quantity,
       price: a.price,
     })) : [];
-    // Calculate breakdown
+    // Calculate total using new discount logic
+    const total = calculateTotalBookingPrice({
+      models: safeModels,
+      accessories: safeAccessories,
+      days,
+      insurance: !!insurance,
+    });
+
+    // For breakdown, apply discount globally: first camera full price, rest 25% off
+    let cameraCount = 0;
+    const modelBreakdown = safeModels.map((item: any) => {
+      const basePrice = calculatePriceWithConfig(item.config, days);
+      let price = 0;
+      for (let i = 0; i < item.quantity; i++) {
+        if (cameraCount === 0) {
+          price += basePrice;
+        } else {
+          price += basePrice * 0.75;
+        }
+        cameraCount++;
+      }
+      return {
+        name: item.name,
+        quantity: item.quantity,
+        price: Math.round(price),
+      };
+    });
+    const accessoryBreakdown = safeAccessories.map((item: any) => ({
+      name: item.name,
+      quantity: item.quantity,
+      price: (item.price ?? 70) * item.quantity,
+    }));
     const insuranceAmount = !!insurance ? 15 * days : 0;
     const breakdown = {
-      models: safeModels.map((item: any) => ({
-        name: item.name,
-        quantity: item.quantity,
-        price: calculatePriceWithConfig(item.config, days) * item.quantity,
-      })),
-      accessories: safeAccessories.map((item: any) => ({
-        name: item.name,
-        quantity: item.quantity,
-        price: (item.price ?? 70) * item.quantity,
-      })),
+      models: modelBreakdown,
+      accessories: accessoryBreakdown,
       insurance: insuranceAmount,
     };
-    const total =
-      breakdown.models.reduce((sum, m) => sum + m.price, 0) +
-      breakdown.accessories.reduce((sum, a) => sum + a.price, 0) +
-      breakdown.insurance;
     return { total, breakdown };
   }
 }
