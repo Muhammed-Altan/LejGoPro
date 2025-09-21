@@ -1,8 +1,27 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Patch, Body, Param } from '@nestjs/common';
+import { Delete } from '@nestjs/common';
 import { BookingService } from './booking.service';
 
 @Controller('bookings')
 export class BookingController {
+  @Delete(':id')
+  async deleteBooking(@Param('id') id: string) {
+    try {
+      return await this.bookingService.deleteBooking(Number(id));
+    } catch (error) {
+      console.error('DELETE /bookings/:id error:', error);
+      throw error;
+    }
+  }
+  @Patch(':id')
+  async updateBooking(@Param('id') id: string, @Body() body: any) {
+    try {
+      return await this.bookingService.updateBooking(Number(id), body);
+    } catch (error) {
+      console.error('PATCH /bookings/:id error:', error);
+      throw error;
+    }
+  }
   constructor(private readonly bookingService: BookingService) {}
 
   @Post()

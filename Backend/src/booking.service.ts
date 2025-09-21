@@ -5,6 +5,28 @@ const prisma = new PrismaClient();
 
 @Injectable()
 export class BookingService {
+  async deleteBooking(id: number) {
+    // Find the booking to get accessoryInstanceIds
+    const booking = await prisma.booking.findUnique({ where: { id } });
+    if (!booking) throw new Error('Booking not found');
+    // Delete related accessory bookings
+    if (booking.accessoryInstanceIds && booking.accessoryInstanceIds.length > 0) {
+      await prisma.accessoryBooking.deleteMany({
+        where: {
+          accessoryInstanceId: { in: booking.accessoryInstanceIds }
+        }
+      });
+    }
+    // Delete the booking itself
+    return prisma.booking.delete({ where: { id } });
+  }
+  async updateBooking(id: number, data: any) {
+    // Only allow updating fields that exist in the Booking model
+    return prisma.booking.update({
+      where: { id },
+      data
+    });
+  }
   async bookCamera(
     cameraId: number,
     startDate: Date,
