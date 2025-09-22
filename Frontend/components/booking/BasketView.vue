@@ -22,6 +22,10 @@
           </div>
         </div>
       </div>
+      <div v-if="backendBreakdown && backendBreakdown.discount" class="basket-row basket-row-discount">
+        <span>Du sparer</span>
+        <span class="basket-discount-value">{{ formatCurrency(backendBreakdown.discount) }}</span>
+      </div>
       <div v-if="insurance" class="basket-row basket-row-insurance">
         <span>Forsikring</span>
         <span>
@@ -156,6 +160,14 @@ function formatCurrency(n: number | null, showCurrency = true) {
 </script>
 
 <style scoped>
+.basket-row-discount {
+  margin-top: 1.2rem;
+  color: #1a7f37;
+  font-weight: 500;
+}
+.basket-discount-value {
+  font-weight: 600;
+}
 .basket-row-insurance {
   margin-top: 1.2rem;
 }

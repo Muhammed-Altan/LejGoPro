@@ -55,11 +55,12 @@
               v-for="model in models"
               :key="model.name"
               :value="model.name"
+              :disabled="datesSelected && availability[model.id] === 0"
             >
               {{ model.name }} — {{ model.price.toFixed(2) }} kr./dag
               <span v-if="datesSelected">
-                ({{ availability[model.id] ?? "–" }} tilgængelige)</span
-              >
+                ({{ availability[model.id] === 0 ? 'Udsolgt' : 'Tilgængelig' }})
+              </span>
             </option>
           </select>
           <div v-if="!datesSelected" class="text-xs text-red-600 mt-1">
@@ -87,16 +88,24 @@
           {{ item.name }}
         </div>
         <div
-          class="flex-1 bg-blue-100 text-center rounded-lg py-2 font-medium flex items-center justify-center gap-2"
+          class="flex-1 bg-blue-100 text-center rounded-lg py-2 font-medium flex flex-col items-center justify-center gap-2"
         >
-          <span>Antal modeller</span>
-          <input
-            type="number"
-            min="1"
-            :max="item.productId !== undefined ? (availability[item.productId] ?? 1) : 1"
-            v-model.number="item.quantity"
-            class="w-20 text-center rounded border border-gray-300"
-          />
+          <div class="flex items-center justify-center gap-2">
+            <span>Antal modeller</span>
+            <input
+              type="number"
+              min="1"
+              :max="item.productId !== undefined ? (availability[item.productId] ?? 1) : 1"
+              v-model.number="item.quantity"
+              class="w-20 text-center rounded border border-gray-300"
+            />
+          </div>
+          <span
+            v-if="item.productId !== undefined && item.quantity === (availability[item.productId] ?? 1)"
+            class="text-xs font-medium bg-yellow-100 text-yellow-700 rounded px-2 py-0.5 mt-1 shadow"
+          >
+            Maksimum valgt
+          </span>
         </div>
         <button
           @click="removeModel(idx)"
@@ -132,6 +141,9 @@
               :value="acc.name"
             >
               {{ acc.name }} — {{ acc.price.toFixed(2) }} kr./dag
+              <span>
+                (Tilgængelig)
+              </span>
             </option>
           </select>
           <div v-if="!datesSelected" class="text-xs text-red-600 mt-1">
