@@ -7,7 +7,7 @@
 				<div>
 					<h2 class="font-semibold text-xl mb-2 text-[#B8082A]">1. Generelle oplysninger</h2>
 					<p>LejGoPro.dk drives af:</p>
-					<p>LejGoPro ApS<br />CVR-nr.: [Indsæt CVR-nummer]<br />Adresse: [Indsæt adresse]<br />E-mail: kontakt@lejgopro.dk<br />Telefon: [Indsæt telefonnummer]</p>
+					<p>LejGoPro<br />CVR-nr.: 41910437<br />Adresse: Snorresgade 1 st th, 2300 København S<br />E-mail: kontakt@lejgopro.dk<br />Telefon: +45 53 80 59 54</p>
 				</div>
 				<div>
 					<h2 class="font-semibold text-xl mb-2 text-[#B8082A]">2. Anvendelsesområde</h2>

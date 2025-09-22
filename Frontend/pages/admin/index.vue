@@ -42,22 +42,23 @@
                                 </div>
                                 <div class="flex flex-row gap-4">
                                     <div class="flex flex-col">
-                                        <label class="text-base font-semibold mb-1 text-gray-900">Postnummer</label>
-                                        <input v-model="editBookingForm.postalCode" required class="p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" />
+                                        <label class="text-base font-semibold mb-1 text-gray-900">Pris pr. dag</label>
+                                        <input v-model.number="form.dailyPrice" type="number" min="0" required class="p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" />
                                     </div>
                                     <div class="flex flex-col">
-                                        <label class="text-base font-semibold mb-1 text-gray-900">Produkt navn</label>
-                                        <select v-model="editBookingForm.productName" class="p-3 border border-gray-200 rounded-lg bg-gray-50 text-base">
-                                            <option v-for="product in products" :key="product.id" :value="product.name">{{ product.name }}</option>
-                                        </select>
+                                        <label class="text-base font-semibold mb-1 text-gray-900">Pris pr. uge</label>
+                                        <input v-model.number="form.weeklyPrice" type="number" min="0" required class="p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" />
+                                    </div>
+                                </div>
+                                <div class="flex flex-row gap-4">
+                                    <div class="flex flex-col">
+                                        <label class="text-base font-semibold mb-1 text-gray-900">Pris pr. 2 uger</label>
+                                        <input v-model.number="form.twoWeekPrice" type="number" min="0" required class="p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" />
                                     </div>
                                     <div class="flex flex-col">
-                                        <label class="text-base font-semibold mb-1 text-gray-900">Kamera navn</label>
-                                        <select v-model="editBookingForm.cameraName" class="p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" @change="updateCameraId">
-                                            <option v-for="camera in selectedProductCameras" :key="camera.id" :value="`Kamera ${camera.id}`">Kamera {{ camera.id }}</option>
-                                        </select>
+                                        <label class="text-base font-semibold mb-1 text-gray-900">Antal kameraer</label>
+                                        <input v-model.number="form.quantity" type="number" min="1" required class="p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" />
                                     </div>
-                                    <!-- Kamera ID field removed -->
                                 </div>
                                 <div class="flex justify-end">
                                     <button type="submit" class="bg-[#B8082A] text-white px-6 py-2 rounded font-semibold shadow hover:bg-[#a10725] transition">Opret</button>

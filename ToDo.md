@@ -25,4 +25,10 @@ SCu - Tilbehør
 Ændrer tilbehør booking til at kun at være accessory og accessoryBooking, ligesom produkter og kameraer
 Brug logikken som Andreas lavede til at den smider bookingen videre hvis den forrige er optaget
 
+Ændrer produkter create fields tilbage
+
+Sæt op for hosting
+
+Spørg omkring TrustPilot
+
  -->
