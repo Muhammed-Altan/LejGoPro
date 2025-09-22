@@ -77,7 +77,7 @@
     </section>
 
     <!-- Selected Model and Quantity -->
-    <div v-if="selectedModels && selectedModels.length" class="space-y-2">
+    <section v-if="selectedModels && selectedModels.length" class="space-y-2">
       <div
         v-for="(item, idx) in selectedModels"
         :key="item.name"
@@ -105,7 +105,7 @@
           Fjern
         </button>
       </div>
-    </div>
+    </section>
 
     <!-- Accessories Selection (Dropdown) -->
     <section class="bg-gray-50 rounded-xl p-6 shadow flex flex-col gap-2">
@@ -149,7 +149,7 @@
     </section>
 
     <!-- Selected Accessory and Quantity -->
-    <div
+    <section
       v-if="selectedAccessories && selectedAccessories.length"
       class="space-y-2"
     >
@@ -180,7 +180,7 @@
           Fjern
         </button>
       </div>
-    </div>
+    </section>
 
     <!-- Insurance Toggle -->
     <section
@@ -263,7 +263,6 @@ import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 
 // Models are now fetched from the backend Product table
-
 
 function onDisabledDropdownFocus(event: FocusEvent, isDisabled: boolean) {
   if (isDisabled) {
