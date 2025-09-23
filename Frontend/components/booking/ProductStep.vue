@@ -59,7 +59,7 @@
             >
               {{ model.name }} — {{ model.price.toFixed(2) }} kr./dag
               <span v-if="datesSelected">
-                ({{ availability[model.id] === 0 ? 'Udsolgt' : 'Tilgængelig' }})
+                ({{ availability[model.id] === 0 ? "Udsolgt" : "Tilgængelig" }})
               </span>
             </option>
           </select>
@@ -77,34 +77,38 @@
       </div>
     </section>
 
-    <!-- Selected Model and Quantity -->
+    <!-- Selected Model and Quantity (Unified) -->
     <section v-if="selectedModels && selectedModels.length" class="space-y-2">
       <div
         v-for="(item, idx) in selectedModels"
         :key="item.name"
-        class="flex gap-4 items-center"
+        class="flex items-center gap-4 bg-blue-100 rounded-lg py-2 px-4 font-medium"
       >
-        <div class="flex-1 bg-blue-100 text-center rounded-lg py-2 font-medium">
+        <div class="flex-1 text-center">
           {{ item.name }}
         </div>
-        <div
-          class="flex-1 bg-blue-100 text-center rounded-lg py-2 font-medium flex flex-col items-center justify-center gap-2"
-        >
-          <div class="flex items-center justify-center gap-2">
-            <span>Antal modeller</span>
-            <input
-              type="number"
-              min="1"
-              :max="item.productId !== undefined ? (availability[item.productId] ?? 1) : 1"
-              v-model.number="item.quantity"
-              class="w-20 text-center rounded border border-gray-300"
-            />
-          </div>
+        <div class="flex items-center justify-center gap-2 group relative">
+          <span>Antal modeller</span>
+          <input
+            type="number"
+            min="1"
+            :max="
+              item.productId !== undefined
+                ? availability[item.productId] ?? 1
+                : 1
+            "
+            v-model.number="item.quantity"
+            class="w-20 text-center rounded border border-gray-300"
+          />
           <span
-            v-if="item.productId !== undefined && item.quantity === (availability[item.productId] ?? 1)"
-            class="text-xs font-medium bg-yellow-100 text-yellow-700 rounded px-2 py-0.5 mt-1 shadow"
+            v-if="
+              item.productId !== undefined &&
+              item.quantity === (availability[item.productId] ?? 1)
+            "
+            class="absolute left-1/2 z-10 -translate-x-1/2 -top-14 w-56 rounded bg-white text-white text-xs px-3 py-2 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 whitespace-normal shadow-lg"
+            style="color: #b90c2c; background: #b90c2c"
           >
-            Maksimum valgt
+            Maksimum antal valgt
           </span>
         </div>
         <button
@@ -141,9 +145,7 @@
               :value="acc.name"
             >
               {{ acc.name }} — {{ acc.price.toFixed(2) }} kr./dag
-              <span>
-                (Tilgængelig)
-              </span>
+              <span> (Tilgængelig) </span>
             </option>
           </select>
           <div v-if="!datesSelected" class="text-xs text-red-600 mt-1">
