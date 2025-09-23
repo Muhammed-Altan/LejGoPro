@@ -41,28 +41,24 @@
                                     <input id="features" v-model="form.features" class="p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" placeholder="fx: 📷 5K Video, 🖥️ GP2 Processor" />
                                 </div>
                                 <div class="flex flex-row gap-4">
-                                    <div class="flex-1 flex flex-col">
-                                        <label for="dailyPrice" class="text-base font-semibold mb-1 text-gray-900">Pris pr. dag</label>
-                                        <input id="dailyPrice" type="number" v-model.number="form.dailyPrice" required class="p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" />
+                                    <div class="flex flex-col">
+                                        <label class="text-base font-semibold mb-1 text-gray-900">Pris pr. dag</label>
+                                        <input v-model.number="form.dailyPrice" type="number" min="0" required class="p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" />
                                     </div>
-                                    <div class="flex-1 flex flex-col">
-                                        <label for="weeklyPrice" class="text-base font-semibold mb-1 text-gray-900">Pris pr. uge</label>
-                                        <input id="weeklyPrice" type="number" v-model.number="form.weeklyPrice" required class="p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" />
-                                    </div>
-                                </div>
-                                <div>
-                                    <div class="flex-1 flex flex-col">
-                                        <label for="twoWeekPrice" class="text-base font-semibold mb-1 text-gray-900">Pris pr. 2 uger</label>
-                                        <input id="twoWeekPrice" type="number" v-model.number="form.twoWeekPrice" required class="p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" />
-                                    </div>
-                                    <div class="flex-1 flex flex-col">
-                                        <label for="quantity" class="text-base font-semibold mb-1 text-gray-900">Antal kameraer</label>
-                                        <input id="quantity" type="number" min="1" v-model.number="form.quantity" required class="p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" />
+                                    <div class="flex flex-col">
+                                        <label class="text-base font-semibold mb-1 text-gray-900">Pris pr. uge</label>
+                                        <input v-model.number="form.weeklyPrice" type="number" min="0" required class="p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" />
                                     </div>
                                 </div>
-                                <div class="flex items-center gap-2">
-                                    <input id="popular" type="checkbox" v-model="form.popular" class="w-4 h-4" />
-                                    <label for="popular" class="text-base font-semibold text-gray-900">Populær</label>
+                                <div class="flex flex-row gap-4">
+                                    <div class="flex flex-col">
+                                        <label class="text-base font-semibold mb-1 text-gray-900">Pris pr. 2 uger</label>
+                                        <input v-model.number="form.twoWeekPrice" type="number" min="0" required class="p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" />
+                                    </div>
+                                    <div class="flex flex-col">
+                                        <label class="text-base font-semibold mb-1 text-gray-900">Antal kameraer</label>
+                                        <input v-model.number="form.quantity" type="number" min="1" required class="p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" />
+                                    </div>
                                 </div>
                                 <div class="flex justify-end">
                                     <button type="submit" class="bg-[#B8082A] text-white px-6 py-2 rounded font-semibold shadow hover:bg-[#a10725] transition">Opret</button>
@@ -96,12 +92,13 @@
                                         <summary class="cursor-pointer font-semibold">Kameraer ({{ product.cameras.length }})</summary>
                                         <div class="pl-4 pt-2">
                                             <div v-for="(camera, idx) in product.cameras" :key="camera.id" class="mb-4">
-                                              <div class="font-bold">Kamera {{ idx + 1 }}</div>
-                                              <ProductCalendar
+                                                <div class="font-bold">Kamera {{ idx + 1 }}</div>
+                                                <ProductCalendar
                                                 :camera-id="camera.id"
                                                 :camera-name="`Kamera ${idx + 1}`"
                                                 :product-name="product.name"
-                                              />
+                                                :bookings="bookings.filter(b => b.cameraId === camera.id)"
+                                                />
                                             </div>
                                         </div>
                                     </details>
@@ -195,6 +192,7 @@
                                 <h4 class="font-bold mb-2">Bookingoversigt for enhed #{{ selectedInstance[accessoryItem.id] }}</h4>
                                 <ul class="mb-2">
                                     <li v-for="booking in instanceBookings[selectedInstance[accessoryItem.id]] || []" :key="booking.id" class="text-sm mb-1">
+                                        <span class="font-semibold text-[#B8082A]">{{ accessoryItem.name }}</span> (Enhed #{{ selectedInstance[accessoryItem.id] }})<br>
                                         {{ booking.startDate }} - {{ booking.endDate }}: {{ booking.customerName || 'Ukendt' }} ({{ booking.status }})
                                     </li>
                                     <li v-if="(instanceBookings[selectedInstance[accessoryItem.id]] || []).length === 0" class="text-gray-400">Ingen bookinger</li>
@@ -221,21 +219,96 @@
                     <div v-for="booking in bookings" :key="booking.id" class="border rounded-xl p-6 bg-white shadow">
                         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                             <div>
-                                <h3 class="text-lg font-bold mb-1">{{ booking.customerName || booking.name || 'Ukendt kunde' }}</h3>
+                                <h3 class="text-lg font-bold mb-1">{{ booking.fullName || booking.customerName || booking.name || 'Ukendt kunde' }}</h3>
                                 <p class="text-gray-600 mb-2">{{ booking.email }}</p>
                                 <div class="flex flex-wrap gap-2 mb-2">
                                     <span class="bg-gray-100 px-2 py-1 rounded text-xs">Start: {{ booking.startDate }}</span>
                                     <span class="bg-gray-100 px-2 py-1 rounded text-xs">Slut: {{ booking.endDate }}</span>
                                 </div>
                                 <div class="flex flex-wrap gap-2 mb-2">
+                                    <span class="bg-gray-100 px-2 py-1 rounded text-xs">Adresse: {{ booking.address }}</span>
+                                    <span class="bg-gray-100 px-2 py-1 rounded text-xs">Lejlighed: {{ booking.apartment }}</span>
+                                    <span class="bg-gray-100 px-2 py-1 rounded text-xs">By: {{ booking.city }}</span>
+                                    <span class="bg-gray-100 px-2 py-1 rounded text-xs">Postnummer: {{ booking.postalCode }}</span>
+                                    <span class="bg-gray-100 px-2 py-1 rounded text-xs">Telefon: {{ booking.phone }}</span>
+                                </div>
+                                <div class="flex flex-wrap gap-2 mb-2">
                                     <span class="bg-gray-100 px-2 py-1 rounded text-xs">Produkt: {{ booking.productName || booking.product || 'Ukendt produkt' }}</span>
-                                    <span class="bg-gray-100 px-2 py-1 rounded text-xs">Pris: {{ booking.price }} kr</span>
+                                    <span class="bg-gray-100 px-2 py-1 rounded text-xs">Kamera: {{ booking.cameraName }}</span>
+                                    <span class="bg-gray-100 px-2 py-1 rounded text-xs">Kamera ID: {{ booking.cameraId }}</span>
+                                    <span class="bg-gray-100 px-2 py-1 rounded text-xs">Tilbehør enheder: {{ booking.accessoryInstanceIds ? booking.accessoryInstanceIds.join(', ') : 'Ingen' }}</span>
+                                    <span class="bg-gray-100 px-2 py-1 rounded text-xs">Total pris: {{ booking.totalPrice }} kr</span>
+                                </div>
+                                <div class="flex gap-2 mt-2">
+                                    <button class="bg-blue-500 text-white px-3 py-1 rounded text-xs cursor-pointer" @click="openEditBooking(booking)">Rediger</button>
+                                    <button class="bg-red-500 text-white px-3 py-1 rounded text-xs cursor-pointer" @click="deleteBooking(booking.id)">Slet</button>
                                 </div>
                             </div>
                             <div class="flex flex-col gap-1 min-w-[150px]">
                                 <span class="font-semibold">Status: <span class="text-[#B8082A]">{{ booking.status || 'Ukendt' }}</span></span>
                                 <span class="font-semibold">Booking ID: <span class="text-[#B8082A]">{{ booking.id }}</span></span>
                             </div>
+                        </div>
+                    </div>
+                    <div v-if="showEditBookingModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40">
+                                    <div class="bg-white rounded-xl shadow-md p-8 w-full max-w-lg relative overflow-y-auto" style="max-height: 90vh;">
+                            <button @click="closeEditBooking" class="absolute top-4 right-4 text-gray-400 hover:text-[#B8082A] text-2xl font-bold">&times;</button>
+                            <h2 class="mb-1 text-xl font-semibold cursor-pointer">Rediger Booking</h2>
+                            <form @submit.prevent="submitEditBooking" class="space-y-7">
+                                <div class="flex flex-col">
+                                    <label class="text-base font-semibold mb-1 text-gray-900">Navn</label>
+                                    <input v-model="editBookingForm.fullName" required class="p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" />
+                                </div>
+                                <div class="flex flex-col">
+                                    <label class="text-base font-semibold mb-1 text-gray-900">Email</label>
+                                    <input v-model="editBookingForm.email" required class="p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" />
+                                </div>
+                                <div class="flex flex-col">
+                                    <label class="text-base font-semibold mb-1 text-gray-900">Telefon</label>
+                                    <input v-model="editBookingForm.phone" required class="p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" />
+                                </div>
+                                <div class="flex flex-col">
+                                    <label class="text-base font-semibold mb-1 text-gray-900">Adresse</label>
+                                    <input v-model="editBookingForm.address" required class="p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" />
+                                </div>
+                                <div class="flex flex-col">
+                                    <label class="text-base font-semibold mb-1 text-gray-900">Lejlighed</label>
+                                    <input v-model="editBookingForm.apartment" class="p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" />
+                                </div>
+                                <div class="flex flex-col">
+                                    <label class="text-base font-semibold mb-1 text-gray-900">By</label>
+                                    <input v-model="editBookingForm.city" required class="p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" />
+                                </div>
+                                <div class="flex flex-col">
+                                    <label class="text-base font-semibold mb-1 text-gray-900">Postnummer</label>
+                                    <input v-model="editBookingForm.postalCode" required class="p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" />
+                                </div>
+                                <!-- Status field removed -->
+                                <div class="flex flex-col">
+                                    <label class="text-base font-semibold mb-1 text-gray-900">Produkt navn</label>
+                                    <select v-model="editBookingForm.productName" class="p-3 border border-gray-200 rounded-lg bg-gray-50 text-base">
+                                        <option v-for="product in products" :key="product.id" :value="product.name">{{ product.name }}</option>
+                                    </select>
+                                </div>
+                                <div class="flex flex-col">
+                                    <label class="text-base font-semibold mb-1 text-gray-900">Kamera navn</label>
+                                    <select v-model="editBookingForm.cameraName" class="p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" @change="updateCameraId">
+                                        <option v-for="camera in selectedProductCameras" :key="camera.id" :value="`Kamera ${camera.id}`">Kamera {{ camera.id }}</option>
+                                    </select>
+                                </div>
+                                <!-- Kamera ID field removed -->
+                                <div class="flex flex-col">
+                                    <label class="text-base font-semibold mb-1 text-gray-900">Tilbehør enheder (kommasepareret)</label>
+                                    <input v-model="editBookingForm.accessoryInstanceIds" class="p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" placeholder="fx: 1,2,3" />
+                                </div>
+                                <div class="flex flex-col">
+                                    <label class="text-base font-semibold mb-1 text-gray-900">Total pris</label>
+                                    <input v-model="editBookingForm.totalPrice" class="p-3 border border-gray-200 rounded-lg bg-gray-50 text-base" />
+                                </div>
+                                <div class="flex justify-end">
+                                    <button type="submit" class="bg-[#B8082A] text-white px-6 py-2 rounded font-semibold shadow hover:bg-[#a10725] transition">Gem ændringer</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -246,6 +319,95 @@
 </template>
 
 <script setup lang="ts">
+async function deleteBooking(id: number) {
+    await fetch(`http://localhost:3001/bookings/${id}`, {
+        method: 'DELETE',
+    });
+    await fetchBookings();
+}
+function updateCameraId() {
+    // Find camera id from selected name
+    const match = /^Kamera (\d+)$/.exec(editBookingForm.value.cameraName);
+        if (match) {
+            const id = match[1];
+            editBookingForm.value.cameraId = id;
+        } else {
+            editBookingForm.value.cameraId = '';
+        }
+}
+// Cameras for selected product only
+const selectedProductCameras = computed(() => {
+    const selectedProduct = products.value.find(p => p.name === editBookingForm.value.productName);
+    return selectedProduct ? selectedProduct.cameras || [] : [];
+});
+import { computed } from 'vue';
+// Aggregate all cameras from all products for select dropdowns
+const allCameras = computed(() => {
+    return products.value.flatMap(product => product.cameras || []);
+});
+const showEditBookingModal = ref(false);
+const editBookingForm = ref({
+    id: undefined,
+    fullName: '',
+    email: '',
+    phone: '',
+    address: '',
+    apartment: '',
+    city: '',
+    postalCode: '',
+    status: '',
+    cameraName: '',
+    cameraId: '',
+    productName: '',
+    accessoryInstanceIds: '',
+    totalPrice: ''
+});
+
+function openEditBooking(booking: any) {
+    showEditBookingModal.value = true;
+    editBookingForm.value = {
+        id: booking.id,
+        fullName: booking.fullName || '',
+        email: booking.email || '',
+        phone: booking.phone || '',
+        address: booking.address || '',
+        apartment: booking.apartment || '',
+        city: booking.city || '',
+        postalCode: booking.postalCode || '',
+        status: booking.status || '',
+        cameraName: booking.cameraName || '',
+        cameraId: booking.cameraId || '',
+        productName: booking.productName || '',
+        accessoryInstanceIds: booking.accessoryInstanceIds ? booking.accessoryInstanceIds.join(',') : '',
+        totalPrice: booking.totalPrice || ''
+    };
+}
+
+function closeEditBooking() {
+    showEditBookingModal.value = false;
+}
+
+async function submitEditBooking() {
+        const id = editBookingForm.value.id;
+        // Build PATCH payload with correct types
+                const patchPayload = {
+                    ...editBookingForm.value,
+                    cameraId: Number(editBookingForm.value.cameraId),
+                    accessoryInstanceIds: editBookingForm.value.accessoryInstanceIds
+                        ? editBookingForm.value.accessoryInstanceIds.split(',').map(x => Number(x.trim())).filter(x => !isNaN(x))
+                        : [],
+                    totalPrice: Number(editBookingForm.value.totalPrice),
+                };
+            delete patchPayload.id;
+            delete patchPayload.status;
+        await fetch(`http://localhost:3001/bookings/${id}`, {
+            method: 'PATCH',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(patchPayload)
+        });
+        showEditBookingModal.value = false;
+        await fetchBookings();
+}
 import { ref, onMounted } from 'vue';
 import { reactive } from 'vue';
 const accessoryInstances = reactive<Record<number, any[]>>({});
@@ -395,6 +557,7 @@ const activeTab = ref('products');
 interface Booking {
     id: number;
     customerName?: string;
+    fullName?: string;
     name?: string;
     email?: string;
     startDate?: string;
@@ -403,12 +566,21 @@ interface Booking {
     product?: string;
     price?: number;
     status?: string;
+    address?: string;
+    apartment?: string;
+    city?: string;
+    postalCode?: string;
+    phone?: string;
+    cameraName?: string;
+    cameraId?: number;
+    accessoryInstanceIds?: number[];
+    totalPrice?: number;
 }
 const bookings = ref<Booking[]>([]);
 
 async function fetchBookings() {
     try {
-        const res = await fetch('http://localhost:3001/booking');
+        const res = await fetch('http://localhost:3001/bookings');
         const data = await res.json();
         console.log('Fetched bookings:', data);
         bookings.value = data;

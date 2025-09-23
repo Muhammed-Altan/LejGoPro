@@ -5,6 +5,28 @@ const prisma = new PrismaClient();
 
 @Injectable()
 export class BookingService {
+  async deleteBooking(id: number) {
+    // Find the booking to get accessoryInstanceIds
+    const booking = await prisma.booking.findUnique({ where: { id } });
+    if (!booking) throw new Error('Booking not found');
+    // Delete related accessory bookings
+    if (booking.accessoryInstanceIds && booking.accessoryInstanceIds.length > 0) {
+      await prisma.accessoryBooking.deleteMany({
+        where: {
+          accessoryInstanceId: { in: booking.accessoryInstanceIds }
+        }
+      });
+    }
+    // Delete the booking itself
+    return prisma.booking.delete({ where: { id } });
+  }
+  async updateBooking(id: number, data: any) {
+    // Only allow updating fields that exist in the Booking model
+    return prisma.booking.update({
+      where: { id },
+      data
+    });
+  }
   async bookCamera(
     cameraId: number,
     startDate: Date,
@@ -18,7 +40,7 @@ export class BookingService {
     apartment: string | undefined,
     postalCode: string,
     city: string,
-    accessoryIds: number[],
+  accessoryInstanceIds: number[],
     totalPrice: number
   ) {
     // Add 3 day grace period before and after
@@ -44,7 +66,7 @@ export class BookingService {
       throw new Error('Camera is already booked for these dates');
     }
     // Create booking
-    return prisma.booking.create({
+    const booking = await prisma.booking.create({
       data: {
         cameraId,
         cameraName,
@@ -58,10 +80,24 @@ export class BookingService {
         apartment,
         postalCode,
         city,
-        accessoryIds,
+        accessoryInstanceIds: Array.isArray(accessoryInstanceIds) ? accessoryInstanceIds.filter(x => x != null) : [],
         totalPrice
       }
     });
+
+    // Create accessory bookings
+    for (const instanceId of accessoryInstanceIds || []) {
+      const accessoryBookingData = {
+        accessoryInstanceId: instanceId,
+        startDate: bookingStart,
+        endDate: bookingEnd,
+        customerName: fullName,
+        status: 'Booked'
+      };
+      console.log('Creating accessory booking:', accessoryBookingData);
+      await prisma.accessoryBooking.create({ data: accessoryBookingData });
+    }
+    return booking;
   }
 
   // Book by product: find a free camera for the product within the period (with grace days)
@@ -76,7 +112,7 @@ export class BookingService {
     apartment: string | undefined,
     postalCode: string,
     city: string,
-    accessoryIds: number[],
+  accessoryInstanceIds: number[],
     totalPrice: number
   ) {
     const graceDays = 3;
@@ -103,7 +139,7 @@ export class BookingService {
       if (!overlapping) {
         // Create booking using this free camera
         const product = await prisma.product.findUnique({ where: { id: productId } });
-        return prisma.booking.create({
+        const booking = await prisma.booking.create({
           data: {
             cameraId: cam.id,
             cameraName: cam.name ?? product?.name ?? undefined,
@@ -117,10 +153,23 @@ export class BookingService {
             apartment,
             postalCode,
             city,
-            accessoryIds,
+            accessoryInstanceIds: Array.isArray(accessoryInstanceIds) ? accessoryInstanceIds.filter(x => x != null) : [],
             totalPrice
           },
         });
+        // Create accessory bookings
+        for (const instanceId of accessoryInstanceIds || []) {
+          const accessoryBookingData = {
+            accessoryInstanceId: instanceId,
+            startDate: startDate,
+            endDate: endDate,
+            customerName: fullName,
+            status: 'Booked'
+          };
+          console.log('Creating accessory booking:', accessoryBookingData);
+          await prisma.accessoryBooking.create({ data: accessoryBookingData });
+        }
+        return booking;
       }
     }
 

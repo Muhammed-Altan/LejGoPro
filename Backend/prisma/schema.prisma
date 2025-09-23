@@ -83,7 +83,7 @@ model Booking {
   city          String
 
   // BasketView.vue fields
-  accessoryIds  Int[]     // Array of Accessory IDs
+  accessoryInstanceIds  Int[]     // Array of AccessoryInstance IDs
 
   // Price
   totalPrice    Int

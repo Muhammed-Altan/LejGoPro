@@ -173,22 +173,18 @@ import type { AccordionItem } from '@nuxt/ui'
 const items = ref<AccordionItem[]>([
   {
     label: 'Hvordan og hvornår skal man betale?',
-    icon: 'i-lucide-credit-card',
     content: 'Betaling sker via MobilePay inden afrejse, efter du har accepteret tilbuddet og modtaget kameraet.'
   },
   {
     label: 'Hvor længe holder et GoPro strøm?',
-    icon: 'i-lucide-battery-charging',
     content: 'Et GoPro holder typisk 1-2 timer afhængigt af brug og model. Med ekstra batterier kan du forlænge tiden.'
   },
   {
     label: 'Hvor lang tid tager det at oplade et GoPro?',
-    icon: 'i-lucide-clock',
     content: 'Opladning tager ca. 2 timer med den medfølgende oplader.'
   },
   {
     label: 'Er kameraet forsikret?',
-    icon: 'i-lucide-shield-check',
     content: 'Ja, der er basisforsikring inkluderet. Kontakt os for detaljer om dækning.'
   }
 ])
