@@ -1,27 +1,16 @@
 <template>
-  <div>
-    <VueDatePicker
-      v-model="startDate"
-      :enable-time-picker="false"
-      format="dd/MM/yyyy"
-      :input-class="'w-full border border-gray-300 rounded-lg py-3 px-4'"
-      placeholder="Start dato"
-    />
-    <VueDatePicker
-      v-model="endDate"
-      :enable-time-picker="false"
-      format="dd/MM/yyyy"
-      :input-class="'w-full border border-gray-300 rounded-lg py-3 px-4'"
-      placeholder="Slut dato"
-    />
+  <div class="bg-gray-50 rounded-xl p-4 shadow">
+    <div class="font-bold text-lg mb-2 text-[#B8082A]">Produktinformation</div>
+    <div class="mb-1 text-base"><span class="font-semibold">Kamera:</span> <span class="text-gray-700">{{ cameraName || 'Ukendt' }}</span></div>
+    <div class="mb-4 text-base"><span class="font-semibold">Produkt:</span> <span class="text-gray-700">{{ productName || 'Ukendt' }}</span></div>
     <div class="mt-2">
-      <button class="bg-[#B8082A] text-white px-4 py-2 rounded" @click="bookCamera">Book kamera</button>
-    </div>
-    <div class="mt-4">
-      <ul>
-        <li v-for="booking in bookings" :key="booking.id">
-          {{ booking.start }} - {{ booking.end }} ({{ booking.cameraName }}, {{ booking.productName }})
+      <div class="font-semibold mb-1">Bookinger:</div>
+      <ul class="space-y-1">
+        <li v-for="booking in bookings" :key="booking.id" class="bg-white rounded px-3 py-2 shadow-sm border border-gray-200">
+          <span class="text-gray-800">{{ booking.start }} - {{ booking.end }}</span>
+          <span class="ml-2 text-[#B8082A] font-medium">{{ booking.productName }}</span>
         </li>
+        <li v-if="bookings.length === 0" class="text-gray-400 italic">Ingen bookinger for dette kamera.</li>
       </ul>
     </div>
   </div>
@@ -30,12 +19,8 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue';
 import { useNuxtApp } from '#app';
-import VueDatePicker from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css';
 
 const props = defineProps<{ cameraId: number; cameraName?: string; productName?: string }>();
-const startDate = ref<Date|null>(null);
-const endDate = ref<Date|null>(null);
 const bookings = ref<Array<{ id: number; start: string; end: string; cameraName: string; productName: string }>>([]);
 
 async function fetchBookings() {
@@ -55,29 +40,4 @@ async function fetchBookings() {
 }
 
 onMounted(fetchBookings);
-
-async function bookCamera() {
-  if (!startDate.value || !endDate.value) return;
-  // Post booking to backend
-  const { $config } = useNuxtApp();
-  const base = ($config?.public?.apiBase) || 'http://localhost:3001';
-  const res = await fetch(`${base}/bookings`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      cameraId: props.cameraId,
-      cameraName: props.cameraName,
-      productName: props.productName,
-      startDate: startDate.value,
-      endDate: endDate.value
-    })
-  });
-  if (res.ok) {
-    await fetchBookings(); // Refresh bookings after successful booking
-    startDate.value = null;
-    endDate.value = null;
-  } else {
-    alert('Booking fejlede: Ugyldig booking');
-  }
-}
 </script>

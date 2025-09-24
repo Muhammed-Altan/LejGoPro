@@ -122,7 +122,7 @@ async function bookNow() {
 			apartment: store.apartment,
 			postalCode: store.postalCode,
 			city: store.city,
-			accessoryIds: store.selectedAccessories ? store.selectedAccessories.map(a => a.productId || a.id) : [],
+			accessoryIds: store.selectedAccessories ? store.selectedAccessories.map(a => a.instanceId) : [],
 			totalPrice: store.backendTotal || 0
 		};
 		const res = await fetch(`${base}/bookings/by-product`, {

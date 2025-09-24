@@ -32,6 +32,25 @@ model Accessory {
   name        String
   description String
   price       Int
+  quantity    Int     @default(1)
+  instances   AccessoryInstance[]
+}
+
+model AccessoryInstance {
+  id          Int      @id @default(autoincrement())
+  accessory   Accessory @relation(fields: [accessoryId], references: [id])
+  accessoryId Int
+  bookings    AccessoryBooking[]
+}
+
+model AccessoryBooking {
+  id              Int      @id @default(autoincrement())
+  accessoryInstance AccessoryInstance @relation(fields: [accessoryInstanceId], references: [id])
+  accessoryInstanceId Int
+  startDate       DateTime
+  endDate         DateTime
+  customerName    String?
+  status          String? @default("Booked")
 }
 
 model Camera {
@@ -64,7 +83,7 @@ model Booking {
   city          String
 
   // BasketView.vue fields
-  accessoryIds  Int[]     // Array of Accessory IDs
+  accessoryInstanceIds  Int[]     // Array of AccessoryInstance IDs
 
   // Price
   totalPrice    Int

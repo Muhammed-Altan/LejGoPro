@@ -68,6 +68,15 @@
 import { ref, watch } from 'vue';
 import { useCheckoutStore } from '@/stores/checkout';
 
+// Field name constants for type safety
+const FIELD_FULL_NAME = 'fullName';
+const FIELD_PHONE = 'phone';
+const FIELD_EMAIL = 'email';
+const FIELD_ADDRESS = 'address';
+const FIELD_APARTMENT = 'apartment';
+const FIELD_POSTAL_CODE = 'postalCode';
+const FIELD_CITY = 'city';
+
 const store = useCheckoutStore();
 
 // Local refs for form fields, synced to store
@@ -94,6 +103,7 @@ watch(
 		});
 	},
 	{ immediate: true }
+
 );
 </script>
 
