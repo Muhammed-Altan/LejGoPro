@@ -1,32 +1,29 @@
 <template>
-  <div
-    class="basket-container"
-    :class="stickyClasses"
-  >
-    <h2 class="basket-title">Din kurv</h2>
-    <div v-if="models.length === 0" class="basket-empty">Ingen produkter valgt endnu.</div>
+  <div :class="['bg-white rounded-2xl p-10 max-w-[400px] mx-auto text-[#111]', stickyClasses]">
+    <h2 class="text-xl font-semibold mb-6">Din kurv</h2>
+    <div v-if="models.length === 0" class="text-[#888] text-base">Ingen produkter valgt endnu.</div>
     <div v-else>
-      <div v-for="(line, idx) in models" :key="idx" class="basket-line">
-        <div class="basket-line-header">
-          <span class="basket-product-name">{{ line.name }}</span>
-          <span class="basket-product-qty">{{ line.quantity }}x</span>
+      <div v-for="(line, idx) in models" :key="idx" class="mb-5">
+        <div class="flex justify-between items-baseline">
+         <span class="font-semibold text-lg">{{ line.name }}</span> 
+         <span class="text-base text-[#222]">{{ line.quantity }}x</span>
         </div>
-        <div class="basket-product-price">{{ formatCurrency(line.price) }}</div>
+        <div class="text-base text-[#222] mt-1">{{ formatCurrency(line.price) }}</div>
       </div>
-      <div v-if="backendBreakdown && backendBreakdown.accessories && backendBreakdown.accessories.length" class="basket-accessories">
-        <div class="basket-accessories-title">Ekstra udstyr:</div>
+      <div v-if="backendBreakdown && backendBreakdown.accessories && backendBreakdown.accessories.length" class="mt-6 mb-4">
+        <div class="font-semibold mb-2 text-[1.05rem]">Ekstra udstyr:</div>
         <div>
-          <div v-for="(acc, i) in backendBreakdown.accessories" :key="i" class="basket-accessory-line">
+          <div v-for="(acc, i) in backendBreakdown.accessories" :key="i" class="flex justify-between text-base mb-1">
             <span>{{ acc.quantity }}x {{ acc.name }}</span>
             <span>{{ formatCurrency(acc.price) }}</span>
           </div>
         </div>
       </div>
-      <div v-if="backendBreakdown && backendBreakdown.discount" class="basket-row basket-row-discount">
+      <div v-if="backendBreakdown && backendBreakdown.discount" class="flex justify-between text-base mt-5 text-[#1a7f37] font-medium">
         <span>Du sparer</span>
-        <span class="basket-discount-value">{{ formatCurrency(backendBreakdown.discount) }}</span>
+        <span class="font-semibold">{{ formatCurrency(backendBreakdown.discount) }}</span>
       </div>
-      <div v-if="insurance" class="basket-row basket-row-insurance">
+      <div v-if="insurance" class="flex justify-between text-base mt-5">
         <span>Forsikring</span>
         <span>
           <template v-if="backendBreakdown && backendBreakdown.insurance !== undefined && backendBreakdown.insurance !== null">
@@ -35,20 +32,20 @@
           <template v-else>—</template>
         </span>
       </div>
-      <div class="basket-row basket-row-delivery">
+      <div class="flex justify-between text-base mt-2">
         <span>Levering</span>
-        <span class="basket-delivery-free">Gratis</span>
+        <span class="text-[#888]">Gratis</span>
       </div>
-      <div class="basket-total-row">
-        <span class="basket-total-label">I alt:</span>
-        <span class="basket-total-value">
+      <div class="flex justify-between items-end mt-8 text-[1.3rem] font-semibold">
+        <span class="text-[1.2rem] font-semibold">I alt:</span>
+        <span class="text-[1.3rem] font-semibold text-[#222]">
           <span v-if="loading">Beregner…</span>
           <span v-else-if="error">Fejl</span>
-          <span v-else><span class="basket-total-currency">DKK</span> {{ formatCurrency(backendTotal, false) }}</span>
+          <span v-else><span class="text-base text-[#888] mr-1">DKK</span> {{ formatCurrency(backendTotal, false) }}</span>
         </span>
       </div>
-      <div class="basket-days" v-if="rentalDays > 0">Antal dage: {{ rentalDays }}</div>
-      <div class="basket-error" v-if="error">{{ error }}</div>
+      <div class="text-sm text-[#888] mt-2" v-if="rentalDays > 0">Antal dage: {{ rentalDays }}</div>
+      <div class="text-sm text-[#d00] mt-2" v-if="error">{{ error }}</div>
     </div>
   </div>
 </template>
@@ -160,113 +157,5 @@ function formatCurrency(n: number | null, showCurrency = true) {
 </script>
 
 <style scoped>
-.basket-row-discount {
-  margin-top: 1.2rem;
-  color: #1a7f37;
-  font-weight: 500;
-}
-.basket-discount-value {
-  font-weight: 600;
-}
-.basket-row-insurance {
-  margin-top: 1.2rem;
-}
-.basket-container {
-  background: #fff;
-  border-radius: 16px;
-  padding: 2.5rem;
-  max-width: 400px;
-  margin: 0 auto;
-  box-shadow: none;
-  color: #111;
-}
-.basket-title {
-  font-size: 2rem;
-  font-weight: 600;
-  margin-bottom: 1.5rem;
-}
-.basket-empty {
-  color: #888;
-  font-size: 1rem;
-}
-.basket-line {
-  margin-bottom: 1.2rem;
-}
-.basket-line-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: baseline;
-}
-.basket-product-name {
-  font-weight: 600;
-  font-size: 1.1rem;
-}
-.basket-product-qty {
-  font-size: 1rem;
-  color: #222;
-}
-.basket-product-price {
-  font-size: 1rem;
-  color: #222;
-  margin-top: 0.2rem;
-}
-.basket-accessories {
-  margin-top: 1.5rem;
-  margin-bottom: 1rem;
-}
-.basket-accessories-title {
-  font-weight: 600;
-  margin-bottom: 0.5rem;
-  font-size: 1.05rem;
-}
-.basket-accessory-line {
-  display: flex;
-  justify-content: space-between;
-  font-size: 1rem;
-  margin-bottom: 0.2rem;
-}
-.basket-row {
-  display: flex;
-  justify-content: space-between;
-  font-size: 1rem;
-  margin-top: 1.2rem;
-}
-.basket-row-delivery {
-  margin-top: 0.5rem;
-}
-.basket-delivery-free {
-  color: #888;
-}
-.basket-total-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  margin-top: 2rem;
-  font-size: 1.3rem;
-  font-weight: 600;
-}
-.basket-total-label {
-  font-size: 1.2rem;
-  font-weight: 600;
-}
-.basket-total-value {
-  font-size: 1.3rem;
-  font-weight: 600;
-  color: #222;
-}
-.basket-total-currency {
-  font-size: 1rem;
-  color: #888;
-  margin-right: 0.2em;
-}
-.basket-days {
-  font-size: 0.85rem;
-  color: #888;
-  margin-top: 0.5rem;
-}
-.basket-error {
-  font-size: 0.85rem;
-  color: #d00;
-  margin-top: 0.5rem;
-}
+
 </style>

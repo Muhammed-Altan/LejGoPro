@@ -106,14 +106,14 @@
               item.quantity === (availability[item.productId] ?? 1)
             "
             class="absolute left-1/2 z-10 -translate-x-1/2 -top-14 w-56 rounded bg-white text-white text-xs px-3 py-2 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 whitespace-normal shadow-lg"
-            style="color: #b90c2c; background: #b90c2c"
+            style="color: #b90c2c; background: #FF8800"
           >
             Maksimum antal valgt
           </span>
         </div>
         <button
           @click="removeModel(idx)"
-          class="ml-2 text-sm text-gray-500 hover:text-black"
+          class="ml-2 text-sm text-gray-500 fjern-btn cursor-pointer"
         >
           Fjern
         </button>
@@ -189,7 +189,7 @@
         </div>
         <button
           @click="removeAccessory(idx)"
-          class="ml-2 text-sm text-gray-500 hover:text-black"
+          class="ml-2 text-sm text-gray-500 fjern-btn cursor-pointer"
         >
           Fjern
         </button>
@@ -515,5 +515,9 @@ watch([startDate, endDate], async () => {
 select.border-red-500 {
   border-color: #ef4444 !important; /* Tailwind red-500 */
   box-shadow: 0 0 0 2px #ef444433;
+}
+/* Red hover for Fjern button */
+.fjern-btn:hover {
+  color: #b90c2c !important;
 }
 </style>
