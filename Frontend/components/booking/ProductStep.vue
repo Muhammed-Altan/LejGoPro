@@ -7,46 +7,66 @@
       </h2>
     </article>
     <!-- Date Pickers -->
-    <div class="flex items-center justify-between mb-2">
-      <h2 class="font-semibold text-lg">Vælg din booking periode</h2>
-    </div>
-    <div class="flex gap-4">
-      <div class="flex-1">
-        <VueDatePicker
-          v-model="startDate"
-          :enable-time-picker="false"
-          format="dd/MM/yyyy"
-          :input-class="'w-full border border-gray-300 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-400'"
-          placeholder="Start dato"
-        />
+    <section class="bg-gray-50 rounded-xl p-6 shadow flex flex-col gap-2">
+      <div class="flex items-center justify-between mb-2">
+        <h2 class="font-semibold text-lg">Vælg din booking periode</h2>
       </div>
-      <div class="flex-1">
-        <VueDatePicker
-          v-model="endDate"
-          :enable-time-picker="false"
-          format="dd/MM/yyyy"
-          :input-class="'w-full border border-gray-300 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-400'"
-          placeholder="Slut dato"
-        />
+      <div class="flex gap-4">
+        <div class="flex-1">
+          <VueDatePicker
+            v-model="startDate"
+            :enable-time-picker="false"
+            format="dd/MM/yyyy"
+            :input-class="'w-full border border-gray-300 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-400'"
+            placeholder="Start dato"
+          />
+        </div>
+        <div class="flex-1">
+          <VueDatePicker
+            v-model="endDate"
+            :enable-time-picker="false"
+            format="dd/MM/yyyy"
+            :input-class="'w-full border border-gray-300 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-400'"
+            placeholder="Slut dato"
+          />
+        </div>
       </div>
-    </div>
+    </section>
     <!-- GoPro Model Selection (Dropdown) -->
     <section class="bg-gray-50 rounded-xl p-6 shadow flex flex-col gap-2">
       <div class="flex items-center justify-between mb-2">
         <h2 class="font-semibold text-lg">Vælg en GoPro Model</h2>
       </div>
       <div class="flex items-center gap-3">
-        <select
-          v-model="selectedModelName"
-          :disabled="!datesSelected"
-          class="flex-1 w-full border border-gray-300 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
-        >
-          <option disabled value="">Vælg en model…</option>
-          <option v-for="model in models" :key="model.name" :value="model.name">
-            {{ model.name }} — {{ model.price.toFixed(2) }} kr./dag
-            <span v-if="datesSelected"> ({{ availability[model.id] ?? '–' }} tilgængelige)</span>
-          </option>
-        </select>
+        <div class="flex-1 relative">
+          <select
+            v-model="selectedModelName"
+            :disabled="!datesSelected"
+            :class="[
+              'w-full border rounded-lg py-3 px-4 focus:outline-none bg-white',
+              !datesSelected
+                ? 'border-gray-300 bg-gray-100 text-gray-400 cursor-not-allowed disabled-select'
+                : 'border-gray-300 focus:ring-2 focus:ring-blue-400',
+            ]"
+            @focus="onDisabledDropdownFocus($event, !datesSelected)"
+          >
+            <option disabled value="">Vælg en model…</option>
+            <option
+              v-for="model in models"
+              :key="model.name"
+              :value="model.name"
+              :disabled="datesSelected && availability[model.id] === 0"
+            >
+              {{ model.name }} — {{ model.price.toFixed(2) }} kr./dag
+              <span v-if="datesSelected">
+                ({{ availability[model.id] === 0 ? "Udsolgt" : "Tilgængelig" }})
+              </span>
+            </option>
+          </select>
+          <div v-if="!datesSelected" class="text-xs text-red-600 mt-1">
+            Vælg booking periode først
+          </div>
+        </div>
         <button
           :disabled="!selectedModelName || !datesSelected"
           @click="onAddSelectedModel"
@@ -57,35 +77,48 @@
       </div>
     </section>
 
-    <!-- Selected Model and Quantity -->
-    <div v-if="selectedModels && selectedModels.length" class="space-y-2">
+    <!-- Selected Model and Quantity (Unified) -->
+    <section v-if="selectedModels && selectedModels.length" class="space-y-2">
       <div
         v-for="(item, idx) in selectedModels"
         :key="item.name"
-        class="flex gap-4 items-center"
+        class="flex items-center gap-4 bg-blue-100 rounded-lg py-2 px-4 font-medium"
       >
-        <div class="flex-1 bg-blue-100 text-center rounded-lg py-2 font-medium">
+        <div class="flex-1 text-center">
           {{ item.name }}
         </div>
-        <div
-          class="flex-1 bg-blue-100 text-center rounded-lg py-2 font-medium flex items-center justify-center gap-2"
-        >
+        <div class="flex items-center justify-center gap-2 group relative">
           <span>Antal modeller</span>
           <input
             type="number"
             min="1"
+            :max="
+              item.productId !== undefined
+                ? availability[item.productId] ?? 1
+                : 1
+            "
             v-model.number="item.quantity"
             class="w-20 text-center rounded border border-gray-300"
           />
+          <span
+            v-if="
+              item.productId !== undefined &&
+              item.quantity === (availability[item.productId] ?? 1)
+            "
+            class="absolute left-1/2 z-10 -translate-x-1/2 -top-14 w-56 rounded bg-white text-white text-xs px-3 py-2 opacity-0 group-hover:opacity-100 pointer-events-none transition-opacity duration-200 whitespace-normal shadow-lg"
+            style="color: #b90c2c; background: #FF8800"
+          >
+            Maksimum antal valgt
+          </span>
         </div>
         <button
           @click="removeModel(idx)"
-          class="ml-2 text-sm text-gray-500 hover:text-black"
+          class="ml-2 text-sm text-gray-500 fjern-btn cursor-pointer"
         >
           Fjern
         </button>
       </div>
-    </div>
+    </section>
 
     <!-- Accessories Selection (Dropdown) -->
     <section class="bg-gray-50 rounded-xl p-6 shadow flex flex-col gap-2">
@@ -93,16 +126,32 @@
         <h2 class="font-semibold text-lg">Vælg tilbehør</h2>
       </div>
       <div class="flex items-center gap-3">
-        <select
-          v-model="selectedAccessoryName"
-          :disabled="!datesSelected"
-          class="flex-1 w-full border border-gray-300 rounded-lg py-3 px-4 focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
-        >
-          <option disabled value="">Vælg tilbehør…</option>
-          <option v-for="acc in accessories" :key="acc.name" :value="acc.name">
-            {{ acc.name }} — {{ acc.price.toFixed(2) }} kr./dag
-          </option>
-        </select>
+        <div class="flex-1 relative">
+          <select
+            v-model="selectedAccessoryName"
+            :disabled="!datesSelected"
+            :class="[
+              'w-full border rounded-lg py-3 px-4 focus:outline-none bg-white',
+              !datesSelected
+                ? 'border-gray-300 bg-gray-100 text-gray-400 cursor-not-allowed disabled-select'
+                : 'border-gray-300 focus:ring-2 focus:ring-blue-400',
+            ]"
+            @focus="onDisabledDropdownFocus($event, !datesSelected)"
+          >
+            <option disabled value="">Vælg tilbehør…</option>
+            <option
+              v-for="acc in accessories"
+              :key="acc.name"
+              :value="acc.name"
+            >
+              {{ acc.name }} — {{ acc.price.toFixed(2) }} kr./dag
+              <span> (Tilgængelig) </span>
+            </option>
+          </select>
+          <div v-if="!datesSelected" class="text-xs text-red-600 mt-1">
+            Vælg booking periode først
+          </div>
+        </div>
         <button
           :disabled="!selectedAccessoryName || !datesSelected"
           @click="onAddSelectedAccessory"
@@ -114,7 +163,7 @@
     </section>
 
     <!-- Selected Accessory and Quantity -->
-    <div
+    <section
       v-if="selectedAccessories && selectedAccessories.length"
       class="space-y-2"
     >
@@ -133,18 +182,19 @@
           <input
             type="number"
             min="1"
+            :max="accessoryAvailability[item.name] ?? 1"
             v-model.number="item.quantity"
             class="w-20 text-center rounded border border-gray-300"
           />
         </div>
         <button
           @click="removeAccessory(idx)"
-          class="ml-2 text-sm text-gray-500 hover:text-black"
+          class="ml-2 text-sm text-gray-500 fjern-btn cursor-pointer"
         >
           Fjern
         </button>
       </div>
-    </div>
+    </section>
 
     <!-- Insurance Toggle -->
     <section
@@ -227,6 +277,19 @@ import VueDatePicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 
 // Models are now fetched from the backend Product table
+
+function onDisabledDropdownFocus(event: FocusEvent, isDisabled: boolean) {
+  if (isDisabled) {
+    const target = event.target as HTMLSelectElement;
+    target.classList.add("border-red-500");
+    setTimeout(() => {
+      target.classList.remove("border-red-500");
+    }, 1200);
+    event.preventDefault();
+    event.stopPropagation();
+    target.blur();
+  }
+}
 interface ProductOption {
   id: number;
   name: string;
@@ -237,6 +300,7 @@ interface ProductOption {
 const models = ref<ProductOption[]>([]);
 const accessories = ref<{ name: string; price: number }[]>([]);
 const availability = ref<Record<number, number>>({});
+const accessoryAvailability = ref<Record<string, number>>({});
 
 // SSR-safe Pinia usage
 const store = useCheckoutStore();
@@ -376,16 +440,23 @@ onMounted(async () => {
   // Initial availability load if dates already in store
   if (datesSelected.value) {
     try {
-      const qs = new URLSearchParams({ start: startDate.value!.toISOString(), end: endDate.value!.toISOString() });
-      const res = await fetch(`${base}/products/availability/range?${qs.toString()}`);
+      const qs = new URLSearchParams({
+        start: startDate.value!.toISOString(),
+        end: endDate.value!.toISOString(),
+      });
+      const res = await fetch(
+        `${base}/products/availability/range?${qs.toString()}`
+      );
       if (res.ok) {
         const data = await res.json();
         const map: Record<number, number> = {};
-        (data || []).forEach((p: any) => { map[p.productId] = p.available; });
+        (data || []).forEach((p: any) => {
+          map[p.productId] = p.available;
+        });
         availability.value = map;
       }
     } catch (e) {
-      console.error('Error fetching availability:', e);
+      console.error("Error fetching availability:", e);
     }
   }
 });
@@ -399,15 +470,22 @@ watch([startDate, endDate], async () => {
     return;
   }
   try {
-    const qs = new URLSearchParams({ start: startDate.value.toISOString(), end: endDate.value.toISOString() });
-    const res = await fetch(`${base}/products/availability/range?${qs.toString()}`);
-    if (!res.ok) throw new Error('Failed to load availability');
+    const qs = new URLSearchParams({
+      start: startDate.value.toISOString(),
+      end: endDate.value.toISOString(),
+    });
+    const res = await fetch(
+      `${base}/products/availability/range?${qs.toString()}`
+    );
+    if (!res.ok) throw new Error("Failed to load availability");
     const data = await res.json();
     const map: Record<number, number> = {};
-    (data || []).forEach((p: any) => { map[p.productId] = p.available; });
+    (data || []).forEach((p: any) => {
+      map[p.productId] = p.available;
+    });
     availability.value = map;
   } catch (e) {
-    console.error('Error fetching availability:', e);
+    console.error("Error fetching availability:", e);
     availability.value = {};
   }
 });
@@ -426,5 +504,20 @@ watch([startDate, endDate], async () => {
 }
 .plus-red {
   color: #b8082a !important;
+}
+
+/* Disabled dropdown styling */
+.disabled-select {
+  background-color: #f3f4f6 !important; /* Tailwind gray-100 */
+  color: #d1d5db !important; /* Tailwind gray-300 */
+  cursor: not-allowed !important;
+}
+select.border-red-500 {
+  border-color: #ef4444 !important; /* Tailwind red-500 */
+  box-shadow: 0 0 0 2px #ef444433;
+}
+/* Red hover for Fjern button */
+.fjern-btn:hover {
+  color: #b90c2c !important;
 }
 </style>

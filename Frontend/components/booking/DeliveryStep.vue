@@ -58,23 +58,15 @@
 				autocomplete="address-level2"
 			/>
 		</div>
-		<div class="bg-blue-50 text-center text-gray-800 rounded-lg py-4 px-2 mt-2 text-base font-medium">
+		<!-- <div class="bg-blue-50 text-center text-gray-800 rounded-lg py-4 px-2 mt-2 text-base font-medium">
 			Angiv din leveringsadresse for at se de tilgængelige leveringsmetoder
-		</div>
+		</div> -->
 	</form>
 </template>
 
 <script setup>
-// Previous defineModel code for reference:
-// const fullName = defineModel(FIELD_FULL_NAME, { default: '' });
-// const phone = defineModel(FIELD_PHONE, { default: '' });
-// const email = defineModel(FIELD_EMAIL, { default: '' });
-// const address = defineModel(FIELD_ADDRESS, { default: '' });
-// const apartment = defineModel(FIELD_APARTMENT, { default: '' });
-// const postalCode = defineModel(FIELD_POSTAL_CODE, { default: '' });
-// const city = defineModel(FIELD_CITY, { default: '' });
+import { ref, watch } from 'vue';
 import { useCheckoutStore } from '@/stores/checkout';
-import { watch, ref } from 'vue';
 
 // Field name constants for type safety
 const FIELD_FULL_NAME = 'fullName';
@@ -98,19 +90,20 @@ const city = ref('');
 
 // Watch and sync to store
 watch(
- [fullName, phone, email, address, apartment, postalCode, city],
- ([n, p, e, a, ap, pc, c]) => {
-	 store.setDeliveryInfo({
-		 [FIELD_FULL_NAME]: n,
-		 [FIELD_PHONE]: p,
-		 [FIELD_EMAIL]: e,
-		 [FIELD_ADDRESS]: a,
-		 [FIELD_APARTMENT]: ap,
-		 [FIELD_POSTAL_CODE]: pc,
-		 [FIELD_CITY]: c
-	 });
- },
- { immediate: true }
+	[fullName, phone, email, address, apartment, postalCode, city],
+	([n, p, e, a, ap, pc, c]) => {
+		store.setDeliveryInfo({
+			fullName: n,
+			phone: p,
+			email: e,
+			address: a,
+			apartment: ap,
+			postalCode: pc,
+			city: c
+		});
+	},
+	{ immediate: true }
+
 );
 </script>
 
